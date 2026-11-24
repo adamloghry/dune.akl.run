@@ -1,0 +1,88 @@
+---
+import Base from '../layouts/Base.astro';
+import Sprite from '../components/Sprite.astro';
+import Dunes from '../components/Dunes.astro';
+import EventCard from '../components/EventCard.astro';
+import { eras, kindLabel } from '../data/timeline';
+
+const colours = ['--rust', '--sand-d', '--spice', '--blue', '--sand', '--gold', '--dune-3', '--added'];
+const total = eras.reduce((n, e) => n + (e.to - e.from), 0);
+// Short eras get a floor so they remain clickable; the legend carries the real spans.
+const ruler = eras.map((e, i) => {
+  const pct = Math.max(1.6, ((e.to - e.from) / total) * 100);
+  return { ...e, pct, colour: colours[i % colours.length], narrow: pct < 9 };
+});
+const filmCount = eras.flatMap((e) => e.events).flatMap((ev) => ev.films ?? []).length;
+---
+<Base page="home">
+  <section class="hero">
+    <Dunes />
+    <div class="actor worm-rise"><Sprite name="worm" size={5} /></div>
+    <div class="actor thopter-fly"><Sprite name="thopter" size={4} /></div>
+    <div class="wrap hero-inner">
+      <p class="kicker">a chronicle in {eras.length} eras</p>
+      <h1>THE GOLDEN<br />PATH</h1>
+      <p class="lede">
+        More than fifteen thousand years of Frank Herbert's Dune, from the war on thinking machines to the
+        no-ship vanishing into the dark. The books are the record. Where Denis Villeneuve's films
+        tell it differently, the difference is marked.
+      </p>
+      <div class="cta">
+        <a class="btn" href="#old-empire">begin the record</a>
+        <a class="btn ghost" href="films/">{filmCount} film notes</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <section class="ruler-sec" aria-labelledby="scale">
+      <h2 id="scale" class="sec-title">The scale of it</h2>
+      <p class="sec-sub">
+        Each band is an era drawn to its length in years. The whole of the novel Dune, and both
+        films, happen inside a sliver about two years wide. Leto II's reign alone is more than a
+        fifth of the record.
+      </p>
+      <nav class="ruler" aria-label="Eras by length">
+        {ruler.map((e) => (
+          <a href={`#${e.id}`} class:list={{ narrow: e.narrow }} style={`flex: ${e.pct} 0 0; --c: var(${e.colour})`} title={`${e.name} · ${e.span}`}>
+            <span>{e.num}</span>
+          </a>
+        ))}
+      </nav>
+      <ol class="ruler-legend">
+        {ruler.map((e) => (
+          <li style={`--c: var(${e.colour})`}><i></i><a href={`#${e.id}`}>{e.num} {e.name}</a></li>
+        ))}
+      </ol>
+    </section>
+
+    <div class="controls pxbox" role="group" aria-label="Display options">
+      <label class="toggle"><input type="checkbox" id="show-films" checked /><span class="sw"></span>show film notes</label>
+      <label class="toggle"><input type="checkbox" id="only-diverged" /><span class="sw"></span>only what the films touch</label>
+      <div class="legend" aria-hidden="true">
+        {(['kept', 'changed', 'cut', 'added'] as const).map((k) => <span class={`badge k-${k}`}>{kindLabel[k]}</span>)}
+      </div>
+    </div>
+
+    {eras.map((era) => {
+      const hasFilm = era.events.some((ev) => (ev.films ?? []).length > 0);
+      return (
+        <section id={era.id} class:list={['era', { 'has-film': hasFilm }]} aria-labelledby={`${era.id}-h`}>
+          <header class="era-head pxbox">
+            <div class="era-sprite"><Sprite name={era.sprite} size={5} /></div>
+            <div>
+              <span class="num" aria-hidden="true">{era.num}</span>
+              <h2 id={`${era.id}-h`}>{era.name}</h2>
+              <div class="span">{era.span}</div>
+              <p>{era.summary}</p>
+              <div class="books">{era.books.map((b) => <span class="book-tag">{b}</span>)}</div>
+            </div>
+          </header>
+          <ol class="spine">
+            {era.events.map((ev) => <EventCard event={ev} />)}
+          </ol>
+        </section>
+      );
+    })}
+  </div>
+</Base>

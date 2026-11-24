@@ -1,0 +1,52 @@
+---
+import Base from '../layouts/Base.astro';
+import Sprite from '../components/Sprite.astro';
+import { bookInfo } from '../data/timeline';
+---
+<Base page="about" title="About — The Golden Path">
+  <div class="wrap">
+    <header class="page-head">
+      <p class="kicker">sources and method</p>
+      <h1>About this chronicle</h1>
+    </header>
+    <div class="prose">
+      <h2>Canon</h2>
+      <p>
+        Only Frank Herbert's six Dune novels and the appendices and glossary printed with Dune.
+        Nothing from the later prequels and sequels by Brian Herbert and Kevin J. Anderson is
+        used, even where those books fill gaps. Where Herbert left something vague, so does this
+        site.
+      </p>
+      <ul class="books-grid">
+        {Object.entries(bookInfo).map(([k, b]) => (
+          <li class="pxbox"><Sprite name="book" size={2} /><div><b>{b.title}</b><span>{b.year} · {b.note}</span></div></li>
+        ))}
+      </ul>
+
+      <h2>Films</h2>
+      <p>
+        Denis Villeneuve's Dune (2021) and Dune: Part Two (2024). Each film note is tagged
+        <span class="badge k-changed">CHANGED</span>, <span class="badge k-cut">CUT</span>,
+        <span class="badge k-added">ADDED</span> or <span class="badge k-kept">KEPT</span>.
+      </p>
+
+      <h2>Dates</h2>
+      <p>
+        The Imperial calendar counts years After Guild (A.G.), from the start of the Spacing
+        Guild's monopoly. Herbert gives hard dates for the deep past (the Butlerian Jihad, the
+        Battle of Corrin) and for the opening of Dune in 10,191 A.G. After that, each novel dates
+        itself only relative to the one before: Messiah is twelve years after Dune, Children nine
+        after that, God Emperor about 3,500 years later, Heretics about 1,500 after Leto's death.
+        Those dates are shown as intervals, marked "≈", and drawn as hollow markers on the timeline.
+        The scale ruler uses approximate absolute positions built from those intervals.
+      </p>
+
+      <h2>Build</h2>
+      <p>Astro static site, pinned by a Nix flake, deployed to Cloudflare's free tier.</p>
+      <pre><code>nix develop          # node + wrangler
+npm run dev          # local preview
+nix build            # reproducible build into ./result
+npx wrangler deploy  # publish dist/ as static assets</code></pre>
+    </div>
+  </div>
+</Base>

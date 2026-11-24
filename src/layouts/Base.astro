@@ -1,0 +1,75 @@
+---
+import '@fontsource/silkscreen/400.css';
+import '@fontsource/vt323/400.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/600.css';
+import '../styles/global.css';
+import Sprite from '../components/Sprite.astro';
+import Dunes from '../components/Dunes.astro';
+
+interface Props { title?: string; description?: string; page?: 'home' | 'films' | 'about' }
+const {
+  title = 'The Golden Path — a Dune chronicle',
+  description = 'The in-universe history of Frank Herbert\'s Dune, from the Butlerian Jihad to Chapterhouse, with every divergence in Denis Villeneuve\'s films marked.',
+  page = 'home',
+} = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const nav = [
+  { id: 'home', href: `${base}/`, label: 'chronicle' },
+  { id: 'films', href: `${base}/films/`, label: 'films' },
+  { id: 'about', href: `${base}/about/`, label: 'about' },
+];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta name="theme-color" content="#140c1a" />
+    <link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml" />
+    <script is:inline>
+      (() => {
+        try {
+          const t = localStorage.getItem('theme');
+          document.documentElement.dataset.theme = t || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        } catch { document.documentElement.dataset.theme = 'dark'; }
+      })();
+    </script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="wrap">
+        <a class="brand" href={`${base}/`}><Sprite name="worm" size={2} /><span>THE GOLDEN PATH</span></a>
+        <nav class="nav" aria-label="Site">
+          {nav.map((n) => <a href={n.href} aria-current={n.id === page ? 'page' : undefined}>{n.label}</a>)}
+        </nav>
+        <button class="theme-btn" type="button" aria-label="Switch between day and night">
+          <svg class="icon-sun" viewBox="0 0 10 10" shape-rendering="crispEdges" fill="currentColor"><rect x="3" y="3" width="4" height="4"/><rect x="4" y="0" width="2" height="2"/><rect x="4" y="8" width="2" height="2"/><rect x="0" y="4" width="2" height="2"/><rect x="8" y="4" width="2" height="2"/><rect x="1" y="1" width="1" height="1"/><rect x="8" y="1" width="1" height="1"/><rect x="1" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/></svg>
+          <svg class="icon-moon" viewBox="0 0 10 10" shape-rendering="crispEdges" fill="currentColor"><rect x="3" y="1" width="4" height="1"/><rect x="2" y="2" width="3" height="1"/><rect x="1" y="3" width="3" height="4"/><rect x="2" y="7" width="3" height="1"/><rect x="3" y="8" width="5" height="1"/><rect x="7" y="7" width="2" height="1"/></svg>
+        </button>
+      </div>
+    </header>
+    <main id="top">
+      <slot />
+    </main>
+    <footer>
+      <Dunes seed={13714} height={60} stars={false} />
+      <div class="wrap foot">
+        <span>Book canon: Frank Herbert, 1965–1985. Films: Denis Villeneuve, 2021 &amp; 2024.</span>
+        <span>A fan chronicle. Not affiliated with the Herbert estate or Legendary.</span>
+      </div>
+    </footer>
+    <a class="to-top" href="#top" aria-label="Back to top">^</a>
+    <script is:inline>
+      document.querySelector('.theme-btn')?.addEventListener('click', () => {
+        const d = document.documentElement;
+        d.dataset.theme = d.dataset.theme === 'light' ? 'dark' : 'light';
+        try { localStorage.setItem('theme', d.dataset.theme); } catch {}
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "dune-chronicle",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "The Golden Path: a pixel-art chronicle of Frank Herbert's Dune, with Villeneuve's film divergences marked.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "deploy": "astro build && wrangler deploy"
+  },
+  "dependencies": {
+    "@fontsource/ibm-plex-mono": "^5.2.0",
+    "@fontsource/silkscreen": "^5.2.0",
+    "@fontsource/vt323": "^5.2.0",
+    "astro": "^7.4.13"
+  }
+}

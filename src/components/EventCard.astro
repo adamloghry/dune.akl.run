@@ -1,0 +1,31 @@
+---
+import type { Event } from '../data/timeline';
+import { kindLabel } from '../data/timeline';
+interface Props { event: Event }
+const { event: e } = Astro.props;
+const films = e.films ?? [];
+---
+<li id={e.id} class:list={['event', { approx: e.approx, 'has-film': films.length > 0 }]}>
+  <article class="card pxbox">
+    <div class="card-meta">
+      <span class="when">{e.when}</span>
+      <span class="book-tag">{e.book}</span>
+      {e.approx && <span class="sr-only">(approximate date)</span>}
+    </div>
+    <h3><a href={`#${e.id}`}>{e.title}</a></h3>
+    <p>{e.body}</p>
+    {films.length > 0 && (
+      <ul class="film-notes" aria-label="How the films differ">
+        {films.map((f) => (
+          <li class={`film-note k-${f.kind}`}>
+            <div class="fn-head">
+              <span class={`badge k-${f.kind}`}>{kindLabel[f.kind]}</span>
+              <span class="fn-film">FILM · {f.film}</span>
+            </div>
+            <p>{f.text}</p>
+          </li>
+        ))}
+      </ul>
+    )}
+  </article>
+</li>
