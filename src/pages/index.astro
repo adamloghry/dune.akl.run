@@ -24,6 +24,7 @@ const land: Record<string, { label: string; sky: string; l: [string, string, str
 };
 const motes = Array.from({ length: 18 }, (_, i) => ({ x: (i * 53) % 100, d: 9 + ((i * 7) % 8), delay: -((i * 13) % 17), dx: ((i % 5) - 2) * 30 }));
 const filmCount = eras.flatMap((e) => e.events).flatMap((ev) => ev.films ?? []).length;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <Base page="home">
   <section class="hero">
@@ -41,8 +42,8 @@ const filmCount = eras.flatMap((e) => e.events).flatMap((ev) => ev.films ?? []).
       </p>
       <div class="cta">
         <a class="btn" href="#old-empire">begin the record</a>
-        <a class="btn ghost" href="characters/">meet the people</a>
-        <a class="btn ghost" href="films/">{filmCount} film notes</a>
+        <a class="btn ghost" href={`${base}/characters/`}>meet the people</a>
+        <a class="btn ghost" href={`${base}/films/`}>{filmCount} film notes</a>
       </div>
     </div>
   </section>

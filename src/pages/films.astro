@@ -13,6 +13,7 @@ const films: { id: Film; title: string; year: string; scope: string }[] = [
   { id: 'PART TWO', title: 'Dune: Part Two', year: '2024', scope: 'The second half: the sietch years to the throne, compressed from about two years into months.' },
 ];
 const order = (k: FilmKind) => kinds.indexOf(k);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <Base page="films" title="Book vs film — The Golden Path">
   <div class="wrap">
@@ -43,7 +44,7 @@ const order = (k: FilmKind) => kinds.indexOf(k);
               {fr.map((r) => (
                 <tr>
                   <td><span class={`badge k-${r.kind}`}>{kindLabel[r.kind]}</span></td>
-                  <td><a href={`../#${r.ev.id}`}>{r.ev.title}</a><br /><span class="vt" style="color: var(--ink-3); font-size: 18px">{r.ev.when}</span></td>
+                  <td><a href={`${base}/#${r.ev.id}`}>{r.ev.title}</a><br /><span class="vt" style="color: var(--ink-3); font-size: 18px">{r.ev.when}</span></td>
                   <td>{r.text}</td>
                 </tr>
               ))}
