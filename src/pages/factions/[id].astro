@@ -1,0 +1,99 @@
+---
+import Base from '../../layouts/Base.astro';
+import Avatar from '../../components/Avatar.astro';
+import Sprite from '../../components/Sprite.astro';
+import { factions, factionById, characters, eraOrder, relLabel, type Faction } from '../../data/cast';
+import { eventsFor, factionLinks, eraName } from '../../data/query';
+
+export function getStaticPaths() {
+  return factions.map((f, i) => ({ params: { id: f.id }, props: { f, prev: factions[i - 1] ?? null, next: factions[i + 1] ?? null } }));
+}
+interface Props { f: Faction; prev: Faction | null; next: Faction | null }
+const { f, prev, next } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const evs = eventsFor('f', f.id);
+const people = characters.flatMap((c) => c.factions.filter((x) => x.id === f.id).map((x) => ({ c, rel: x.rel })));
+const order = { member: 0, trained: 1, ally: 2, enemy: 3 } as const;
+people.sort((a, b) => order[a.rel] - order[b.rel]);
+const links = [...factionLinks().entries()]
+  .filter(([k]) => k.split('|').includes(f.id))
+  .map(([k, n]) => ({ id: k.split('|').find((x) => x !== f.id)!, n }))
+  .sort((a, b) => b.n - a.n);
+const maxLink = Math.max(1, ...links.map((l) => l.n));
+const words = ['absent', 'marginal', 'a player', 'central'];
+---
+<Base page="factions" title={`${f.name} — The Golden Path`} description={f.blurb}>
+  <div class="wrap">
+    <nav class="crumbs vt"><a href={`${base}/factions/`}>factions</a> / {f.id}</nav>
+    <header class="profile pxbox" style={`--fc:${f.colour}`}>
+      <div class="portrait sigil-portrait" style={`color:${f.colour}`}><Sprite name={f.sigil} size={10} /></div>
+      <div>
+        <p class="kicker" style="margin:0">{f.kind}</p>
+        <h1>{f.name}</h1>
+        <p>{f.blurb}</p>
+      </div>
+    </header>
+    {f.film && (
+      <aside class="film-panel pxbox"><Sprite name="reel" size={3} /><div><b class="vt">ON SCREEN</b><p>{f.film}</p></div></aside>
+    )}
+
+    <section class="arc-sec">
+      <h2 class="sec-title">Weight across the ages</h2>
+      <ol class="arc presence-arc">
+        {eraOrder.map((e) => (
+          <li class={`p${f.presence[e] ?? 0}`}>
+            <a class="arc-era vt" href={`${base}/#${e}`}>{eraName(e)}</a>
+            <span class="meter" aria-label={words[f.presence[e] ?? 0]}>{[1, 2, 3].map((n) => <i class={n <= (f.presence[e] ?? 0) ? 'on' : ''}></i>)}</span>
+            <p>{f.arc[e] ?? words[f.presence[e] ?? 0]}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    {people.length > 0 && (
+      <section class="arc-sec">
+        <h2 class="sec-title">People</h2>
+        <ul class="companions">
+          {people.map(({ c, rel }) => (
+            <li><a href={`${base}/characters/${c.id}/`} class="pxbox"><Avatar c={c} size={3} /><span>{c.name}</span><em class={`rel rel-${rel}`}>{relLabel[rel]}</em></a></li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {links.length > 0 && (
+      <section class="arc-sec">
+        <h2 class="sec-title">Entangled with</h2>
+        <p class="sec-sub">How many timeline events each other faction shares with {f.name}.</p>
+        <ul class="links">
+          {links.map((l) => (
+            <li>
+              <a href={`${base}/factions/${l.id}/`} style={`color:${factionById[l.id].colour}`}><Sprite name={factionById[l.id].sigil} size={2} /></a>
+              <a href={`${base}/factions/${l.id}/`} class="lname">{factionById[l.id].name}</a>
+              <span class="bar" style={`--w:${(l.n / maxLink) * 100}%; --c:${factionById[l.id].colour}`}></span>
+              <b class="vt">{l.n}</b>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <section class="arc-sec">
+      <h2 class="sec-title">On the timeline, {evs.length} events</h2>
+      <ol class="mini-events">
+        {evs.map(({ ev }) => (
+          <li class="pxbox">
+            <div class="card-meta"><span class="when">{ev.when}</span><span class="book-tag">{ev.book}</span></div>
+            <h3><a href={`${base}/#${ev.id}`}>{ev.title}</a></h3>
+            <p>{ev.body}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <nav class="pager">
+      {prev ? <a class="btn ghost" href={`${base}/factions/${prev.id}/`}>&lt; {prev.name}</a> : <span></span>}
+      {next && <a class="btn ghost" href={`${base}/factions/${next.id}/`}>{next.name} &gt;</a>}
+    </nav>
+  </div>
+</Base>

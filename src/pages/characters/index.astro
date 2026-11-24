@@ -1,0 +1,45 @@
+---
+import Base from '../../layouts/Base.astro';
+import Avatar from '../../components/Avatar.astro';
+import Sprite from '../../components/Sprite.astro';
+import { characters, factionById, eraOrder, eraShort } from '../../data/cast';
+import { eventsFor } from '../../data/query';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<Base page="characters" title="Characters — The Golden Path">
+  <div class="wrap">
+    <header class="page-head">
+      <p class="kicker">dramatis personae</p>
+      <h1>Characters</h1>
+      <p class="sec-sub">
+        {characters.length} people who carry the saga. The strip under each portrait shows the eight
+        eras: solid where they are alive, hatched where they persist as memory, ghola line or
+        bloodline. Duncan Idaho is the only one present from Dune to the last page.
+      </p>
+    </header>
+    <ul class="cast-grid">
+      {characters.map((c) => (
+        <li>
+          <a class="cast-card pxbox" href={`${base}/characters/${c.id}/`}>
+            <Avatar c={c} size={5} />
+            <div class="cast-body">
+              <b>{c.name}</b>
+              {c.aka && <span class="aka">{c.aka}</span>}
+              <div class="sigils">
+                {c.factions.map((f) => (
+                  <span class={`sigil rel-${f.rel}`} style={`color:${factionById[f.id].colour}`} title={`${factionById[f.id].name} (${f.rel})`}>
+                    <Sprite name={factionById[f.id].sigil} size={2} />
+                  </span>
+                ))}
+              </div>
+              <div class="life" aria-label="Eras present">
+                {eraOrder.map((e) => <i class={c.eras[e] ?? 'none'} title={`${eraShort[e]}: ${c.eras[e] ?? 'absent'}`}></i>)}
+              </div>
+              <span class="count">{eventsFor('who', c.id).length} events</span>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Base>

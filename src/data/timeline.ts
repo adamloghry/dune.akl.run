@@ -65,7 +65,7 @@ export const eras: Era[] = [
         when: '1381 B.G.',
         title: 'The Zensunni schism',
         book: 'APPENDIX',
-        body: 'A sect breaks from the teachings of Maometh, the "Third Muhammed". Its followers become the Zensunni Wanderers, a people forced from world to world (Poritrin, Bela Tegeuse, Rossak, Harmonthep and others) for generations. They are the ancestors of the Fremen.',
+        body: 'A sect breaks from the teachings of Maometh, the "Third Muhammed". Its followers become the Zensunni Wanderers, a people forced from world to world (Poritrin, Bela Tegeuse, Harmonthep and others) for generations. They are the ancestors of the Fremen.',
       },
       {
         id: 'jihad',
@@ -86,7 +86,7 @@ export const eras: Era[] = [
         when: '88 B.G.',
         title: 'The Battle of Corrin',
         book: 'APPENDIX',
-        body: 'A space battle near Sigma Draconis settles the ascendancy of the ruling house from Salusa Secundus, which takes the name Corrino. The Emperor\'s terror troops, the Sardaukar, take their name from it. In Dune, the Atreides–Harkonnen feud is traced to a Harkonnen banished for cowardice after this battle.',
+        body: 'A space battle near Sigma Draconis settles the ascendancy of the ruling house from Salusa Secundus, which takes the name Corrino.  In Dune, the Atreides–Harkonnen feud is traced to a Harkonnen banished for cowardice after this battle.',
       },
     ],
   },
@@ -142,18 +142,11 @@ export const eras: Era[] = [
       },
       {
         id: 'kynes',
-        when: 'Two generations before Dune',
+        when: 'A generation before Dune',
         approx: true,
         title: 'Pardot Kynes and the ecological dream',
         book: 'APPENDIX',
         body: 'The Imperial Planetologist Pardot Kynes goes native among the Fremen and gives them a plan: turn Arrakis green with patience and hoarded water, over three to five hundred years. He dies in a cave-in at Plaster Basin. His son Liet-Kynes inherits both the post and the dream.',
-        films: [
-          {
-            film: 'PART ONE',
-            kind: 'changed',
-            text: 'Liet Kynes is a woman (Dr. Liet Kynes). Her father and the multi-generation terraforming plan are barely mentioned.',
-          },
-        ],
       },
     ],
   },
@@ -184,7 +177,7 @@ export const eras: Era[] = [
           {
             film: 'PART ONE',
             kind: 'added',
-            text: 'The film opens with Chani narrating Harkonnen oppression of the Fremen, framing the story from Arrakis rather than Caladan.',
+            text: 'Before Caladan, the film opens with Chani narrating Harkonnen oppression of the Fremen, framing the story from Arrakis.',
           },
         ],
       },
@@ -193,7 +186,7 @@ export const eras: Era[] = [
         when: '10,191 A.G.',
         title: 'Arrival at Arrakeen',
         book: 'DUNE',
-        body: 'The Atreides take over the Residency. A hunter-seeker attack on Paul, a formal banquet where the Duke and Jessica read the planet\'s power brokers, and the Shadout Mapes\' gift of a crysknife. Duncan Idaho goes into the desert and comes back calling the Fremen the Atreides\' real "desert power".',
+        body: 'The Atreides take over the Residency. The Fremen housekeeper, the Shadout Mapes, gives Jessica a crysknife; that first night a hunter-seeker nearly kills Paul. Later comes a formal banquet where the Duke and Jessica read the planet\'s power brokers. Duncan Idaho returns from the sietches with the measure of the Fremen, and Leto tells Paul what they must now win: "desert power".',
         films: [
           {
             film: 'PART ONE',
@@ -221,7 +214,7 @@ export const eras: Era[] = [
         when: '10,191 A.G.',
         title: 'Into the desert, and the death of Kynes',
         book: 'DUNE',
-        body: 'Paul and Jessica escape by ornithopter through a storm. Duncan dies holding off Sardaukar at an ecological testing station. Kynes, unmasked as a Fremen leader, is left in the open desert by the Harkonnens and dies when a pre-spice mass erupts beneath him, hallucinating his father\'s voice.',
+        body: 'Dumped in the deep desert by Harkonnen soldiers, Paul and Jessica escape with the survival kit Yueh hid for them and are found by Duncan and taken to an Imperial ecological testing station run by Liet-Kynes. Sardaukar attack; Duncan dies holding them off while Paul and Jessica escape by ornithopter into a storm. Kynes, unmasked as a Fremen leader, is left in the open desert by the Harkonnens and dies when a pre-spice mass erupts beneath him, hallucinating his father\'s voice.',
         films: [
           {
             film: 'PART ONE',
@@ -231,7 +224,26 @@ export const eras: Era[] = [
           {
             film: 'PART ONE',
             kind: 'changed',
-            text: 'Kynes dies by choice: she summons a sandworm with a thumper and takes the Sardaukar down with her.',
+            text: 'Liet Kynes is a woman (Dr. Liet Kynes), and her father\'s multi-generation plan is barely mentioned. She dies by choice: she summons a sandworm with a thumper and takes the Sardaukar down with her.',
+          },
+        ],
+      },
+      {
+        id: 'stilltent',
+        when: '10,191 A.G.',
+        title: 'The awakening in the stilltent',
+        book: 'DUNE',
+        body: "Sheltering from the storm in a stilltent, steeped in spice, Paul's prescience opens fully. He sees the jihad that will be fought in his name, understands he is the Kwisatz Haderach, and realises that Jessica is the Baron's daughter: he is part Harkonnen.",
+        films: [
+          {
+            film: 'PART ONE',
+            kind: 'kept',
+            text: 'The stilltent vision of the jihad is kept.',
+          },
+          {
+            film: 'PART TWO',
+            kind: 'changed',
+            text: "The discovery that Jessica is the Baron's daughter is moved to Part Two, after Paul drinks the Water of Life.",
           },
         ],
       },
@@ -265,31 +277,24 @@ export const eras: Era[] = [
       },
       {
         id: 'alia-born',
-        when: '≈10,192 A.G.',
-        approx: true,
+        when: '10,191 A.G.',
         title: 'Alia is born',
         book: 'DUNE',
-        body: 'Alia is born fully conscious, an adult mind in an infant body, unsettling even to the Fremen. Paul and Chani have a son, also named Leto. The book spans years; Paul grows into a war leader and a worm rider.',
+        body: 'Born months after the Duke\'s death, Alia is fully conscious from birth, an adult mind in an infant body, unsettling even to the Fremen.',
         films: [
           {
             film: 'PART TWO',
             kind: 'changed',
             text: 'The time-skip is cut. Events take months, so Alia is never born; she speaks to Jessica from the womb and appears to Paul in a vision as an adult.',
           },
-          {
-            film: 'PART TWO',
-            kind: 'cut',
-            text: 'Paul and Chani\'s first son does not exist.',
-          },
         ],
       },
       {
         id: 'chani',
-        when: '≈10,192 A.G.',
-        approx: true,
-        title: 'Chani',
+        when: '10,191 A.G.',
+        title: 'Paul and Chani',
         book: 'DUNE',
-        body: 'Liet-Kynes\'s daughter, a fighter and Paul\'s companion. In the book she believes in him and accepts the dynastic marriage to Irulan, because the closing line is hers to claim: "history will call us wives".',
+        body: 'At Sietch Tabr, Paul takes Chani, Liet-Kynes\'s daughter and the girl from his visions, as his partner. In the book she believes in him to the end and accepts the dynastic marriage to Irulan; the novel closes on Jessica telling her that history will call them, the concubines, wives.',
         films: [
           {
             film: 'PART TWO',
@@ -299,22 +304,67 @@ export const eras: Era[] = [
         ],
       },
       {
+        id: 'sandrider',
+        when: '≈10,192 A.G.',
+        approx: true,
+        title: 'Sandrider',
+        book: 'DUNE',
+        body: 'Paul learns the Fremen ways: water discipline, the weirding way taught in return, stillsuits and thumpers. He calls and rides his first maker with hooks, the rite that makes a Fremen a sandrider, and becomes their war leader against the Harkonnens.',
+        films: [
+          {
+            film: 'PART TWO',
+            kind: 'kept',
+            text: 'The first worm ride is kept, staged as the ride on a single giant worm.',
+          },
+        ],
+      },
+      {
+        id: 'first-son',
+        when: '≈10,192 A.G.',
+        approx: true,
+        title: 'Leto, the first son',
+        book: 'DUNE',
+        body: 'Paul and Chani have a son, named Leto after the Duke. Near the end of the war, a Sardaukar raid on the sietches kills the child and carries off Alia.',
+        films: [
+          {
+            film: 'PART TWO',
+            kind: 'cut',
+            text: 'Paul and Chani have no child, so the raid and the loss are gone.',
+          },
+        ],
+      },
+      {
         id: 'water-of-life',
         when: '≈10,193 A.G.',
         approx: true,
         title: 'Paul drinks the Water of Life',
         book: 'DUNE',
-        body: 'With his prescience failing, Paul drinks the poison no man has survived and lies near death for three weeks. He wakes as the Kwisatz Haderach, seeing past, present and the narrow paths of the future, and sees the jihad he cannot stop.',
+        body: 'With his prescience clouded, Paul drinks the poison no man has survived and lies near death for three weeks. He wakes as the Kwisatz Haderach, seeing past, present and the narrow paths of the future, and sees the jihad he cannot stop.',
         films: [
+          {
+            film: 'PART TWO',
+            kind: 'added',
+            text: 'Paul goes south and proclaims himself the Lisan al-Gaib before a war council of fundamentalists. The council scene and the split between sceptical northerners and southern believers are inventions of the film.',
+          },
           {
             film: 'PART TWO',
             kind: 'changed',
             text: 'The drinking is kept but framed as a choice to accept the messiah role in order to lead the south, not as a search for lost prescience. Paul\'s waking becomes a turn toward ruthlessness.',
           },
+        ],
+      },
+      {
+        id: 'rabban',
+        when: '≈10,192 A.G.',
+        approx: true,
+        title: 'Rabban, the Beast',
+        book: 'DUNE',
+        body: 'The Baron hands Arrakis to his brutal nephew Glossu Rabban with orders to squeeze it dry, so that Feyd-Rautha can later arrive as the people\'s saviour. Muad\'Dib\'s raids turn the plan into a slow Harkonnen defeat.',
+        films: [
           {
             film: 'PART TWO',
-            kind: 'added',
-            text: 'The Fremen are split into sceptical northerners and southern fundamentalists, which externalises Paul\'s dilemma.',
+            kind: 'changed',
+            text: 'The Feyd-as-saviour plan is cut. Rabban is simply failing, and Gurney kills him during the final battle.',
           },
         ],
       },
@@ -384,7 +434,7 @@ export const eras: Era[] = [
           {
             film: 'PART TWO',
             kind: 'changed',
-            text: 'Compressed into one scene: the Great Houses refuse to accept Paul and he immediately launches the holy war. Irulan is a character on screen rather than the book\'s narrator-historian.',
+            text: 'Compressed into one scene: the Great Houses refuse to accept Paul and he immediately launches the holy war. Irulan appears on screen and keeps a journal, but no longer frames the story as the book\'s narrator-historian.',
           },
         ],
       },
@@ -424,7 +474,7 @@ export const eras: Era[] = [
         approx: true,
         title: 'Blindness, twins and the walk into the desert',
         book: 'MESSIAH',
-        body: 'A stone burner blinds Paul, but prescience lets him "see". Irulan has been secretly feeding Chani contraceptives; the delay damages her and she dies giving birth to twins, Leto II and Ghanima. Hayt\'s original memories break through. Paul walks blind into the desert, as Fremen custom demands, leaving Alia as regent.',
+        body: 'A stone burner blinds Paul, but prescience lets him "see". Irulan has been secretly feeding Chani contraceptives; the delay damages her and she dies giving birth to twins, Leto II and Ghanima. Scytale offers to restore Chani as a ghola in exchange for Paul\'s throne; Paul kills him. Under that pressure Hayt\'s original memories break through and he is Duncan again, and Alia\'s love. Paul walks blind into the desert, as Fremen custom demands, leaving Alia as regent.',
       },
     ],
   },
@@ -454,7 +504,23 @@ export const eras: Era[] = [
         approx: true,
         title: 'The Corrino plot and the Preacher',
         book: 'CHILDREN',
-        body: 'Shaddam\'s daughter Wensicia sends trained Laza tigers to kill the twins so her son Farad\'n can take the throne. Leto lets himself be thought dead. A blind Preacher from the desert denounces the religion of Muad\'Dib in Arrakeen.',
+        body: 'Duncan, now Alia\'s husband, takes Jessica to Salusa Secundus, where she trains Farad\'n in the Bene Gesserit ways. Shaddam\'s daughter Wensicia sends trained Laza tigers to kill the twins so her son Farad\'n can take the throne. Leto lets himself be thought dead. A blind Preacher from the desert denounces the religion of Muad\'Dib in Arrakeen.',
+      },
+      {
+        id: 'jacurutu',
+        when: 'Messiah + 9 yrs',
+        approx: true,
+        title: 'Jacurutu',
+        book: 'CHILDREN',
+        body: 'On Jessica\'s orders, Gurney takes Leto to the lost sietch of Jacurutu and forces a massive spice overdose on him, a test for Abomination. Leto survives and, in the trance, sees the Golden Path in full.',
+      },
+      {
+        id: 'duncan-stilgar',
+        when: 'Messiah + 9 yrs',
+        approx: true,
+        title: 'Duncan forces Stilgar\'s hand',
+        book: 'CHILDREN',
+        body: 'Duncan, knowing what Alia has become, provokes Stilgar into killing him, a death that breaks Stilgar from the regent and turns the old naib against her.',
       },
       {
         id: 'sandtrout',
@@ -492,7 +558,7 @@ export const eras: Era[] = [
         approx: true,
         title: 'Leto\'s Peace',
         book: 'GOD EMPEROR',
-        body: 'Arrakis is a green world; the only sandworm left is Leto. His army is the Fish Speakers, all women. The Tleilaxu supply him with Duncan Idaho gholas, one after another; many die by his hand or in rebellion.',
+        body: 'Arrakis is green except for the Sareer, a strip of desert Leto preserves; the only sandworm left is Leto. His army is the Fish Speakers, all women. The Tleilaxu supply him with Duncan Idaho gholas, one after another; many die by his hand or in rebellion.',
       },
       {
         id: 'siona',
@@ -501,6 +567,14 @@ export const eras: Era[] = [
         title: 'Siona and Hwi Noree',
         book: 'GOD EMPEROR',
         body: 'Siona, a rebellious Atreides descendant and daughter of his majordomo Moneo, steals Leto\'s journals. She is the product of his own breeding program: invisible to prescience. Ix sends Hwi Noree, engineered to be the woman he could love, and Leto agrees to marry her.',
+      },
+      {
+        id: 'siona-test',
+        when: 'Final months of the reign',
+        approx: true,
+        title: 'The test in the Sareer',
+        book: 'GOD EMPEROR',
+        body: 'Leto takes Siona into the Sareer, the last desert, and gives her spice essence. She sees what he has always seen: without the Golden Path, humanity dies. She remains his enemy, now knowing why he must die.',
       },
       {
         id: 'leto-death',
@@ -568,7 +642,7 @@ export const eras: Era[] = [
         approx: true,
         title: 'Miles Teg and the Duncan ghola',
         book: 'HERETICS',
-        body: 'The old Mentat-Bashar Miles Teg guards a new Duncan Idaho ghola on Gammu, once Giedi Prime. Under torture Teg discovers he can move at blinding speed. The young Honored Matre Murbella seizes Duncan, and his Tleilaxu-implanted conditioning lets him imprint her instead.',
+        body: 'The old Mentat-Bashar Miles Teg guards a new Duncan Idaho ghola on Gammu, once Giedi Prime. In a Harkonnen no-globe on Gammu, Teg restores the ghola\'s original memories. Under torture he discovers he can move at blinding speed. The young Honored Matre Murbella seizes Duncan, and his Tleilaxu-implanted conditioning lets him imprint her instead.',
       },
       {
         id: 'rakis-destroyed',
@@ -600,7 +674,7 @@ export const eras: Era[] = [
         approx: true,
         title: 'Daniel and Marty',
         book: 'CHAPTERHOUSE',
-        body: 'An old couple, who appear to Duncan in visions as gardeners, watch the no-ship go and speak of "hunting" it. What they are is left open, and readers have argued about it ever since. Frank Herbert died in 1986; his arc ends here, on the question.',
+        body: 'An old couple, who appear to Duncan in visions as gardeners, watch the no-ship go and speak of it as something they are searching for. What they are is left open, and readers have argued about it ever since. Frank Herbert died in 1986; his arc ends here, on the question.',
       },
     ],
   },

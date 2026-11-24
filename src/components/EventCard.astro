@@ -1,9 +1,15 @@
 ---
 import type { Event } from '../data/timeline';
 import { kindLabel } from '../data/timeline';
+import { tags, charById, factionById } from '../data/cast';
+import Avatar from './Avatar.astro';
+import Sprite from './Sprite.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 interface Props { event: Event }
 const { event: e } = Astro.props;
 const films = e.films ?? [];
+const who = (tags[e.id]?.who ?? []).filter((id) => charById[id]);
+const fs = (tags[e.id]?.f ?? []).filter((id) => factionById[id]);
 ---
 <li id={e.id} class:list={['event', { approx: e.approx, 'has-film': films.length > 0 }]}>
   <article class="card pxbox">
@@ -14,6 +20,13 @@ const films = e.films ?? [];
     </div>
     <h3><a href={`#${e.id}`}>{e.title}</a></h3>
     <p>{e.body}</p>
+    {(who.length > 0 || fs.length > 0) && (
+      <div class="involved">
+        {who.map((id) => <a href={`${base}/characters/${id}/`} title={charById[id].name}><Avatar c={charById[id]} size={2} /></a>)}
+        {who.length > 0 && fs.length > 0 && <span class="sep" aria-hidden="true"></span>}
+        {fs.map((id) => <a class="fsig" href={`${base}/factions/${id}/`} title={factionById[id].name} style={`color:${factionById[id].colour}`}><Sprite name={factionById[id].sigil} size={2} /></a>)}
+      </div>
+    )}
     {films.length > 0 && (
       <ul class="film-notes" aria-label="How the films differ">
         {films.map((f) => (

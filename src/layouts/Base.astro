@@ -7,7 +7,7 @@ import '../styles/global.css';
 import Sprite from '../components/Sprite.astro';
 import Dunes from '../components/Dunes.astro';
 
-interface Props { title?: string; description?: string; page?: 'home' | 'films' | 'about' }
+interface Props { title?: string; description?: string; page?: 'home' | 'films' | 'about' | 'characters' | 'factions' | 'web' }
 const {
   title = 'The Golden Path — a Dune chronicle',
   description = 'The in-universe history of Frank Herbert\'s Dune, from the Butlerian Jihad to Chapterhouse, with every divergence in Denis Villeneuve\'s films marked.',
@@ -16,6 +16,9 @@ const {
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const nav = [
   { id: 'home', href: `${base}/`, label: 'chronicle' },
+  { id: 'characters', href: `${base}/characters/`, label: 'people' },
+  { id: 'factions', href: `${base}/factions/`, label: 'powers' },
+  { id: 'web', href: `${base}/web/`, label: 'web' },
   { id: 'films', href: `${base}/films/`, label: 'films' },
   { id: 'about', href: `${base}/about/`, label: 'about' },
 ];

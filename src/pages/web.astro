@@ -1,0 +1,117 @@
+---
+import Base from '../layouts/Base.astro';
+import Avatar from '../components/Avatar.astro';
+import Sprite from '../components/Sprite.astro';
+import { characters, factions, factionById, eraOrder, eraShort, relLabel } from '../data/cast';
+import { factionLinks } from '../data/query';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const links = factionLinks();
+const pair = (a: string, b: string) => links.get([a, b].sort().join('|')) ?? 0;
+const maxPair = Math.max(1, ...links.values());
+const relMark = { member: '■', trained: '◆', ally: '○', enemy: '✕' } as const;
+---
+<Base page="web" title="The web — The Golden Path">
+  <div class="wrap">
+    <header class="page-head">
+      <p class="kicker">how it all intersects</p>
+      <h1>The web</h1>
+      <p class="sec-sub">
+        Four views of the same data: who is alive when, which powers matter when, who belongs to
+        what, and which powers keep colliding. Every row and column links to its own page.
+      </p>
+      <nav class="jump vt">
+        <a href="#lives">lifelines</a> · <a href="#powers">powers by era</a> · <a href="#allegiance">allegiances</a> · <a href="#collisions">collisions</a>
+      </nav>
+    </header>
+
+    <section id="lives" class="web-sec">
+      <h2 class="sec-title">Lifelines</h2>
+      <p class="sec-sub">Solid: alive in that era. Hatched: present as memory, ghola line or bloodline.</p>
+      <div class="scroll-x pxbox">
+        <table class="grid-table">
+          <thead><tr><th></th>{eraOrder.map((e) => <th><a href={`${base}/#${e}`}>{eraShort[e]}</a></th>)}</tr></thead>
+          <tbody>
+            {characters.map((c) => (
+              <tr>
+                <th class="rowh"><a href={`${base}/characters/${c.id}/`}><Avatar c={c} size={2} /><span>{c.name}</span></a></th>
+                {eraOrder.map((e, i) => {
+                  const s = c.eras[e];
+                  const l = c.eras[eraOrder[i - 1]]; const r = c.eras[eraOrder[i + 1]];
+                  return <td><i class:list={['seg', s, { capl: s && !l, capr: s && !r }]} style={`--c:${factionById[c.factions[0].id].colour}`} title={s ? `${c.name}: ${s} in ${eraShort[e]}` : undefined}></i></td>;
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="powers" class="web-sec">
+      <h2 class="sec-title">Powers by era</h2>
+      <p class="sec-sub">Brighter means more central to that era's story.</p>
+      <div class="scroll-x pxbox">
+        <table class="grid-table heat">
+          <thead><tr><th></th>{eraOrder.map((e) => <th><a href={`${base}/#${e}`}>{eraShort[e]}</a></th>)}</tr></thead>
+          <tbody>
+            {factions.map((f) => (
+              <tr>
+                <th class="rowh"><a href={`${base}/factions/${f.id}/`}><span style={`color:${f.colour}`}><Sprite name={f.sigil} size={2} /></span><span>{f.name}</span></a></th>
+                {eraOrder.map((e) => <td><i class={`cell p${f.presence[e] ?? 0}`} style={`--c:${f.colour}`} title={f.arc[e] ?? ''}></i></td>)}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="allegiance" class="web-sec">
+      <h2 class="sec-title">Allegiances</h2>
+      <p class="sec-sub">
+        <span class="rel rel-member">■ member</span> <span class="rel rel-trained">◆ trained by</span>
+        <span class="rel rel-ally">○ allied</span> <span class="rel rel-enemy">✕ opposed</span>
+      </p>
+      <div class="scroll-x pxbox">
+        <table class="grid-table matrix">
+          <thead>
+            <tr><th></th>{factions.map((f) => <th class="sig"><a href={`${base}/factions/${f.id}/`} style={`color:${f.colour}`} title={f.name}><Sprite name={f.sigil} size={2} /></a></th>)}</tr>
+          </thead>
+          <tbody>
+            {characters.map((c) => (
+              <tr>
+                <th class="rowh"><a href={`${base}/characters/${c.id}/`}><Avatar c={c} size={2} /><span>{c.name}</span></a></th>
+                {factions.map((f) => {
+                  const r = c.factions.find((x) => x.id === f.id)?.rel;
+                  return <td>{r && <span class={`rel rel-${r}`} title={`${c.name}: ${relLabel[r]} ${f.name}`}>{relMark[r]}</span>}</td>;
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="collisions" class="web-sec">
+      <h2 class="sec-title">Collisions</h2>
+      <p class="sec-sub">How many timeline events each pair of powers shares. The hottest cells are where the saga's plots live.</p>
+      <div class="scroll-x pxbox">
+        <table class="grid-table matrix tri">
+          <thead>
+            <tr><th></th>{factions.map((f) => <th class="sig"><a href={`${base}/factions/${f.id}/`} style={`color:${f.colour}`} title={f.name}><Sprite name={f.sigil} size={2} /></a></th>)}</tr>
+          </thead>
+          <tbody>
+            {factions.map((a, i) => (
+              <tr>
+                <th class="rowh"><a href={`${base}/factions/${a.id}/`}><span style={`color:${a.colour}`}><Sprite name={a.sigil} size={2} /></span><span>{a.name}</span></a></th>
+                {factions.map((b, j) => {
+                  if (j >= i) return <td></td>;
+                  const n = pair(a.id, b.id);
+                  return <td>{n > 0 && <span class="heatpx" style={`--a:${0.15 + 0.85 * (n / maxPair)}`} title={`${a.name} × ${b.name}: ${n} shared events`}>{n}</span>}</td>;
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+</Base>

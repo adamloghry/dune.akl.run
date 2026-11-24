@@ -1,0 +1,98 @@
+---
+import Base from '../../layouts/Base.astro';
+import Avatar from '../../components/Avatar.astro';
+import Sprite from '../../components/Sprite.astro';
+import { characters, charById, factionById, eraOrder, relLabel, type Character } from '../../data/cast';
+import { eventsFor, companions, eraName } from '../../data/query';
+import { kindLabel } from '../../data/timeline';
+
+export function getStaticPaths() {
+  return characters.map((c, i) => ({
+    params: { id: c.id },
+    props: { c, prev: characters[i - 1] ?? null, next: characters[i + 1] ?? null },
+  }));
+}
+interface Props { c: Character; prev: Character | null; next: Character | null }
+const { c, prev, next } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const evs = eventsFor('who', c.id);
+const comp = companions(c.id).slice(0, 8);
+const lifeEras = eraOrder.filter((e) => c.eras[e] || c.arc[e]);
+---
+<Base page="characters" title={`${c.name} — The Golden Path`} description={c.blurb}>
+  <div class="wrap">
+    <nav class="crumbs vt"><a href={`${base}/characters/`}>characters</a> / {c.id}</nav>
+    <header class="profile pxbox">
+      <div class="portrait"><Avatar c={c} size={10} /></div>
+      <div>
+        <h1>{c.name}</h1>
+        {c.aka && <p class="aka vt">{c.aka}</p>}
+        <p>{c.blurb}</p>
+        <ul class="aff">
+          {c.factions.map((f) => (
+            <li>
+              <a href={`${base}/factions/${f.id}/`} style={`color:${factionById[f.id].colour}`}>
+                <Sprite name={factionById[f.id].sigil} size={2} />
+              </a>
+              <span><a href={`${base}/factions/${f.id}/`}>{factionById[f.id].name}</a> <em class={`rel rel-${f.rel}`}>{relLabel[f.rel]}</em></span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </header>
+
+    {c.film && (
+      <aside class="film-panel pxbox">
+        <Sprite name="reel" size={3} />
+        <div><b class="vt">ON SCREEN · {c.film.actor}</b><p>{c.film.note}</p></div>
+      </aside>
+    )}
+
+    <section class="arc-sec">
+      <h2 class="sec-title">Through the ages</h2>
+      <ol class="arc">
+        {lifeEras.map((e) => (
+          <li class={c.eras[e] ?? 'none'}>
+            <a class="arc-era vt" href={`${base}/#${e}`}>{eraName(e)}</a>
+            <p>{c.arc[e] ?? (c.eras[e] === 'echo' ? 'Present as memory, ghola line or bloodline.' : '')}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="arc-sec">
+      <h2 class="sec-title">Their story, in {evs.length} events</h2>
+      <ol class="mini-events">
+        {evs.map(({ ev, era }) => (
+          <li class="pxbox">
+            <div class="card-meta"><span class="when">{ev.when}</span><span class="book-tag">{ev.book}</span></div>
+            <h3><a href={`${base}/#${ev.id}`}>{ev.title}</a></h3>
+            <p>{ev.body}</p>
+            {(ev.films ?? []).length > 0 && (
+              <div class="mini-films">
+                {(ev.films ?? []).map((f) => <span class={`badge k-${f.kind}`} title={f.text}>{kindLabel[f.kind]}</span>)}
+                <span class="vt" style="color:var(--ink-3)">in the films</span>
+              </div>
+            )}
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    {comp.length > 0 && (
+      <section class="arc-sec">
+        <h2 class="sec-title">Most often alongside</h2>
+        <ul class="companions">
+          {comp.map(([id, n]) => (
+            <li><a href={`${base}/characters/${id}/`} class="pxbox"><Avatar c={charById[id]} size={3} /><span>{charById[id].name}</span><b class="vt">{n}×</b></a></li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <nav class="pager">
+      {prev ? <a class="btn ghost" href={`${base}/characters/${prev.id}/`}>&lt; {prev.name}</a> : <span></span>}
+      {next && <a class="btn ghost" href={`${base}/characters/${next.id}/`}>{next.name} &gt;</a>}
+    </nav>
+  </div>
+</Base>

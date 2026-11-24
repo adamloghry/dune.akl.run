@@ -1,0 +1,37 @@
+---
+import Base from '../../layouts/Base.astro';
+import Sprite from '../../components/Sprite.astro';
+import { factions, eraOrder, eraShort } from '../../data/cast';
+import { eventsFor } from '../../data/query';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<Base page="factions" title="Factions — The Golden Path">
+  <div class="wrap">
+    <header class="page-head">
+      <p class="kicker">the powers</p>
+      <h1>Factions</h1>
+      <p class="sec-sub">
+        Houses, orders, peoples and monopolies. The bar under each one is its weight in each of
+        the eight eras, from absent to central. Watch the Great Houses vanish and the
+        Bene Gesserit outlast everyone.
+      </p>
+    </header>
+    <ul class="faction-grid">
+      {factions.map((f) => (
+        <li>
+          <a class="faction-card pxbox" href={`${base}/factions/${f.id}/`} style={`--fc:${f.colour}`}>
+            <span class="big-sigil" style={`color:${f.colour}`}><Sprite name={f.sigil} size={5} /></span>
+            <div>
+              <span class="kind vt">{f.kind}</span>
+              <b>{f.name}</b>
+              <div class="presence" aria-label="Presence by era">
+                {eraOrder.map((e) => <i class={`p${f.presence[e] ?? 0}`} title={`${eraShort[e]}: ${['absent', 'marginal', 'a player', 'central'][f.presence[e] ?? 0]}`}></i>)}
+              </div>
+              <span class="count">{eventsFor('f', f.id).length} events</span>
+            </div>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</Base>

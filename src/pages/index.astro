@@ -12,11 +12,23 @@ const ruler = eras.map((e, i) => {
   const pct = Math.max(1.6, ((e.to - e.from) / total) * 100);
   return { ...e, pct, colour: colours[i % colours.length], narrow: pct < 9 };
 });
+const land: Record<string, { label: string; sky: string; l: [string, string, string] }> = {
+  'old-empire': { label: 'ARRAKIS · unsettled desert', sky: '#e9b06a', l: ['#d9964f', '#b8732f', '#8a5032'] },
+  imperium: { label: 'ARRAKIS · desert and spice fields', sky: '#e9a85c', l: ['#d9964f', '#b8732f', '#8a5032'] },
+  dune: { label: 'ARRAKIS · desert, secret plantings', sky: '#e39a52', l: ['#d9964f', '#a8853a', '#8a5032'] },
+  messiah: { label: 'ARRAKIS · open water, first gardens', sky: '#dfa86a', l: ['#c9a050', '#8a9a4a', '#6b5a3a'] },
+  children: { label: 'ARRAKIS · greening, worms retreating', sky: '#c9c08a', l: ['#9ab35a', '#7a8f4a', '#8a6a3a'] },
+  'god-emperor': { label: 'ARRAKIS · green, save the Sareer', sky: '#8fc0e0', l: ['#4f8f4a', '#3a6f3a', '#c98a45'] },
+  scattering: { label: 'ARRAKIS · the desert returns', sky: '#e0b070', l: ['#c9a050', '#a8853a', '#6b5a3a'] },
+  heretics: { label: 'RAKIS · desert, then burned', sky: '#2a1418', l: ['#3a2a2a', '#5a3a2a', '#c8452e'] },
+};
+const motes = Array.from({ length: 18 }, (_, i) => ({ x: (i * 53) % 100, d: 9 + ((i * 7) % 8), delay: -((i * 13) % 17), dx: ((i % 5) - 2) * 30 }));
 const filmCount = eras.flatMap((e) => e.events).flatMap((ev) => ev.films ?? []).length;
 ---
 <Base page="home">
   <section class="hero">
     <Dunes />
+    <div class="motes" aria-hidden="true">{motes.map((m) => <i style={`--x:${m.x}%;--d:${m.d}s;--delay:${m.delay}s;--dx:${m.dx}px`}></i>)}</div>
     <div class="actor worm-rise"><Sprite name="worm" size={5} /></div>
     <div class="actor thopter-fly"><Sprite name="thopter" size={4} /></div>
     <div class="wrap hero-inner">
@@ -29,6 +41,7 @@ const filmCount = eras.flatMap((e) => e.events).flatMap((ev) => ev.films ?? []).
       </p>
       <div class="cta">
         <a class="btn" href="#old-empire">begin the record</a>
+        <a class="btn ghost" href="characters/">meet the people</a>
         <a class="btn ghost" href="films/">{filmCount} film notes</a>
       </div>
     </div>
@@ -59,6 +72,7 @@ const filmCount = eras.flatMap((e) => e.events).flatMap((ev) => ev.films ?? []).
     <div class="controls pxbox" role="group" aria-label="Display options">
       <label class="toggle"><input type="checkbox" id="show-films" checked /><span class="sw"></span>show film notes</label>
       <label class="toggle"><input type="checkbox" id="only-diverged" /><span class="sw"></span>only what the films touch</label>
+      <span class="era-now" aria-live="polite"></span>
       <div class="legend" aria-hidden="true">
         {(['kept', 'changed', 'cut', 'added'] as const).map((k) => <span class={`badge k-${k}`}>{kindLabel[k]}</span>)}
       </div>
@@ -76,6 +90,10 @@ const filmCount = eras.flatMap((e) => e.events).flatMap((ev) => ev.films ?? []).
               <div class="span">{era.span}</div>
               <p>{era.summary}</p>
               <div class="books">{era.books.map((b) => <span class="book-tag">{b}</span>)}</div>
+              <div class="era-land" style={`--sky:${land[era.id].sky};--l1:${land[era.id].l[0]};--l2:${land[era.id].l[1]};--l3:${land[era.id].l[2]}`}>
+                <Dunes seed={era.from + 77} height={40} stars={false} />
+                <span>{land[era.id].label}</span>
+              </div>
             </div>
           </header>
           <ol class="spine">
@@ -85,4 +103,14 @@ const filmCount = eras.flatMap((e) => e.events).flatMap((ev) => ev.films ?? []).
       );
     })}
   </div>
+  <script is:inline>
+    (() => {
+      const out = document.querySelector('.era-now');
+      if (!out || !('IntersectionObserver' in window)) return;
+      const io = new IntersectionObserver((es) => {
+        for (const e of es) if (e.isIntersecting) out.textContent = '▸ ' + e.target.querySelector('h2').textContent;
+      }, { rootMargin: '-40% 0px -55% 0px' });
+      document.querySelectorAll('.era').forEach((s) => io.observe(s));
+    })();
+  </script>
 </Base>
