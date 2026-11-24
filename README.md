@@ -27,6 +27,8 @@ This README is the authority for the handoff.
 | `/characters/` and `/characters/<id>/` | 26 people: portrait, factions, arc by era, every event, film casting note, who they share events with |
 | `/factions/` and `/factions/<id>/` | 13 powers: weight per era, members, which other factions they collide with, every event |
 | `/web/`    | Intersections: lifelines, powers by era heatmap, allegiance matrix, collisions heatmap |
+| `/family/` | Atreides family tree across all six novels, with film differences flagged    |
+| `/search/` | Client-side search over every event, person and faction (index embedded at build; `/` opens it) |
 | `/about/`  | Canon, dating method, build commands                                        |
 | `/404.html`| Served by Cloudflare for unknown paths                                      |
 
@@ -43,10 +45,12 @@ astro.config.mjs        static output, directory URLs, trailing slashes
 src/data/timeline.ts    eras, events, film notes
 src/data/cast.ts        characters, factions, and the event → people/factions tags
 src/data/query.ts       derived views (events per person, companions, faction links)
+src/data/family.ts      family tree nodes, unions and descent lines (hand-placed layout)
+src/data/search.ts      builds the search index embedded in /search/
 src/data/sprites.ts     pixel sprites as character grids (palette chars → CSS vars)
 src/components/         Sprite (grid → merged-run SVG), Dunes (seeded landscape), EventCard, Avatar (procedural portrait)
 src/layouts/Base.astro  shell, nav, theme switch, footer
-src/pages/              index, films, about, 404, web, characters/, factions/
+src/pages/              index, films, about, 404, web, family, search, characters/, factions/
 src/styles/global.css   tokens (dark = Arrakis night, light = Arrakis day), all styling
 public/                 favicon, robots.txt, _headers (immutable caching for hashed assets)
 ```

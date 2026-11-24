@@ -7,7 +7,7 @@ import '../styles/global.css';
 import Sprite from '../components/Sprite.astro';
 import Dunes from '../components/Dunes.astro';
 
-interface Props { title?: string; description?: string; page?: 'home' | 'films' | 'about' | 'characters' | 'factions' | 'web' }
+interface Props { title?: string; description?: string; page?: 'home' | 'films' | 'about' | 'characters' | 'factions' | 'web' | 'family' | 'search' }
 const {
   title = 'The Golden Path — a Dune chronicle',
   description = 'The in-universe history of Frank Herbert\'s Dune, from the Butlerian Jihad to Chapterhouse, with every divergence in Denis Villeneuve\'s films marked.',
@@ -19,6 +19,7 @@ const nav = [
   { id: 'characters', href: `${base}/characters/`, label: 'people' },
   { id: 'factions', href: `${base}/factions/`, label: 'powers' },
   { id: 'web', href: `${base}/web/`, label: 'web' },
+  { id: 'family', href: `${base}/family/`, label: 'family' },
   { id: 'films', href: `${base}/films/`, label: 'films' },
   { id: 'about', href: `${base}/about/`, label: 'about' },
 ];
@@ -50,10 +51,15 @@ const nav = [
         <nav class="nav" aria-label="Site">
           {nav.map((n) => <a href={n.href} aria-current={n.id === page ? 'page' : undefined}>{n.label}</a>)}
         </nav>
+        <div class="tools">
+        <a class="search-btn" href={`${base}/search/`} aria-label="Search the chronicle (press /)" aria-current={page === 'search' ? 'page' : undefined}>
+          <svg viewBox="0 0 10 10" shape-rendering="crispEdges" fill="currentColor"><rect x="2" y="0" width="4" height="1"/><rect x="1" y="1" width="1" height="1"/><rect x="6" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="4"/><rect x="7" y="2" width="1" height="4"/><rect x="1" y="6" width="1" height="1"/><rect x="6" y="6" width="1" height="1"/><rect x="2" y="7" width="4" height="1"/><rect x="7" y="7" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="9" y="9" width="1" height="1"/></svg>
+        </a>
         <button class="theme-btn" type="button" aria-label="Switch between day and night">
           <svg class="icon-sun" viewBox="0 0 10 10" shape-rendering="crispEdges" fill="currentColor"><rect x="3" y="3" width="4" height="4"/><rect x="4" y="0" width="2" height="2"/><rect x="4" y="8" width="2" height="2"/><rect x="0" y="4" width="2" height="2"/><rect x="8" y="4" width="2" height="2"/><rect x="1" y="1" width="1" height="1"/><rect x="8" y="1" width="1" height="1"/><rect x="1" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/></svg>
           <svg class="icon-moon" viewBox="0 0 10 10" shape-rendering="crispEdges" fill="currentColor"><rect x="3" y="1" width="4" height="1"/><rect x="2" y="2" width="3" height="1"/><rect x="1" y="3" width="3" height="4"/><rect x="2" y="7" width="3" height="1"/><rect x="3" y="8" width="5" height="1"/><rect x="7" y="7" width="2" height="1"/></svg>
         </button>
+        </div>
       </div>
     </header>
     <main id="top">
@@ -72,6 +78,16 @@ const nav = [
         const d = document.documentElement;
         d.dataset.theme = d.dataset.theme === 'light' ? 'dark' : 'light';
         try { localStorage.setItem('theme', d.dataset.theme); } catch {}
+      });
+      const nav = document.querySelector('.nav'), cur = nav?.querySelector('[aria-current="page"]');
+      if (nav && cur && nav.scrollWidth > nav.clientWidth) nav.scrollLeft = cur.offsetLeft - nav.clientWidth / 2 + cur.offsetWidth / 2;
+      document.addEventListener('keydown', (e) => {
+        if (e.key !== '/' || e.metaKey || e.ctrlKey || e.altKey) return;
+        const t = e.target;
+        if (t instanceof HTMLElement && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+        const q = document.getElementById('q');
+        e.preventDefault();
+        if (q) q.focus(); else location.href = document.querySelector('.search-btn').href;
       });
     </script>
   </body>

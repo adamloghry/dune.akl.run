@@ -80,7 +80,7 @@ export const factions: Faction[] = [
       messiah: 'Rules the known universe through Paul\'s jihad.',
       children: 'Alia\'s regency, then Leto II.',
       'god-emperor': 'Leto II is the dynasty; Siona carries the line he bred to be invisible.',
-      heretics: 'Atreides genes run on in Odrade, Teg and Sheeana.',
+      heretics: 'Atreides genes run on in Odrade and her father, Miles Teg.',
     },
     film: 'Recognisably the same house, with the Caladan years compressed into a prologue.',
   },

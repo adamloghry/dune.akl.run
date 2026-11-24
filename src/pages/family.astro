@@ -1,0 +1,105 @@
+---
+import Base from '../layouts/Base.astro';
+import Avatar from '../components/Avatar.astro';
+import { charById, type Character } from '../data/cast';
+import { familyNodes, unions, edges, unionLabel, type FNode } from '../data/family';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const PAD = 70, W = 1080, ROW = 170, CARD_W = 136, CARD_H = 122, AV = 22; // AV: y of the union line inside a card
+const rows = Math.max(...familyNodes.map((n) => n.row)) + 1;
+const H = rows * ROW;
+const node = Object.fromEntries(familyNodes.map((n) => [n.id, { ...n, x: n.x + PAD }]));
+const top = (n: FNode) => n.row * ROW;
+const uPoint = (id: string) => {
+  const u = unions.find((x) => x.id === id)!;
+  const a = node[u.a], b = node[u.b];
+  return { x: (a.x + b.x) / 2, y: top(a) + AV + 24, row: a.row };
+};
+const portrait = (n: FNode): Character =>
+  n.char ? charById[n.char] : ({ id: n.id, name: n.name, factions: [{ id: n.faction ?? 'atreides', rel: 'member' }], look: n.look! } as unknown as Character);
+
+// union lines run between the facing edges of the two cards
+const unionPaths = unions.map((u) => {
+  const a = node[u.a], b = node[u.b];
+  const [l, r] = a.x < b.x ? [a, b] : [b, a];
+  const y = top(a) + AV + 24;
+  return { u, d: `M${l.x + CARD_W / 2} ${y} H${r.x - CARD_W / 2}` };
+});
+
+// child lines: down from the union (or single parent), across on a bus just above the child row, down into the card
+const childPaths = edges.map((e) => {
+  const to = node[e.to];
+  const src = e.from.startsWith('u-') ? uPoint(e.from) : { x: node[e.from].x, y: top(node[e.from]) + CARD_H, row: node[e.from].row };
+  const bus = (src.row + 1) * ROW - 22;
+  const d = `M${src.x} ${src.y} V${bus} H${to.x} V${top(to)}`;
+  const far = to.row - src.row > 1;
+  // label: beside the long vertical run of a far edge, else to the right of the child card
+  const lx = far ? to.x + 10 : to.x + CARD_W / 2 + 10;
+  const ly = far ? (to.row - 1) * ROW + 30 : top(to) + 16;
+  return { e, d, lx, ly };
+});
+const filmNotes = familyNodes.filter((n) => n.film);
+---
+<Base page="family" title="The Atreides line — The Golden Path" description="The Atreides family tree across all six of Frank Herbert's Dune novels, with where the films differ.">
+  <div class="wrap">
+    <header class="page-head">
+      <p class="kicker">bloodline</p>
+      <h1>The Atreides line</h1>
+      <p class="sec-sub">
+        Five thousand years of one family, from the Old Duke to the last Mother Superior. The whole
+        saga is a breeding program: the Bene Gesserit's, then Leto II's. Dotted lines skip
+        generations the novels do not name. Duncan Idaho appears three times, as three different
+        gholas.
+      </p>
+      <p class="tree-key vt">
+        <span><i class="k-line"></i> married</span>
+        <span><i class="k-line partner"></i> partners, unmarried</span>
+        <span><i class="k-line name-only"></i> in name only</span>
+        <span><i class="k-line dotted"></i> many generations</span>
+        <span><i class="k-film"></i> the films differ</span>
+      </p>
+    </header>
+
+    <div class="scroll-x pxbox tree-box">
+      <div class="tree" style={`width:${W}px;height:${H}px`}>
+        <svg class="tree-lines" viewBox={`0 0 ${W} ${H}`} width={W} height={H} aria-hidden="true" shape-rendering="crispEdges">
+          {childPaths.map((p) => <path d={p.d} class:list={['t-child', { dotted: p.e.dotted }]} />)}
+          {unionPaths.map((p) => <path d={p.d} class={`t-union ${p.u.kind}`}><title>{unionLabel[p.u.kind]}</title></path>)}
+          {unions.map((u) => { const p = uPoint(u.id); return <rect x={p.x - 4} y={p.y - 4} width="8" height="8" class={`t-knot ${u.kind}`} />; })}
+        </svg>
+        {childPaths.filter((p) => p.e.label).map((p) => (
+          <span class="tree-gap vt" style={`left:${p.lx}px;top:${p.ly}px`}>{p.e.label}</span>
+        ))}
+        {familyNodes.map((raw) => { const n = node[raw.id];
+          const inner = (
+            <>
+              <Avatar c={portrait(n)} size={3} />
+              <b>{n.name}</b>
+              {n.sub && <small>{n.sub}</small>}
+              {n.film && <i class="t-film" title={n.film}>FILM</i>}
+            </>
+          );
+          const style = `left:${n.x - CARD_W / 2}px;top:${top(n)}px;width:${CARD_W}px;height:${CARD_H}px`;
+          return n.char
+            ? <a class="t-card" href={`${base}/characters/${n.char}/`} style={style}>{inner}</a>
+            : <div class="t-card no-page" style={style}>{inner}</div>;
+        })}
+      </div>
+    </div>
+    <script is:inline>
+      (() => {
+        const box = document.querySelector('.tree-box'), paul = document.querySelector('.t-card[href*="/paul"], .t-card[href*="characters-paul"]');
+        if (box && paul && box.scrollWidth > box.clientWidth) box.scrollLeft = paul.offsetLeft - box.clientWidth / 2 + paul.offsetWidth / 2;
+      })();
+    </script>
+    <p class="vt scroll-hint">Scroll sideways to see the whole tree. Tap a portrait to open that person's page.</p>
+
+    <section class="arc-sec">
+      <h2 class="sec-title">On screen</h2>
+      <p class="sec-sub">Villeneuve's two films cover only the first three generations, and change them.</p>
+      <ul class="tree-films">
+        {filmNotes.map((n) => <li class="pxbox"><b>{n.name}</b> <span>{n.film}</span></li>)}
+      </ul>
+    </section>
+  </div>
+</Base>
