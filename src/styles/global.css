@@ -96,10 +96,10 @@ a:hover { color: var(--gold); }
   border-bottom: var(--px) solid var(--line);
 }
 .topbar .wrap { display: flex; align-items: center; gap: 16px; min-height: 56px; }
-.brand { display: flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font-family: 'Silkscreen', monospace; font-size: 15px; }
+.brand { display: flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font-family: 'Silkscreen', monospace; font-size: 15px; white-space: nowrap; flex: none; }
 .brand:hover { color: var(--spice); }
-.nav { display: flex; gap: 4px; margin-left: auto; flex-wrap: wrap; }
-.nav a { font-family: 'VT323', monospace; font-size: 22px; line-height: 1; padding: 6px 10px; color: var(--ink-2); text-decoration: none; border: 2px solid transparent; }
+.nav { display: flex; gap: 4px; margin-left: auto; flex-wrap: nowrap; }
+.nav a { font-family: 'VT323', monospace; font-size: 22px; line-height: 1; padding: 6px 8px; white-space: nowrap; color: var(--ink-2); text-decoration: none; border: 2px solid transparent; }
 .nav a:hover, .nav a[aria-current='page'] { color: var(--ink); border-color: var(--line); background: var(--panel); }
 .theme-btn { background: none; border: 2px solid var(--line); color: var(--ink-2); width: 36px; height: 36px; padding: 0; cursor: pointer; display: grid; place-items: center; }
 .theme-btn:hover { color: var(--gold); border-color: var(--gold); }
@@ -389,7 +389,7 @@ footer .foot { position: relative; padding-top: 18px; font-family: 'VT323', mono
 /* active era in sticky controls */
 .era-now { font-family: 'VT323', monospace; font-size: 20px; color: var(--gold); }
 .era-now:empty { display: none; }
-@media (max-width: 760px) {
+@media (max-width: 1180px) {
   .topbar .wrap { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 8px 0 0; min-height: 0; }
   .brand span { display: inline; font-size: 13px; }
   .nav { grid-column: 1 / -1; order: 3; position: relative; margin: 0 -16px; padding: 0 16px 6px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; gap: 2px; }

@@ -1,0 +1,233 @@
+---
+// The scale view: every event placed by its (approximate) year, in four zooms. All layout is
+// done at build time; switching zoom is CSS only (radio buttons), so it works without JavaScript.
+import Base from '../layouts/Base.astro';
+import { eras } from '../data/timeline';
+import { euEvents } from '../data/beyond';
+import { years } from '../data/years';
+import { sp, eventLevel } from '../data/spoilers';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const W = 1100, M = 24, LANE = 22, CH = 8.2; // CH: rough VT323 glyph width at 18px
+const DUNE = 10192;
+const colours = ['--rust', '--sand-d', '--spice', '--blue', '--sand', '--gold', '--dune-3', '--added'];
+type Fn = (y: number) => number;
+const lin = (a: number, b: number): Fn => (y) => M + ((y - a) / (b - a)) * (W - 2 * M);
+const slog = (d: number) => Math.sign(d) * Math.log10(1 + Math.abs(d));
+const logFn = (a: number, b: number): Fn => { const A = slog(a - DUNE), B = slog(b - DUNE); return (y) => M + ((slog(y - DUNE) - A) / (B - A)) * (W - 2 * M); };
+const fmtYear = (y: number) => (y < 0 ? `${Math.abs(y).toLocaleString('en')} B.G.` : `${y.toLocaleString('en')} A.G.`);
+
+interface View { id: string; name: string; note: string; a: number; b: number; log?: boolean }
+const views: View[] = [
+  { id: 'all', name: 'true scale', a: -1450, b: 15300,
+    note: 'Every year the same width. The three novels about Paul, and both films, fit inside the thin spike at Dune.' },
+  { id: 'log', name: 'zoom on Dune', a: -1450, b: 15300, log: true,
+    note: 'Each step away from Dune is ten times longer than the last: one year, ten, a hundred, a thousand. The same events, finally readable.' },
+  { id: 'paul', name: "Paul's lifetime", a: 10150, b: 10220,
+    note: 'Seventy years, from the fall of Ix in the later books to the twins. Most of what fans argue about happens in here.' },
+  { id: 'novel', name: 'inside Dune', a: 10190.85, b: 10193.6,
+    note: 'The two and a half years of the novel Dune, roughly the span of both films. The order follows the book; the spacing inside a year is a best guess.' },
+  { id: 'after', name: 'Leto II to the end', a: 10185, b: 15300,
+    note: "Leto's reign is the long bar: 3,500 years of enforced peace. Then the Scattering, and the last two novels at the far right." },
+];
+
+interface Item { id: string; title: string; y: number; span?: [number, number]; rough?: boolean; eu: boolean; level: number; era: string }
+const items: Item[] = [
+  ...eras.flatMap((era) => era.events.map((e) => ({ id: e.id, title: e.title, eu: false, era: era.name, level: eventLevel(e.id), ...years[e.id] }))),
+  ...euEvents.map((e) => ({ id: e.id, title: e.title, eu: true, era: eras.find((x) => x.id === e.era)?.name ?? '', level: eventLevel(e.id), ...years[e.id] })),
+].filter((i) => i.y !== undefined) as Item[];
+const missing = [...eras.flatMap((e) => e.events.map((x) => x.id)), ...euEvents.map((e) => e.id)].filter((id) => !years[id]);
+if (missing.length) throw new Error(`scale: no year for ${missing.join(', ')}`);
+
+interface Label { x: number; lx: number; lane: number; w: number; text: string; href: string; ids: Item[]; anchorEnd: boolean }
+function layout(list: Item[], X: Fn, maxLanes = 9) {
+  const sorted = [...list].sort((p, q) => p.y - q.y);
+  const groups: Item[][] = [];
+  for (const it of sorted) {
+    const g = groups[groups.length - 1];
+    if (g && X(it.y) - X(g[0].y) < 12) g.push(it); else groups.push([it]);
+  }
+  const ends: number[] = [];
+  const labels: Label[] = groups.map((g) => {
+    const x = Math.round(X(g[0].y));
+    const text = g.length === 1 ? g[0].title : `${g.length} events · ${g[0].era}`;
+    const w = Math.round(text.length * CH + 12);
+    const anchorEnd = x + w > W - 4;
+    const lx = anchorEnd ? x - w + 2 : x - 2;
+    let lane = ends.findIndex((e) => e < lx - 6);
+    if (lane < 0) lane = ends.length < maxLanes ? ends.length : ends.indexOf(Math.min(...ends));
+    ends[lane] = lx + w;
+    const href = g.length === 1 ? `${base}/#${g[0].id}` : `${base}/#${g[0].id}`;
+    return { x, lx, lane, w, text, href, ids: g, anchorEnd };
+  });
+  return { labels, lanes: Math.max(1, ends.length) };
+}
+
+function ticks(v: View, X: Fn) {
+  if (v.log) {
+    const ds = [-10000, -1000, -100, -10, -1, 0, 1, 10, 100, 1000];
+    return ds.map((d) => ({ x: Math.round(X(DUNE + d)), t: d === 0 ? 'DUNE' : `${d > 0 ? '+' : '−'}${Math.abs(d).toLocaleString('en')} yrs` }));
+  }
+  const span = v.b - v.a, steps = [1, 5, 10, 20, 50, 100, 250, 500, 1000, 2000, 2500, 5000];
+  const step = steps.find((s) => span / s <= 9) ?? 5000;
+  const out = [];
+  for (let y = Math.ceil(v.a / step) * step; y <= v.b; y += step) out.push({ x: Math.round(X(y)), t: fmtYear(y || 0) });
+  return out;
+}
+
+const panels = views.map((v) => {
+  const X = v.log ? logFn(v.a, v.b) : lin(v.a, v.b);
+  const inView = (i: Item) => i.y >= v.a && i.y <= v.b;
+  const canon = layout(items.filter((i) => !i.eu && inView(i)), X);
+  const eu = layout(items.filter((i) => i.eu && inView(i)), X, 5);
+  const top = 16 + canon.lanes * LANE;
+  const axis = top + 30; // era band
+  const H = axis + 26 + 30 + eu.lanes * LANE + 12;
+  const bands = eras.map((e, i) => {
+    const x0 = Math.max(M, X(Math.max(e.from, v.a))), x1 = Math.min(W - M, X(Math.min(e.to, v.b)));
+    return { e, x0: Math.round(x0), w: Math.max(0, Math.round(x1) - Math.round(x0)), c: colours[i % colours.length] };
+  }).filter((b) => b.w > 0 && v.b > b.e.from && v.a < b.e.to);
+  const spans = items.filter((i) => i.span && inView(i)).map((i) => {
+    const x0 = Math.round(X(Math.max(i.span![0], v.a))), x1 = Math.round(X(Math.min(i.span![1], v.b)));
+    return { i, x0, w: Math.max(2, x1 - x0) };
+  });
+  // The "everything about Paul is one pixel" callout on the true-scale view.
+  const pin = v.id === 'all' ? { x: Math.round(X(DUNE)), w: Math.max(1, Math.round(X(10214) - X(10191))) } : null;
+  return { v, X, canon, eu, top, axis, H, bands, spans, ticks: ticks(v, X), pin };
+});
+const level = (ids: Item[]) => Math.max(...ids.map((i) => i.level));
+---
+<Base page="scale" title="The scale of it — The Golden Path" description="Every event in the Dune saga placed by its year, at true scale and zoomed: 16,000 years in one strip.">
+  <div class="wrap">
+    <header class="page-head">
+      <p class="kicker">sixteen thousand years</p>
+      <h1>The scale of it</h1>
+      <p class="sec-sub">
+        Every event on the chronicle, placed by its year. Switch zoom to see how much of the saga
+        happens in a few years around Dune, and how much time passes between the books. Dates
+        the books leave vague are placed by best reading and drawn hollow.
+      </p>
+    </header>
+
+    <div class="scale-ui">
+      {views.map((v, i) => <input type="radio" name="zoom" id={`z-${v.id}`} class="sr-only" checked={i === 0} />)}
+      <input type="checkbox" id="z-eu" class="sr-only" checked />
+      <div class="zoom-tabs" role="group" aria-label="Zoom">
+        {views.map((v) => <label for={`z-${v.id}`} class={`zt zt-${v.id}`}>{v.name}</label>)}
+        <label for="z-eu" class="zt zt-eu"><i aria-hidden="true"></i>later books</label>
+      </div>
+      <div class="panels">
+        {panels.map((p) => (
+          <section class={`panel p-${p.v.id}`} aria-label={p.v.name}>
+            <p class="panel-note">{p.v.note}</p>
+            <div class="scroll-x pxbox scale-box">
+              <svg class="scale-svg" viewBox={`0 0 ${W} ${p.H}`} width={W} height={p.H} shape-rendering="crispEdges" role="img" aria-label={`Timeline, ${p.v.name}. The events are listed as links below the chart.`}>
+                {p.ticks.map((t) => (
+                  <g class="tick"><rect x={t.x} y={8} width="1" height={p.H - 16} /><text x={t.x + 4} y={p.axis + 44}>{t.t}</text></g>
+                ))}
+                {p.bands.map((b) => (
+                  <g class="band" style={`--c: var(${b.c})`}>
+                    <rect x={b.x0} y={p.axis} width={b.w} height="18" />
+                    {b.w > b.e.name.length * CH + 16 && <text x={b.x0 + 6} y={p.axis + 14}>{b.e.name}</text>}
+                  </g>
+                ))}
+                {p.spans.map((s) => (
+                  <rect class:list={['span', { 'span-eu': s.i.eu }]} x={s.x0} y={s.i.eu ? p.axis + 22 : p.axis - 6} width={s.w} height="4" {...sp(s.i.level as 1, true)} />
+                ))}
+                {p.pin && (
+                  <g class="pin">
+                    <rect x={p.pin.x - 1} y={p.top - 4} width={p.pin.w + 2} height={p.axis - p.top + 22} />
+                  </g>
+                )}
+                {p.canon.labels.map((l) => (
+                  <g class="stemg" {...sp(level(l.ids) as 1, true)}><rect class="stem" x={l.x} y={p.top - (l.lane + 1) * LANE + 20} width="2" height={p.axis - (p.top - (l.lane + 1) * LANE + 20)} /></g>
+                ))}
+                {p.eu.labels.map((l) => (
+                  <g class="stemg eu" {...sp(Math.max(2, level(l.ids)) as 1, true)}><rect class="stem" x={l.x} y={p.axis + 18} width="2" height={34 + l.lane * LANE} /></g>
+                ))}
+                {p.canon.labels.map((l) => {
+                  const y = p.top - (l.lane + 1) * LANE + 4;
+                  const rough = l.ids.every((i) => i.rough);
+                  return (
+                    <a href={l.href} class:list={['ev', { multi: l.ids.length > 1, rough }]} {...sp(level(l.ids) as 1, true)}>
+                      <title>{l.ids.map((i) => i.title).join(' · ')}</title>
+                      <rect class="dot" x={l.x - 3} y={p.axis - 4} width="8" height="8" />
+                      <rect class="lbl" x={l.lx} y={y} width={l.w} height="18" />
+                      <text x={l.lx + 6} y={y + 14}>{l.text}</text>
+                    </a>
+                  );
+                })}
+                {p.eu.labels.map((l) => {
+                  const y = p.axis + 52 + l.lane * LANE;
+                  return (
+                    <a href={l.href} class:list={['ev', 'eu', { multi: l.ids.length > 1 }]} {...sp(Math.max(2, level(l.ids)) as 1, true)}>
+                      <title>Later books: {l.ids.map((i) => i.title).join(' · ')}</title>
+                      <rect class="lbl" x={l.lx} y={y} width={l.w} height="18" />
+                      <text x={l.lx + 6} y={y + 14}>{l.text}</text>
+                    </a>
+                  );
+                })}
+              </svg>
+            </div>
+            <p class="scroll-hint vt">Scroll sideways to see the whole line.</p>
+            {p.pin && <p class="pin-note vt">The orange spike: Dune, Messiah and Children of Dune, 23 years, {p.pin.w} {p.pin.w === 1 ? 'pixel' : 'pixels'} wide.</p>}
+          </section>
+        ))}
+      </div>
+    </div>
+
+    <section class="arc-sec">
+      <h2 class="sec-title">Gaps between the books</h2>
+      <ul class="gaps">
+        <li class="pxbox"><b>~10,000 yrs</b><span>from the Butlerian Jihad to Dune</span></li>
+        <li class="pxbox"><b>12 yrs</b><span>Dune to Dune Messiah</span></li>
+        <li class="pxbox"><b>9 yrs</b><span>Messiah to Children of Dune</span></li>
+        <li class="pxbox"><b>~3,500 yrs</b><span>Children of Dune to God Emperor</span></li>
+        <li class="pxbox"><b>~1,500 yrs</b><span>God Emperor to Heretics</span></li>
+        <li class="pxbox"><b>a few yrs</b><span>Heretics to Chapterhouse</span></li>
+      </ul>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .scale-ui { margin-top: 8px; }
+  .zoom-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .zt { font: 20px/1 'VT323', monospace; padding: 7px 12px; border: 2px solid var(--line); color: var(--ink-2); cursor: pointer; background: var(--panel); user-select: none; }
+  .zt:hover { color: var(--ink); border-color: var(--spice); }
+  .zt-eu { margin-left: auto; border-style: dashed; display: inline-flex; gap: 8px; align-items: center; }
+  .zt-eu i { width: 12px; height: 12px; border: 2px solid currentColor; }
+  #z-eu:checked ~ .zoom-tabs .zt-eu i { background: var(--spice); border-color: var(--spice); }
+  #z-all:checked ~ .zoom-tabs .zt-all, #z-log:checked ~ .zoom-tabs .zt-log, #z-paul:checked ~ .zoom-tabs .zt-paul, #z-novel:checked ~ .zoom-tabs .zt-novel, #z-after:checked ~ .zoom-tabs .zt-after { color: var(--bg); background: var(--spice); border-color: var(--spice); }
+  #z-all:focus-visible ~ .zoom-tabs .zt-all, #z-log:focus-visible ~ .zoom-tabs .zt-log, #z-paul:focus-visible ~ .zoom-tabs .zt-paul, #z-novel:focus-visible ~ .zoom-tabs .zt-novel, #z-after:focus-visible ~ .zoom-tabs .zt-after, #z-eu:focus-visible ~ .zoom-tabs .zt-eu { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .panel { display: none; }
+  #z-all:checked ~ .panels .p-all, #z-log:checked ~ .panels .p-log, #z-paul:checked ~ .panels .p-paul, #z-novel:checked ~ .panels .p-novel, #z-after:checked ~ .panels .p-after { display: block; }
+  #z-eu:not(:checked) ~ .panels .eu, #z-eu:not(:checked) ~ .panels .stemg.eu, #z-eu:not(:checked) ~ .panels .span-eu { display: none; }
+  .panel-note { margin: 0 0 10px; color: var(--ink-2); max-width: 75ch; }
+  .scale-box { padding: 6px 0; }
+  .scale-svg { display: block; min-width: 1100px; font-family: 'VT323', monospace; font-size: 18px; }
+  .tick rect { fill: var(--line); opacity: 0.55; }
+  .tick text { fill: var(--ink-3); font-size: 16px; }
+  .band rect { fill: var(--c); }
+  .band text { fill: var(--bg); font-size: 16px; }
+  .span { fill: var(--gold); }
+  .span-eu { fill: var(--ink-3); }
+  .pin rect { fill: none; stroke: var(--spice); stroke-width: 2; }
+  .stem { fill: var(--line); }
+  .ev .dot { fill: var(--spice); }
+  .ev.rough .dot { fill: var(--panel); stroke: var(--spice); stroke-width: 2; }
+  .ev .lbl { fill: var(--panel); stroke: var(--line); stroke-width: 2; }
+  .ev text { fill: var(--ink); }
+  .ev.multi text { fill: var(--gold); }
+  .ev.eu .lbl { stroke-dasharray: 4 3; fill: var(--bg-2); }
+  .ev.eu text { fill: var(--ink-2); }
+  .ev:hover .lbl, .ev:focus-visible .lbl { stroke: var(--spice); }
+  .ev:hover text, .ev:focus-visible text { fill: var(--spice); }
+  .ev:focus-visible { outline: none; }
+  .pin-note { color: var(--spice); font-size: 20px; margin: 8px 0 0; }
+  .gaps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
+  .gaps li { padding: 12px 14px; display: grid; gap: 4px; }
+  .gaps b { font: 400 26px/1 'Silkscreen', monospace; color: var(--gold); }
+  .gaps span { color: var(--ink-2); font-size: 14px; }
+  @media (max-width: 640px) { .zt-eu { margin-left: 0; } }
+</style>
