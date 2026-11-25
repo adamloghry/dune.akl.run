@@ -277,7 +277,8 @@ export const eras: Era[] = [
       },
       {
         id: 'alia-born',
-        when: '10,191 A.G.',
+        when: '≈10,192 A.G.',
+        approx: true,
         title: 'Alia is born',
         book: 'DUNE',
         body: 'Born months after the Duke\'s death, Alia is fully conscious from birth, an adult mind in an infant body, unsettling even to the Fremen.',

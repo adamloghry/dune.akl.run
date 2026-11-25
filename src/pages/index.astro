@@ -103,7 +103,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             </div>
           </header>
           <ol class="spine">
-            {spineFor(era).map((it) => it.t === 'canon' ? <EventCard event={it.ev} /> : <EUCard event={it.ev} />)}
+            {(() => { let c = 0; return spineFor(era).map((it, i) => { const side = (i % 2 ? 's-r' : '') + (it.t === 'canon' && c++ % 2 ? ' c-r' : ''); return it.t === 'canon' ? <EventCard event={it.ev} side={side} /> : <EUCard event={it.ev} side={side} />; }); })()}
           </ol>
         </section>
       );

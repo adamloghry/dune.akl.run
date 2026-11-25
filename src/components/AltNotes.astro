@@ -4,6 +4,7 @@ import { kindLabel } from '../data/timeline';
 import { screens } from '../data/beyond-view';
 interface Props { notes: AltNote[] }
 const { notes } = Astro.props;
+const short: Record<string, string> = { LYNCH: "Lynch's film · 1984", 'SCIFI DUNE': 'Sci Fi miniseries · 2000', 'SCIFI CHILDREN': 'Sci Fi Children · 2003', PROPHECY: 'Dune: Prophecy · 2024' };
 ---
 {notes.length > 0 && (
   <ul class="alt-notes" aria-label="Other screen versions">
@@ -11,7 +12,7 @@ const { notes } = Astro.props;
       <li class="alt-note">
         <div class="fn-head">
           <span class={`badge k-${n.kind}`}>{kindLabel[n.kind]}</span>
-          <span class="fn-film">{screens[n.screen].title} · {screens[n.screen].year}</span>
+          <span class="fn-film">OTHER SCREEN · {short[n.screen] ?? `${screens[n.screen].title} · ${screens[n.screen].year}`}</span>
         </div>
         <p>{n.text}</p>
       </li>
