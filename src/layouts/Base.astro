@@ -4,10 +4,12 @@ import '@fontsource/vt323/400.css';
 import '@fontsource/ibm-plex-mono/400.css';
 import '@fontsource/ibm-plex-mono/600.css';
 import '../styles/global.css';
+import '../styles/gloss.css';
 import Sprite from '../components/Sprite.astro';
 import Dunes from '../components/Dunes.astro';
+import { levels } from '../data/spoilers';
 
-interface Props { title?: string; description?: string; page?: 'home' | 'films' | 'about' | 'characters' | 'factions' | 'web' | 'family' | 'search' | 'beyond' }
+interface Props { title?: string; description?: string; page?: 'home' | 'films' | 'about' | 'characters' | 'factions' | 'web' | 'family' | 'search' | 'beyond' | 'map' | 'glossary' | 'guide' | 'scale' | 'event'; image?: string; url?: string }
 const {
   title = 'The Golden Path — a Dune chronicle',
   description = 'The in-universe history of Frank Herbert\'s Dune, from the Butlerian Jihad to Chapterhouse, with every divergence in Denis Villeneuve\'s films marked.',
@@ -18,12 +20,30 @@ const nav = [
   { id: 'home', href: `${base}/`, label: 'chronicle' },
   { id: 'characters', href: `${base}/characters/`, label: 'people' },
   { id: 'factions', href: `${base}/factions/`, label: 'powers' },
-  { id: 'web', href: `${base}/web/`, label: 'web' },
   { id: 'family', href: `${base}/family/`, label: 'family' },
+  { id: 'web', href: `${base}/web/`, label: 'web' },
+  { id: 'map', href: `${base}/map/`, label: 'map' },
+  { id: 'scale', href: `${base}/scale/`, label: 'scale' },
   { id: 'films', href: `${base}/films/`, label: 'films' },
   { id: 'beyond', href: `${base}/beyond/`, label: 'beyond' },
+  { id: 'guide', href: `${base}/guide/`, label: 'guide' },
+];
+const footNav = [
+  { id: 'glossary', href: `${base}/glossary/`, label: 'glossary' },
+  { id: 'search', href: `${base}/search/`, label: 'search' },
   { id: 'about', href: `${base}/about/`, label: 'about' },
 ];
+// Spoiler shield CSS: for each chosen level L, veil anything marked with a later level.
+const sel = (sfx: string) => [1, 2, 3, 4, 5, 6].flatMap((L) => [2, 3, 4, 5, 6, 7].filter((k) => k > L)
+  .map((k) => `html[data-spoil="${L}"] [data-sp="${k}"]:not(.sp-open)${sfx}`)).join(',');
+const shieldCss = `${sel('')}{cursor:pointer}${sel(':not(.t-card)')}{position:relative}`
+  + `${sel('')},${sel(' *')}{color:transparent!important;text-shadow:0 0 9px var(--ink-3)!important;user-select:none}`
+  + `${sel(' svg')},${sel(' img')},${sel(' .badge')}{filter:blur(4px);opacity:.45}`
+  + [1, 2, 3, 4, 5, 6].flatMap((L) => [2, 3, 4, 5, 6, 7].filter((k) => k > L).map((k) => `html[data-spoil="${L}"] a.gl[data-tl="${k}"]::after`)).join(',')
+  + `{content:"A " attr(data-tll) " spoiler. Tap to read the glossary entry." / ''}`
+  + `${sel('.t-child')},${sel('.t-union')},${sel('.t-knot')}{opacity:.12}`
+  + `${sel('[data-sps]')}{background:repeating-linear-gradient(45deg,var(--line) 0 2px,transparent 2px 6px)!important}${sel('[data-sps] > *')}{opacity:.08}`
+  + `${sel(':not([data-sps])::after')}{content:attr(data-spl) " spoiler · tap to show";position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;text-align:center;padding:6px;font:20px/1.1 'VT323',monospace;color:var(--gold)!important;text-shadow:none!important;background:repeating-linear-gradient(45deg,transparent 0 6px,color-mix(in srgb,var(--line) 30%,transparent) 6px 8px)}`;
 ---
 <!doctype html>
 <html lang="en">
@@ -35,6 +55,7 @@ const nav = [
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta name="theme-color" content="#140c1a" />
+    <style set:html={shieldCss}></style>
     <link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml" />
     <script is:inline>
       (() => {
@@ -42,6 +63,10 @@ const nav = [
           const t = localStorage.getItem('theme');
           document.documentElement.dataset.theme = t || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
         } catch { document.documentElement.dataset.theme = 'dark'; }
+        try {
+          const s = localStorage.getItem('spoil');
+          if (s && +s >= 1 && +s < 7) document.documentElement.dataset.spoil = s;
+        } catch {}
       })();
     </script>
   </head>
@@ -56,6 +81,21 @@ const nav = [
         <a class="search-btn" href={`${base}/search/`} aria-label="Search the chronicle (press /)" aria-current={page === 'search' ? 'page' : undefined}>
           <svg viewBox="0 0 10 10" shape-rendering="crispEdges" fill="currentColor"><rect x="2" y="0" width="4" height="1"/><rect x="1" y="1" width="1" height="1"/><rect x="6" y="1" width="1" height="1"/><rect x="0" y="2" width="1" height="4"/><rect x="7" y="2" width="1" height="4"/><rect x="1" y="6" width="1" height="1"/><rect x="6" y="6" width="1" height="1"/><rect x="2" y="7" width="4" height="1"/><rect x="7" y="7" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/><rect x="9" y="9" width="1" height="1"/></svg>
         </a>
+        <details class="shield">
+          <summary aria-label="Spoiler shield: how far have you read or watched?" title="Spoiler shield">
+            <svg viewBox="0 0 10 10" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><rect x="1" y="0" width="8" height="1"/><rect x="0" y="1" width="1" height="5"/><rect x="9" y="1" width="1" height="5"/><rect x="1" y="6" width="1" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="2" y="7" width="1" height="1"/><rect x="7" y="7" width="1" height="1"/><rect x="3" y="8" width="1" height="1"/><rect x="6" y="8" width="1" height="1"/><rect x="4" y="9" width="2" height="1"/><rect x="3" y="2" width="4" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="7" y="3" width="1" height="1"/><rect x="4" y="3" width="2" height="2"/><rect x="3" y="5" width="4" height="1"/></svg>
+            <span class="shield-tag vt"></span>
+          </summary>
+          <form class="shield-panel pxbox" onsubmit="return false">
+            <fieldset>
+              <legend class="vt">Spoiler shield: how far have you got?</legend>
+              {levels.map((l) => (
+                <label><input type="radio" name="spoil" value={l.n} />{l.n === 7 ? 'Everything, no shield' : l.label}</label>
+              ))}
+            </fieldset>
+            <p>Anything from later in the saga is blurred. Tap a blurred box to read it anyway. Your choice stays on this device.</p>
+          </form>
+        </details>
         <button class="theme-btn" type="button" aria-label="Switch between day and night">
           <svg class="icon-sun" viewBox="0 0 10 10" shape-rendering="crispEdges" fill="currentColor"><rect x="3" y="3" width="4" height="4"/><rect x="4" y="0" width="2" height="2"/><rect x="4" y="8" width="2" height="2"/><rect x="0" y="4" width="2" height="2"/><rect x="8" y="4" width="2" height="2"/><rect x="1" y="1" width="1" height="1"/><rect x="8" y="1" width="1" height="1"/><rect x="1" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/></svg>
           <svg class="icon-moon" viewBox="0 0 10 10" shape-rendering="crispEdges" fill="currentColor"><rect x="3" y="1" width="4" height="1"/><rect x="2" y="2" width="3" height="1"/><rect x="1" y="3" width="3" height="4"/><rect x="2" y="7" width="3" height="1"/><rect x="3" y="8" width="5" height="1"/><rect x="7" y="7" width="2" height="1"/></svg>
@@ -68,6 +108,9 @@ const nav = [
     </main>
     <footer>
       <Dunes seed={13714} height={60} stars={false} />
+      <nav class="wrap foot-nav vt" aria-label="More">
+        {[...nav, ...footNav].map((n) => <a href={n.href} aria-current={n.id === page ? 'page' : undefined}>{n.label}</a>)}
+      </nav>
       <div class="wrap foot">
         <span>Book canon: Frank Herbert, 1965–1985. Films: Denis Villeneuve, 2021 &amp; 2024.</span>
         <span>A fan chronicle. Not affiliated with the Herbert estate or Legendary.</span>
@@ -80,6 +123,52 @@ const nav = [
         d.dataset.theme = d.dataset.theme === 'light' ? 'dark' : 'light';
         try { localStorage.setItem('theme', d.dataset.theme); } catch {}
       });
+      (() => {
+        // Spoiler shield: veil anything marked later than the chosen point; tap to reveal one item.
+        const d = document.documentElement, shield = document.querySelector('.shield');
+        const short = Object.fromEntries([...document.querySelectorAll('.shield-panel input')].map((i) => [i.value, i.parentElement.textContent.trim()]));
+        const level = () => +(d.dataset.spoil || 7);
+        const veiled = (el) => +el.dataset.sp > level() && !el.classList.contains('sp-open');
+        const mark = (el) => {
+          const v = veiled(el);
+          if (v) {
+            el.setAttribute('tabindex', '0'); el.setAttribute('role', 'button');
+            el.setAttribute('aria-label', `Spoiler for ${el.dataset.spl}. Press to show.`);
+          } else if (el.hasAttribute('aria-label') && el.getAttribute('role') === 'button') {
+            el.removeAttribute('tabindex'); el.removeAttribute('role'); el.removeAttribute('aria-label');
+          }
+          for (const c of el.children) c.inert = v;
+        };
+        const refresh = (root = document) => {
+          root.querySelectorAll('[data-sp]').forEach(mark);
+          const L = level(), tag = shield?.querySelector('.shield-tag');
+          if (tag) tag.textContent = ['', 'PT 1', 'DUNE', 'MESS', 'KIDS', 'GOD', 'HERE', ''][L] ?? '';
+          shield?.classList.toggle('on', L < 7);
+          document.querySelectorAll('.shield-panel input').forEach((i) => { i.checked = +i.value === L; });
+          document.querySelectorAll('.shield-now').forEach((n) => { n.textContent = L < 7 ? `on: up to ${short[L]}` : 'off'; });
+        };
+        window.spoilRefresh = refresh;
+        document.querySelector('.shield-panel')?.addEventListener('change', (e) => {
+          const L = +e.target.value;
+          if (L < 7) d.dataset.spoil = String(L); else delete d.dataset.spoil;
+          try { L < 7 ? localStorage.setItem('spoil', String(L)) : localStorage.removeItem('spoil'); } catch {}
+          document.querySelectorAll('.sp-open').forEach((x) => x.classList.remove('sp-open'));
+          refresh();
+        });
+        const reveal = (e) => {
+          const el = e.target.closest?.('[data-sp]');
+          if (!el || !veiled(el)) return;
+          if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+          e.preventDefault(); e.stopPropagation();
+          el.classList.add('sp-open'); mark(el);
+          el.querySelectorAll('[data-sp]').forEach((x) => { if (+x.dataset.sp <= +el.dataset.sp) { x.classList.add('sp-open'); mark(x); } });
+        };
+        document.addEventListener('click', reveal, true);
+        document.addEventListener('keydown', reveal, true);
+        document.addEventListener('click', (e) => { if (shield?.open && !shield.contains(e.target)) shield.open = false; });
+        document.querySelectorAll('[data-open-shield]').forEach((b) => b.addEventListener('click', (e) => { e.stopPropagation(); if (shield) { shield.open = true; shield.querySelector('input:checked, input')?.focus(); } }));
+        refresh();
+      })();
       const nav = document.querySelector('.nav'), cur = nav?.querySelector('[aria-current="page"]');
       if (nav && cur && nav.scrollWidth > nav.clientWidth) nav.scrollLeft = cur.offsetLeft - nav.clientWidth / 2 + cur.offsetWidth / 2;
       document.addEventListener('keydown', (e) => {

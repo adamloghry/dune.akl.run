@@ -1,0 +1,188 @@
+---
+import Base from '../layouts/Base.astro';
+import Sprite from '../components/Sprite.astro';
+import { eras, bookInfo } from '../data/timeline';
+import { euBooks, screens } from '../data/beyond';
+import { euAuthors } from '../data/beyond-view';
+import { startHere, herbertBooks, villeneuveFilms, partThree, laterChrono, otherScreens } from '../data/guide';
+import type { EUBook } from '../data/beyond-types';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+// The integrator adds 'guide' to Base's `page` union and to the nav.
+const page = 'guide' as const;
+const eraName = Object.fromEntries(eras.map((e) => [e.id, e.name]));
+const pubOrder = Object.entries(euBooks) as [EUBook, (typeof euBooks)[EUBook]][];
+---
+<Base page={page} title="Reading and watching guide — The Golden Path" description="Where to start with Dune: the order of Frank Herbert's six novels and Denis Villeneuve's films, what each one adds, and where the later books and other adaptations fit.">
+  <div class="wrap">
+    <header class="page-head">
+      <p class="kicker">where to begin</p>
+      <h1>Reading and watching guide</h1>
+      <p class="sec-sub">
+        Where to start, what order to go in, and what each book and film adds. Spoiler-light: no
+        deaths and no twists below. Frank Herbert's six novels come first, then Denis Villeneuve's
+        films. The later books and the other adaptations sit in dashed boxes at the end.
+      </p>
+    </header>
+
+    <section class="g-sec" aria-labelledby="start-h">
+      <h2 id="start-h" class="sec-title">Start here</h2>
+      <div class="g-start pxbox">
+        <p class="g-lead">{startHere.lead}</p>
+        <ol class="g-steps">
+          {startHere.steps.map((s, i) => (
+            <li><span class="g-num" aria-hidden="true">{i + 1}</span><div><b>{s.what}</b><p>{s.why}</p></div></li>
+          ))}
+        </ol>
+      </div>
+      <ul class="g-alts">
+        {startHere.alternatives.map((a) => <li><span class="g-or">or</span> <b>{a.label}.</b> {a.text}</li>)}
+      </ul>
+    </section>
+
+    <section class="g-sec" aria-labelledby="herbert-h">
+      <h2 id="herbert-h" class="sec-title">Frank Herbert's six novels</h2>
+      <p class="sec-sub">
+        Read them in publication order, which is also story order. The appendices and glossary at the
+        back of Dune are part of the record too: <a href={`${base}/#old-empire`}>{eraName['old-empire']}</a> and
+        <a href={`${base}/#imperium`}>{eraName.imperium}</a> come from them.
+      </p>
+      <ol class="g-books">
+        {herbertBooks.map((b, i) => (
+          <li class="g-book pxbox">
+            <div class="g-book-head">
+              <Sprite name="book" size={2} />
+              <span class="g-n">{i + 1}</span>
+              <span class="book-tag">{b.book}</span>
+              <span class="g-year vt">{b.year}</span>
+            </div>
+            <h3>{b.title}</h3>
+            <p class="g-adds">{b.adds}</p>
+            <p class="g-feel"><span class="g-label">feel</span> {b.feel}</p>
+            <p class="g-era"><span class="g-label">on the timeline</span> {b.eras.map((id, j) => <>{j > 0 && ' · '}<a href={`${base}/#${id}`}>{eraName[id]}</a></>)}</p>
+            {b.films && <p class="g-films"><span class="g-tag">FILMS</span> {b.films}</p>}
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="g-sec" aria-labelledby="films-h">
+      <h2 id="films-h" class="sec-title">Denis Villeneuve's films</h2>
+      <p class="sec-sub">
+        Two films adapt the first novel. Every place they differ from it is marked on the timeline and
+        collected on the <a href={`${base}/films/`}>films page</a>.
+      </p>
+      <ul class="g-films-list">
+        {villeneuveFilms.map((f) => (
+          <li class="pxbox g-film">
+            <h3>{f.title} <span class="g-year vt">{f.year}</span></h3>
+            <p><span class="g-label">covers</span> {f.covers}</p>
+            <p class="g-note">{f.note}</p>
+          </li>
+        ))}
+        <li class="pxbox g-film g-next">
+          <h3>{partThree.title} <span class="badge g-sched">SCHEDULED</span></h3>
+          <p><span class="g-label">adapts</span> {partThree.adapts}.</p>
+          <p class="g-note">Scheduled to open in theaters on {partThree.release}, as of {partThree.checked}. This site will add its notes once the film is out.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section class="g-sec" aria-labelledby="later-h">
+      <h2 id="later-h" class="sec-title">The later books</h2>
+      <div class="pxbox eu-card g-later">
+        <p class="eu-flag vt"><span>LATER BOOKS</span> not Frank Herbert · {euAuthors}</p>
+        <p class="g-later-intro">
+          Since 1999, {euAuthors} have written {pubOrder.length} more novels set before, between and
+          after Frank Herbert's. They are not his work, and they sometimes change what he wrote. Read
+          his six first. The <a href={`${base}/beyond/`}>Beyond Herbert</a> page lists every change.
+        </p>
+        <div class="g-cols">
+          <div>
+            <h3 class="series-h">In publication order</h3>
+            <ol class="g-order">
+              {pubOrder.map(([, b]) => <li><span>{b.title}</span> <span class="vt g-y">{b.year}</span></li>)}
+            </ol>
+          </div>
+          <div>
+            <h3 class="series-h">In story order</h3>
+            <ol class="g-order">
+              {laterChrono.map((it) => 'eu' in it
+                ? <li><span>{euBooks[it.eu].title}</span> <span class="vt g-y">{euBooks[it.eu].year}</span></li>
+                : <li class="g-anchor"><span class="book-tag">FRANK HERBERT</span> <b>{bookInfo[it.herbert].title}</b></li>)}
+            </ol>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="g-sec" aria-labelledby="screens-h">
+      <h2 id="screens-h" class="sec-title">Other screen versions</h2>
+      <p class="sec-sub">For comparison only. Each one departs further from the books than Villeneuve's films.</p>
+      <ul class="g-screens">
+        {otherScreens.map((s) => (
+          <li class="pxbox eu-card">
+            <b>{screens[s.screen].title}</b> <span class="vt g-y">{screens[s.screen].year}</span>
+            <p>{s.line}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .g-sec { margin: 40px 0 0; }
+  .g-start { padding: 18px 20px 8px; }
+  .g-lead { margin: 0 0 12px; font-family: 'VT323', monospace; font-size: 24px; line-height: 1.15; color: var(--gold); }
+  .g-steps { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+  .g-steps li { display: grid; grid-template-columns: 40px 1fr; gap: 14px; align-items: start; padding: 10px 0; border-top: 2px dashed var(--line); }
+  .g-steps li:first-child { border-top: 0; }
+  .g-num { display: grid; place-items: center; width: 40px; height: 40px; font-family: 'Silkscreen', monospace; font-size: 20px; color: var(--bg); background: var(--spice); box-shadow: 3px 3px 0 var(--shadow); }
+  .g-steps b { display: block; font-size: 16px; color: var(--ink); }
+  .g-steps p { margin: 4px 0 0; font-size: 15px; color: var(--ink-2); max-width: 72ch; }
+  .g-alts { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 8px; font-size: 15px; color: var(--ink-2); }
+  .g-alts b { color: var(--ink); font-weight: 600; }
+  .g-or { font-family: 'VT323', monospace; font-size: 18px; color: var(--gold); padding: 0 6px; border: 2px solid var(--line); margin-right: 4px; }
+
+  .g-books { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 16px; }
+  .g-book { padding: 16px 18px 18px; }
+  .g-book-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .g-n { font-family: 'Silkscreen', monospace; font-size: 22px; line-height: 1; color: var(--spice); }
+  .g-year, .g-y { color: var(--gold); font-size: 22px; line-height: 1; }
+  .g-y { font-size: 18px; }
+  .g-book h3, .g-film h3 { margin: 10px 0 6px; font-size: clamp(16px, 2.2vw, 19px); line-height: 1.25; color: var(--ink); }
+  .g-book p, .g-film p { margin: 8px 0 0; font-size: 15px; }
+  .g-adds { color: var(--ink); }
+  .g-feel, .g-era, .g-note { color: var(--ink-2); }
+  .g-label { font-family: 'VT323', monospace; font-size: 18px; line-height: 1; color: var(--ink-3); margin-right: 4px; }
+  .g-era a { white-space: nowrap; }
+  .g-films { padding: 8px 10px; background: var(--panel-2); border-left: var(--px) solid var(--added); color: var(--ink); }
+  .g-tag { font-family: 'VT323', monospace; font-size: 17px; line-height: 1; padding: 2px 6px 1px; border: 2px solid currentColor; color: var(--added); margin-right: 4px; }
+
+  .g-films-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 16px; }
+  .g-film { padding: 16px 18px 18px; }
+  .g-film h3 { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 0; }
+  .g-next { background: var(--panel-2); }
+  .g-sched { color: var(--gold); font-size: 16px; }
+
+  .g-later { padding: 16px 18px 18px; }
+  .g-later-intro { margin: 0; font-size: 15px; color: var(--ink-2); max-width: 76ch; }
+  .g-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 32px; }
+  .g-cols .series-h { margin-top: 18px; }
+  .g-order { margin: 8px 0 0; padding-left: 2.2em; font-size: 15px; color: var(--ink); }
+  .g-order li { margin: 3px 0; padding-left: 2px; }
+  .g-order li::marker { font-family: 'VT323', monospace; font-size: 18px; color: var(--ink-3); }
+  .g-anchor b { font-weight: 600; }
+  .g-anchor .book-tag { font-size: 15px; padding: 2px 5px 1px; vertical-align: 2px; }
+
+  .g-screens { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+  .g-screens li { padding: 12px 14px; }
+  .g-screens p { margin: 6px 0 0; font-size: 14px; color: var(--ink-2); }
+
+  @media (max-width: 640px) {
+    .g-cols { grid-template-columns: 1fr; }
+    .g-steps li { grid-template-columns: 32px 1fr; gap: 10px; }
+    .g-num { width: 32px; height: 32px; font-size: 16px; }
+  }
+</style>

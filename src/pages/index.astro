@@ -6,6 +6,8 @@ import EventCard from '../components/EventCard.astro';
 import EUCard from '../components/EUCard.astro';
 import { spineFor, euEvents, altNotes } from '../data/beyond-view';
 import { eras, kindLabel } from '../data/timeline';
+import { sp, eraLevel } from '../data/spoilers';
+import type { EraId } from '../data/cast';
 
 const colours = ['--rust', '--sand-d', '--spice', '--blue', '--sand', '--gold', '--dune-3', '--added'];
 const total = eras.reduce((n, e) => n + (e.to - e.from), 0);
@@ -78,6 +80,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <label class="toggle"><input type="checkbox" id="only-diverged" /><span class="sw"></span>only what the films touch</label>
       <label class="toggle"><input type="checkbox" id="show-eu" checked /><span class="sw"></span>later books ({euEvents.length})</label>
       <label class="toggle"><input type="checkbox" id="show-alt" /><span class="sw"></span>other screen versions ({altNotes.length})</label>
+      <button type="button" class="shield-hint" data-open-shield>spoiler shield <span class="shield-now">off</span></button>
       <span class="era-now" aria-live="polite"></span>
       <div class="legend" aria-hidden="true">
         {(['kept', 'changed', 'cut', 'added'] as const).map((k) => <span class={`badge k-${k}`}>{kindLabel[k]}</span>)}
@@ -94,7 +97,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               <span class="num" aria-hidden="true">{era.num}</span>
               <h2 id={`${era.id}-h`}>{era.name}</h2>
               <div class="span">{era.span}</div>
-              <p>{era.summary}</p>
+              <p {...sp(eraLevel[era.id as EraId])}>{era.summary}</p>
               <div class="books">{era.books.map((b) => <span class="book-tag">{b}</span>)}</div>
               <div class="era-land" style={`--sky:${land[era.id].sky};--l1:${land[era.id].l[0]};--l2:${land[era.id].l[1]};--l3:${land[era.id].l[2]}`}>
                 <Dunes seed={era.from + 77} height={40} stars={false} />

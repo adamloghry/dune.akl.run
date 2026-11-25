@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import Sprite from '../../components/Sprite.astro';
 import { factions, eraOrder, eraShort } from '../../data/cast';
 import { eventsFor } from '../../data/query';
+import { sp, eventLevel, eraLevel, appear, blurbLevel, facAppear, facBlurb, lastLevel, type Level } from '../../data/spoilers';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <Base page="factions" title="Factions — The Golden Path">
@@ -18,13 +19,13 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </header>
     <ul class="faction-grid">
       {factions.map((f) => (
-        <li>
+        <li {...sp(facAppear(f.id))}>
           <a class="faction-card pxbox" href={`${base}/factions/${f.id}/`} style={`--fc:${f.colour}`}>
             <span class="big-sigil" style={`color:${f.colour}`}><Sprite name={f.sigil} size={5} /></span>
             <div>
               <span class="kind vt">{f.kind}</span>
               <b>{f.name}</b>
-              <div class="presence" aria-label="Presence by era">
+              <div class="presence" aria-label="Presence by era" {...sp(lastLevel(f.presence), true)}>
                 {eraOrder.map((e) => <i class={`p${f.presence[e] ?? 0}`} title={`${eraShort[e]}: ${['absent', 'marginal', 'a player', 'central'][f.presence[e] ?? 0]}`}></i>)}
               </div>
               <span class="count">{eventsFor('f', f.id).length} events</span>

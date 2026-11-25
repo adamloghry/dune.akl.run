@@ -4,6 +4,7 @@ import Avatar from '../../components/Avatar.astro';
 import Sprite from '../../components/Sprite.astro';
 import { characters, factionById, eraOrder, eraShort } from '../../data/cast';
 import { eventsFor } from '../../data/query';
+import { sp, eventLevel, eraLevel, appear, blurbLevel, facAppear, facBlurb, lastLevel, akaLevel, type Level } from '../../data/spoilers';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <Base page="characters" title="Characters — The Golden Path">
@@ -19,12 +20,12 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </header>
     <ul class="cast-grid">
       {characters.map((c) => (
-        <li>
+        <li {...sp(appear(c.id))}>
           <a class="cast-card pxbox" href={`${base}/characters/${c.id}/`}>
             <Avatar c={c} size={5} />
             <div class="cast-body">
               <b>{c.name}</b>
-              {c.aka && <span class="aka">{c.aka}</span>}
+              {c.aka && <span class="aka" {...sp(akaLevel(c.id), true)}>{c.aka}</span>}
               <div class="sigils">
                 {c.factions.map((f) => (
                   <span class={`sigil rel-${f.rel}`} style={`color:${factionById[f.id].colour}`} title={`${factionById[f.id].name} (${f.rel})`}>
@@ -32,7 +33,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
                   </span>
                 ))}
               </div>
-              <div class="life" aria-label="Eras present">
+              <div class="life" aria-label="Eras present" {...sp(lastLevel(c.eras), true)}>
                 {eraOrder.map((e) => <i class={c.eras[e] ?? 'none'} title={`${eraShort[e]}: ${c.eras[e] ?? 'absent'}`}></i>)}
               </div>
               <span class="count">{eventsFor('who', c.id).length} events</span>

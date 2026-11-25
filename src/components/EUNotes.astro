@@ -1,19 +1,22 @@
 ---
 import type { EUNote } from '../data/beyond-types';
 import { euKindLabel, euBooks } from '../data/beyond-view';
-interface Props { notes: EUNote[] }
-const { notes } = Astro.props;
+import { sp, eventLevel, type Level } from '../data/spoilers';
+import { glossHtml } from '../lib/gloss';
+interface Props { notes: EUNote[]; seen?: Set<string> }
+const { notes, seen = new Set<string>() } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 {notes.length > 0 && (
   <ul class="eu-notes" aria-label="What the later books add or change">
     {notes.map((n) => (
-      <li class={`eu-note eu-k-${n.kind}`}>
+      <li class={`eu-note eu-k-${n.kind}`} {...sp(Math.max(2, eventLevel(n.event)) as Level)}>
         <div class="fn-head">
           <span class={`badge eu-badge eu-k-${n.kind}`}>{euKindLabel[n.kind]}</span>
           <span class="fn-film">LATER BOOKS · {n.books.map((b) => euBooks[b].title).join(', ')}</span>
         </div>
         <div>
-          <p>{n.text}</p>
+          <p set:html={glossHtml(n.text, seen, base)} />
           {n.herbert && <p class="eu-herbert"><b>Frank Herbert wrote</b> {n.herbert}</p>}
         </div>
       </li>

@@ -1,0 +1,110 @@
+---
+import Base from '../layouts/Base.astro';
+import '../styles/gloss.css';
+import { glossary } from '../data/glossary';
+import { glossHtml, termsIn } from '../lib/gloss';
+import { eras } from '../data/timeline';
+import { euEvents } from '../data/beyond';
+import { euAuthors } from '../data/beyond-view';
+import { characters } from '../data/cast';
+import { sp, termLevel, eventLevel, appear, type Level } from '../data/spoilers';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+// The integrator adds 'glossary' to Base's `page` union and to the nav.
+const page = 'glossary' as const;
+
+// Where each term is used: canon events, later-books events, and people.
+type Use = { href: string; label: string; later?: boolean };
+const uses = new Map<string, Use[]>();
+const add = (text: string, use: Use) => {
+  for (const id of termsIn(text)) {
+    const list = uses.get(id) ?? [];
+    if (!list.some((u) => u.href === use.href)) list.push(use);
+    uses.set(id, list);
+  }
+};
+for (const era of eras) for (const ev of era.events) add(`${ev.title}\n${ev.body}`, { href: `${base}/#${ev.id}`, label: ev.title });
+for (const ev of euEvents) add(`${ev.title}\n${ev.body}`, { href: `${base}/#${ev.id}`, label: ev.title, later: true });
+const people = new Map<string, Use[]>();
+for (const c of characters) {
+  for (const id of termsIn(c.blurb)) {
+    const list = people.get(id) ?? [];
+    list.push({ href: `${base}/characters/${c.id}/`, label: c.name });
+    people.set(id, list);
+  }
+}
+
+const letterOf = (s: string) => s.replace(/[^A-Za-z]/g, '').charAt(0).toUpperCase();
+const groups = new Map<string, typeof glossary>();
+for (const t of glossary) {
+  const l = letterOf(t.term);
+  groups.set(l, [...(groups.get(l) ?? []), t]);
+}
+const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+const later = glossary.filter((t) => t.tier === 'later-books').length;
+---
+<Base page={page} title="Glossary — The Golden Path" description="Every Dune term used in this chronicle, defined in plain words, with notes on Villeneuve's films and on terms that come only from the later books.">
+  <div class="wrap">
+    <header class="page-head">
+      <p class="kicker">words of the Imperium</p>
+      <h1>Glossary</h1>
+      <p class="sec-sub">
+        {glossary.length} terms you meet in this chronicle, defined in our own words from Frank
+        Herbert's novels. A <span class="gl-tag" style="color: var(--added)">FILM</span> note says how
+        Villeneuve's films show or change a term. The {later} terms in dashed boxes come only from the
+        later books by {euAuthors}. Elsewhere on the site, a word with a dotted underline links here;
+        hover over it or tab to it to read the definition in place.
+      </p>
+    </header>
+
+    <nav class="gl-jump pxbox" aria-label="Jump to letter">
+      {alphabet.map((l) => groups.has(l)
+        ? <a href={`#letter-${l.toLowerCase()}`}>{l}</a>
+        : <span aria-hidden="true">{l}</span>)}
+    </nav>
+
+    {[...groups.entries()].map(([l, terms]) => (
+      <section aria-labelledby={`letter-${l.toLowerCase()}`}>
+        <h2 class="gl-letter" id={`letter-${l.toLowerCase()}`}>{l}</h2>
+        <dl class="gl-list">
+          {terms.map((t) => {
+            const seen = new Set([t.id]);
+            const where = uses.get(t.id) ?? [];
+            const who = people.get(t.id) ?? [];
+            const isLater = t.tier === 'later-books';
+            return (
+              <div class:list={['gl-entry', 'pxbox', { 'gl-later': isLater }]}>
+                <dt id={`gl-${t.id}`}>
+                  <span>{t.term}</span>
+                  {t.aliases && t.aliases.length > 0 && (
+                    <span class="gl-aka">also {t.aliases.join(', ')}</span>
+                  )}
+                </dt>
+                <dd {...sp(Math.max(termLevel[t.id] ?? 1, isLater ? 2 : 1) as Level)}>
+                  {isLater && <p class="gl-tier"><span>LATER BOOKS</span> not Frank Herbert · {euAuthors}</p>}
+                  <p class="gl-def" set:html={glossHtml(t.def, seen, base)} />
+                  {t.more && <p class="gl-more" set:html={glossHtml(t.more, seen, base)} />}
+                  {t.film && (
+                    <p class="gl-film"><span class="gl-tag">FILM</span><span set:html={glossHtml(t.film, seen, base)} /></p>
+                  )}
+                  {where.length > 0 && (
+                    <div class="gl-where">
+                      <b>appears in</b>
+                      <ul>{where.map((u) => <li {...sp(u.href.includes('#') ? eventLevel(u.href.split('#')[1]) : 1, true)}><a href={u.href}>{u.label}</a>{u.later && <span class="sr-only"> (later books)</span>}</li>)}</ul>
+                    </div>
+                  )}
+                  {who.length > 0 && (
+                    <div class="gl-where">
+                      <b>people</b>
+                      <ul>{who.map((u) => <li {...sp(appear(u.href.replace(/\/$/, '').split('/').pop() ?? ''), true)}><a href={u.href}>{u.label}</a></li>)}</ul>
+                    </div>
+                  )}
+                </dd>
+              </div>
+            );
+          })}
+        </dl>
+      </section>
+    ))}
+  </div>
+</Base>

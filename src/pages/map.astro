@@ -1,0 +1,389 @@
+---
+// Map of the Imperium: a schematic pixel star chart of the worlds that matter in the saga.
+// Everything is drawn at build time as one inline SVG on a 320x180 grid (one grid unit = one
+// map pixel). The only randomness is a seeded PRNG, so builds stay byte-identical.
+import Base from '../layouts/Base.astro';
+import Sprite from '../components/Sprite.astro';
+import Avatar from '../components/Avatar.astro';
+import { worlds, guildRoutes, zensunniPath, worldById, type World } from '../data/worlds';
+import { allEvents } from '../data/query';
+import { euEvents } from '../data/beyond';
+import { charById, factionById } from '../data/cast';
+import { sp, eventLevel, appear, type Level } from '../data/spoilers';
+// Spoiler levels for each world's description and other names.
+const worldLevel: Record<string, Level> = {
+  arrakis: 7, caladan: 6, 'giedi-prime': 6, kaitain: 2, junction: 7, ix: 6, tleilax: 7, 'wallach-ix': 6,
+  chapterhouse: 7, lernaeus: 6, lampadas: 7, buzzell: 7, synchrony: 7, lankiveil: 2,
+};
+const akaLevel: Record<string, Level> = { arrakis: 6, caladan: 6, 'giedi-prime': 6 };
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const W = 320, H = 180;
+
+// ---------------------------------------------------------------- helpers
+function prng(seed: number) {
+  return () => {
+    seed |= 0; seed = (seed + 0x6d2b79f5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+type Px = [number, number];
+/** Pixels → one compact path, merging horizontal runs. */
+function toPath(px: Px[]): string {
+  const rows = new Map<number, number[]>();
+  for (const [x, y] of px) { if (!rows.has(y)) rows.set(y, []); rows.get(y)!.push(x); }
+  let d = '';
+  for (const [y, xs] of [...rows.entries()].sort((a, b) => a[0] - b[0])) {
+    const s = [...new Set(xs)].sort((a, b) => a - b);
+    for (let i = 0; i < s.length; ) {
+      let j = i; while (j + 1 < s.length && s[j + 1] === s[j] + 1) j++;
+      d += `M${s[i]} ${y}h${s[j] - s[i] + 1}v1h-${s[j] - s[i] + 1}z`;
+      i = j + 1;
+    }
+  }
+  return d;
+}
+const sizeOf = (w: World) => (w.unknown ? 7 : w.size ?? 6);
+const radius = (w: World) => sizeOf(w) / 2;
+
+/** A pixel disc with stripes, a lit limb and a dithered terminator. Returns paths keyed by colour. */
+function disc(w: World, ox = 0, oy = 0) {
+  const d = sizeOf(w), r = d / 2, L = w.look;
+  const cx = w.x + (d % 2 ? 0.5 : 0), cy = w.y + (d % 2 ? 0.5 : 0);
+  const x0 = Math.floor(cx - r), y0 = Math.floor(cy - r);
+  const out: Record<string, Px[]> = { base: [], band: [], light: [], shade: [] };
+  const every = L.bands ?? 3;
+  for (let py = y0; py < y0 + d; py++) for (let px = x0; px < x0 + d; px++) {
+    const dx = (px + 0.5 - cx) / r, dy = (py + 0.5 - cy) / r;
+    if (dx * dx + dy * dy > 1.02) continue;
+    const t = dx * 0.85 + dy * 0.35; // light comes from the upper left
+    const odd = (px + py) % 2 === 0;
+    let k: keyof typeof out = every > 0 && (py - y0) % every === every - 1 ? 'band' : 'base';
+    if (t > 0.5 || (t > 0.18 && odd)) k = 'shade';
+    else if (t < -0.62 || (t < -0.42 && odd && dy < 0)) k = 'light';
+    out[k].push([px - ox, py - oy]);
+  }
+  return { colours: { base: L.base, band: L.band, light: L.light, shade: L.shade }, paths: Object.fromEntries(Object.entries(out).map(([k, v]) => [k, toPath(v)])) as Record<keyof typeof out, string> };
+}
+
+/** Dotted pixel line between two worlds, every `step`th pixel, clear of both discs. */
+function dotted(a: World, b: World, step: number): Px[] {
+  const px: Px[] = [];
+  let x0 = Math.round(a.x), y0 = Math.round(a.y);
+  const x1 = Math.round(b.x), y1 = Math.round(b.y);
+  const dx = Math.abs(x1 - x0), dy = -Math.abs(y1 - y0), sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1;
+  let err = dx + dy, i = 0;
+  const ra = radius(a) + 3, rb = radius(b) + 3;
+  for (;;) {
+    if (i++ % step === 0 && Math.hypot(x0 - a.x, y0 - a.y) > ra && Math.hypot(x0 - b.x, y0 - b.y) > rb) px.push([x0, y0]);
+    if (x0 === x1 && y0 === y1) break;
+    const e2 = 2 * err;
+    if (e2 >= dy) { err += dy; x0 += sx; }
+    if (e2 <= dx) { err += dx; y0 += sy; }
+  }
+  return px;
+}
+
+// ---------------------------------------------------------------- background
+const rnd = prng(10191);
+const near = (x: number, y: number, pad: number) => worlds.some((w) => Math.hypot(w.x - x, w.y - y) < radius(w) + pad);
+const stars: Px[] = [], twinkle: Px[] = [], bright: Px[] = [];
+for (let i = 0; i < 260; i++) {
+  const x = Math.floor(rnd() * W), y = Math.floor(rnd() * H);
+  if (near(x, y, 4)) continue;
+  (i % 9 === 0 ? twinkle : stars).push([x, y]);
+}
+for (let i = 0; i < 9; i++) {
+  const x = 4 + Math.floor(rnd() * (W - 8)), y = 4 + Math.floor(rnd() * (H - 8));
+  if (near(x, y, 7)) continue;
+  bright.push([x, y], [x - 1, y], [x + 1, y], [x, y - 1], [x, y + 1]);
+}
+// Nebulae: ordered (Bayer) dithering, thinning out toward the edge, with a little noise.
+const bayer = [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]];
+function nebula(cx: number, cy: number, rx: number, ry: number, seed: number): Px[] {
+  const n = prng(seed), px: Px[] = [];
+  for (let y = Math.floor(cy - ry); y <= cy + ry; y++) for (let x = Math.floor(cx - rx); x <= cx + rx; x++) {
+    if (x < 0 || y < 0 || x >= W || y >= H) continue;
+    const d = Math.hypot((x - cx) / rx, (y - cy) / ry);
+    if (d > 1) continue;
+    const density = (1 - d) * 0.55 + (n() - 0.5) * 0.2;
+    if (bayer[y % 4][x % 4] / 16 < density) px.push([x, y]);
+  }
+  return px;
+}
+const nebA = [...nebula(104, 112, 62, 30, 7), ...nebula(150, 70, 30, 18, 8)]; // spice-coloured haze around Dune
+const nebB = [...nebula(262, 66, 46, 28, 9), ...nebula(48, 40, 34, 22, 10)];
+const grid = [
+  ...Array.from({ length: 7 }, (_, i) => `M${(i + 1) * 40 + 0.5} 0V${H}`),
+  ...Array.from({ length: 4 }, (_, i) => `M0 ${(i + 1) * 36 + 0.5}H${W}`),
+].join('');
+
+// ---------------------------------------------------------------- routes
+const hub = worldById.junction;
+const routes = toPath(guildRoutes.flatMap((id) => dotted(hub, worldById[id], 3)));
+const migration = toPath(zensunniPath.slice(1).flatMap((id, i) => dotted(worldById[zensunniPath[i]], worldById[id], 2)));
+
+// ---------------------------------------------------------------- planets
+const planets = worlds.map((w) => {
+  const r = radius(w), side = w.label ?? 'r';
+  const lx = side === 'r' ? w.x + r + 3 : side === 'l' ? w.x - r - 3 : w.x;
+  const ly = side === 't' ? w.y - r - 3 : side === 'b' ? w.y + r + 8 : w.y + 2.5;
+  const anchor = side === 'r' ? 'start' : side === 'l' ? 'end' : 'middle';
+  const moons: Px[] = [];
+  if (w.look.moons) {
+    const mx = Math.round(w.x + r + 1), my = Math.round(w.y - r - 1); // first moon, 2x2, upper right
+    moons.push([mx, my], [mx + 1, my], [mx, my + 1], [mx + 1, my + 1]);
+    if (w.look.moons > 1) moons.push([Math.round(w.x - r - 2), Math.round(w.y + r)]); // second moon, lower left
+  }
+  // a flat pixel ring through the equator, drawn over the disc
+  const ring = w.look.ring ? toPath(Array.from({ length: Math.round(r * 2 + 7) }, (_, i) => [Math.floor(w.x - r - 3) + i, Math.round(w.y)] as Px)) : '';
+  // dotted outline for '?' markers and later-books worlds
+  const halo: Px[] = [];
+  if (w.unknown || w.euOnly) {
+    const hr = r + 2;
+    for (let a = 0; a < 360; a += 360 / (hr * 4)) {
+      const x = Math.round(w.x + Math.cos((a * Math.PI) / 180) * hr), y = Math.round(w.y + Math.sin((a * Math.PI) / 180) * hr);
+      if ((x + y) % 2 === 0) halo.push([x, y]);
+    }
+  }
+  const hit = { x: Math.floor(w.x - r - 3) + 0.5, y: Math.floor(w.y - r - 3) + 0.5, s: Math.ceil(r * 2 + 6) };
+  const label = `${w.name}${w.where ? `, ${w.where}` : ''}${w.euOnly ? '. Later books only' : ''}${w.unknown ? '. Location unknown' : ''}`;
+  return { w, r, lx, ly, anchor, d: w.unknown ? null : disc(w), moons: toPath(moons), ring, halo: toPath(halo), hit, label };
+});
+const ar = worldById.arrakis, arR = radius(ar) + 4;
+const corner = (sx: number, sy: number): Px[] => {
+  const x = Math.round(ar.x + sx * arR), y = Math.round(ar.y + sy * arR);
+  return [[x, y], [x - sx, y], [x - 2 * sx, y], [x, y - sy], [x, y - 2 * sy]];
+};
+const arrakisMark = toPath([...corner(-1, -1), ...corner(1, -1), ...corner(-1, 1), ...corner(1, 1)]);
+const pulse = toPath(Array.from({ length: 64 }, (_, i) => {
+  const a = (i / 64) * Math.PI * 2, rr = arR + 3;
+  return [Math.round(ar.x + Math.cos(a) * rr), Math.round(ar.y + Math.sin(a) * rr)] as Px;
+}).filter(([x, y]) => (x + y) % 2 === 0));
+
+// ---------------------------------------------------------------- cards
+const evIndex = new Map(allEvents.map((p, i) => [p.ev.id, { i, ev: p.ev }]));
+const euIndex = new Map(euEvents.map((e, i) => [e.id, { i, ev: e }]));
+const cards = worlds.map((w) => ({
+  w,
+  // re-centre the disc in a box one pixel larger on every side
+  mini: w.unknown ? null : disc({ ...w, x: 0, y: 0 }, Math.floor((sizeOf(w) % 2 ? 0.5 : 0) - sizeOf(w) / 2) - 1, Math.floor((sizeOf(w) % 2 ? 0.5 : 0) - sizeOf(w) / 2) - 1),
+  evs: w.events.map((id) => evIndex.get(id)!).filter(Boolean).sort((a, b) => a.i - b.i).map((x) => x.ev),
+  eus: (w.eu ?? []).map((id) => euIndex.get(id)!).filter(Boolean).sort((a, b) => a.i - b.i).map((x) => x.ev),
+  fs: (w.factions ?? []).filter((id) => factionById[id]).map((id) => factionById[id]),
+  ps: (w.people ?? []).filter((id) => charById[id]).map((id) => charById[id]),
+}));
+const canonCount = worlds.filter((w) => !w.euOnly).length;
+---
+<Base page="map" title="Map of the Imperium — The Golden Path" description="A pixel star map of the worlds that matter in Frank Herbert's Dune saga, from Arrakis to Chapterhouse, each linked to its events.">
+  <div class="wrap">
+    <header class="page-head">
+      <p class="kicker">star chart</p>
+      <h1>Map of the Imperium</h1>
+      <p class="sec-sub">
+        {canonCount} worlds from Frank Herbert's six novels and the glossary printed with Dune, plus one that
+        exists only in the later books. Positions are schematic: the novels give no star chart, so
+        nearness on this map means nothing. Where a star is named, it is the one the Dune glossary
+        gives. Pick a world to read what happens there.
+      </p>
+    </header>
+
+    <div class="scroll-x pxbox map-box" id="map">
+      <svg class="starmap" viewBox={`0 0 ${W} ${H}`} shape-rendering="crispEdges" role="group" aria-labelledby="map-title">
+        <title id="map-title">Schematic star map of the Imperium. Each world links to its entry below.</title>
+        <g aria-hidden="true">
+          <rect class="m-bg" width={W} height={H} />
+          <path class="m-neb-a" d={toPath(nebA)} />
+          <path class="m-neb-b" d={toPath(nebB)} />
+          <path class="m-grid" d={grid} />
+          <path class="m-star" d={toPath(stars)} />
+          <path class="m-star m-tw" d={toPath(twinkle)} />
+          <path class="m-bright" d={toPath(bright)} />
+          <path class="m-route" d={routes} />
+          <path class="m-migr" d={migration} />
+          <path class="m-pulse" d={pulse} />
+          <path class="m-mark" d={arrakisMark} />
+        </g>
+        {planets.map((p) => (
+          <a id={`pl-${p.w.id}`} href={`#world-${p.w.id}`} class:list={['planet', { 'is-eu': p.w.euOnly, 'is-unknown': p.w.unknown, 'is-dune': p.w.id === 'arrakis' }]} aria-label={p.label}>
+            <rect class="hit" x={p.hit.x} y={p.hit.y} width={p.hit.s} height={p.hit.s} />
+            <g class="body" aria-hidden="true">
+              {p.d && (['base', 'band', 'light', 'shade'] as const).map((k) => <path d={p.d!.paths[k]} fill={p.d!.colours[k]} />)}
+              {p.ring && <path d={p.ring} fill={p.w.look.light} />}
+              {p.moons && <path class="m-moon" d={p.moons} />}
+              {p.halo && <path class="m-halo" d={p.halo} />}
+              {p.w.unknown && <text class="m-q" x={p.w.x} y={p.w.y + 2.5} text-anchor="middle">?</text>}
+            </g>
+            <text class:list={['m-label', { 'm-dune': p.w.id === 'arrakis' }]} x={p.lx} y={p.ly} text-anchor={p.anchor} aria-hidden="true">{p.w.id === 'arrakis' ? 'ARRAKIS' : p.w.name}</text>
+            {(p.w.euOnly || p.w.id === 'arrakis' || p.w.aka === 'Gammu') && (
+              <text class="m-sub" x={p.lx} y={p.ly + (p.w.id === 'arrakis' ? 6 : 5)} text-anchor={p.anchor} aria-hidden="true">
+                {p.w.euOnly ? 'later books' : p.w.id === 'arrakis' ? 'Dune · Rakis' : 'Gammu'}
+              </text>
+            )}
+          </a>
+        ))}
+      </svg>
+    </div>
+    <ul class="map-key vt" aria-label="Map key">
+      <li><i class="k-dune"></i> Arrakis, the spice world</li>
+      <li><i class="k-route"></i> Guild routes from Junction (drawn for the picture)</li>
+      <li><i class="k-migr"></i> Zensunni wandering, in the glossary's order</li>
+      <li><i class="k-eu"></i> later books only, not Frank Herbert</li>
+      <li><i class="k-q">?</i> location unknown in the books</li>
+    </ul>
+    <script is:inline>
+      (() => {
+        const box = document.querySelector('.map-box'), dune = document.getElementById('pl-arrakis');
+        if (!box || !dune || box.scrollWidth <= box.clientWidth) return;
+        const b = box.getBoundingClientRect(), d = dune.getBoundingClientRect();
+        box.scrollLeft = d.left - b.left - box.clientWidth / 2 + d.width / 2;
+      })();
+    </script>
+    <p class="vt scroll-hint">On a small screen, scroll the map sideways. Tap a world to jump to its entry.</p>
+
+    <nav class="w-index" aria-label="Worlds">
+      {worlds.map((w) => <a href={`#world-${w.id}`} class:list={['vt', { eu: w.euOnly }]}>{w.name}</a>)}
+    </nav>
+
+    <section class="arc-sec" aria-labelledby="worlds-h">
+      <h2 id="worlds-h" class="sec-title">The worlds</h2>
+      <p class="sec-sub">Star names are quoted from the glossary printed with Dune. Where the books give no star, none is shown.</p>
+      <div class="worlds">
+        {cards.map(({ w, mini, evs, eus, fs, ps }) => (
+          <article id={`world-${w.id}`} class:list={['world', 'pxbox', { 'eu-only': w.euOnly, wide: w.id === 'arrakis' }]} aria-labelledby={`wh-${w.id}`}>
+            {w.euOnly && <p class="eu-flag vt"><span>LATER BOOKS</span> not Frank Herbert</p>}
+            <header class="w-head">
+              <span class="w-mini" aria-hidden="true">
+                {mini ? (
+                  <svg viewBox={`0 0 ${sizeOf(w) + 2} ${sizeOf(w) + 2}`} width={(sizeOf(w) + 2) * 6} height={(sizeOf(w) + 2) * 6} shape-rendering="crispEdges">
+                    {(['base', 'band', 'light', 'shade'] as const).map((k) => <path d={mini.paths[k]} fill={mini.colours[k]} />)}
+                  </svg>
+                ) : <b class="w-q">?</b>}
+              </span>
+              <div>
+                <p class="w-kind vt">{w.kind}</p>
+                <h3 id={`wh-${w.id}`}>{w.name}</h3>
+                {w.aka && <p class="w-aka vt" {...sp(akaLevel[w.id] ?? 1, true)}>also {w.aka}</p>}
+              </div>
+            </header>
+            <p class="w-where vt"><b>where</b> {w.where ?? 'no star given in the books'} <span>· named in {w.source}</span></p>
+            <p class="w-blurb" {...sp(worldLevel[w.id] ?? 1)}>{w.blurb}</p>
+            {(fs.length > 0 || ps.length > 0) && (
+              <div class="involved w-who">
+                {fs.map((f) => <a class="fsig" href={`${base}/factions/${f.id}/`} title={f.name} aria-label={f.name} style={`color:${f.colour}`}><Sprite name={f.sigil} size={2} /></a>)}
+                {fs.length > 0 && ps.length > 0 && <span class="sep" aria-hidden="true"></span>}
+                {ps.map((c) => <a href={`${base}/characters/${c.id}/`} title={c.name} aria-label={c.name}><Avatar c={c} size={2} /></a>)}
+              </div>
+            )}
+            <p class="w-sub vt">on the timeline · {evs.length}</p>
+            {evs.length > 0 ? (
+              <ol class="w-events">
+                {evs.map((e) => <li {...sp(eventLevel(e.id), true)}><a href={`${base}/#${e.id}`}><span class="when">{e.when}</span>{e.approx && <span class="sr-only"> (approximate)</span>} <span class="t">{e.title}</span></a></li>)}
+              </ol>
+            ) : <p class="w-none">{w.euOnly ? 'Nothing in Frank Herbert\'s six novels happens here.' : 'No event on the timeline is set here. It is named in the books and little more.'}</p>}
+            {eus.length > 0 && (
+              <div class="w-eu">
+                <p class="eu-flag vt"><span>LATER BOOKS</span> not Frank Herbert</p>
+                <ul>
+                  {eus.map((e) => <li {...sp(eventLevel(e.id), true)}><a href={`${base}/#${e.id}`}><span class="when">{e.when}</span> <span class="t">{e.title}</span></a></li>)}
+                </ul>
+              </div>
+            )}
+            <a class="w-back vt" href={`#pl-${w.id}`}>find on the map ^</a>
+          </article>
+        ))}
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .map-box { padding: 8px; margin-top: 8px; }
+  .starmap { display: block; width: 100%; min-width: 760px; height: auto; background: var(--bg-2); }
+  .m-bg { fill: var(--bg-2); }
+  .m-grid { stroke: var(--line); stroke-width: 1; stroke-dasharray: 1 3; fill: none; opacity: 0.7; }
+  .m-neb-a { fill: var(--rust); opacity: 0.22; }
+  .m-neb-b { fill: var(--blue); opacity: 0.16; }
+  .m-star { fill: var(--ink-2); opacity: 0.65; }
+  .m-bright { fill: var(--ink); opacity: 0.8; }
+  .m-tw { animation: map-tw 3.4s steps(2) infinite; }
+  .m-route { fill: var(--blue); opacity: 0.75; }
+  .m-migr { fill: var(--sand); opacity: 0.85; }
+  .m-mark { fill: var(--spice); }
+  .m-pulse { fill: var(--spice); opacity: 0.5; animation: map-pulse 2.4s steps(2) infinite; }
+  .m-moon { fill: var(--moon); stroke: none; }
+  :global(:root[data-theme='light']) .m-moon { fill: var(--sand-d); }
+  .m-halo { fill: var(--ink-3); }
+  .m-q { font-family: 'VT323', monospace; font-size: 9px; fill: var(--blue); }
+  .m-label {
+    font-family: 'VT323', monospace; font-size: 7px; fill: var(--ink);
+    paint-order: stroke; stroke: var(--bg-2); stroke-width: 1.6px; stroke-linejoin: round;
+  }
+  .m-sub { font-family: 'VT323', monospace; font-size: 5px; fill: var(--ink-2); paint-order: stroke; stroke: var(--bg-2); stroke-width: 1.4px; }
+  .m-dune { font-size: 8.5px; fill: var(--spice); }
+  .planet { cursor: pointer; outline: none; }
+  .planet .hit { fill: transparent; stroke: transparent; stroke-width: 1; }
+  .planet:hover .hit, .planet:focus-visible .hit { stroke: var(--gold); }
+  .planet:target .hit { stroke: var(--spice); fill: color-mix(in srgb, var(--spice) 18%, transparent); }
+  .planet:hover .m-label, .planet:focus-visible .m-label, .planet:target .m-label { fill: var(--gold); }
+  .planet:focus-visible .m-label { text-decoration: underline; }
+  .planet.is-eu .body { opacity: 0.5; }
+  .planet.is-eu .m-label { fill: var(--ink-2); }
+  @keyframes map-tw { 50% { opacity: 0.15; } }
+  @keyframes map-pulse { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .m-tw, .m-pulse { animation: none; } }
+
+  .map-key { list-style: none; padding: 0; margin: 14px 0 0; display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 19px; color: var(--ink-2); }
+  .map-key li { display: flex; align-items: center; gap: 8px; }
+  .map-key i { display: inline-block; width: 22px; height: 10px; flex: none; }
+  .k-dune { border: 3px solid var(--spice); width: 14px !important; height: 14px !important; background: var(--sand); }
+  .k-route { background: repeating-linear-gradient(90deg, var(--blue) 0 3px, transparent 3px 9px); height: 3px !important; }
+  .k-migr { background: repeating-linear-gradient(90deg, var(--sand) 0 3px, transparent 3px 6px); height: 3px !important; }
+  .k-eu { border: 2px dashed var(--ink-3); width: 14px !important; height: 14px !important; }
+  .k-q { font-style: normal; color: var(--blue); width: auto !important; height: auto !important; font-size: 22px; line-height: 1; }
+  .scroll-hint { color: var(--ink-3); font-size: 18px; margin: 6px 0 0; }
+  @media (min-width: 800px) { .scroll-hint { display: none; } }
+
+  .w-index { display: flex; flex-wrap: wrap; gap: 4px 6px; margin: 22px 0 0; }
+  .w-index a { font-size: 20px; line-height: 1; padding: 4px 8px; color: var(--ink-2); text-decoration: none; border: 2px solid var(--line); background: var(--panel); }
+  .w-index a:hover, .w-index a:focus-visible { color: var(--ink); border-color: var(--spice); }
+  .w-index a.eu { border-style: dashed; }
+
+  .worlds { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 16px; margin-top: 16px; }
+  .world { padding: 16px 18px 14px; display: flex; flex-direction: column; transition: transform 0.08s steps(2); }
+  .world.wide { grid-column: 1 / -1; }
+  .world.wide .w-events { columns: 2 300px; column-gap: 28px; }
+  .world:target { border-color: var(--spice); transform: translate(-2px, -2px); box-shadow: calc(var(--px) + 2px) calc(var(--px) + 2px) 0 var(--spice); }
+  .world.eu-only { border-style: dashed; background: var(--bg-2); }
+  .world > .eu-flag { margin: -4px 0 8px; font-size: 17px; color: var(--ink-3); line-height: 1.1; }
+  .eu-flag span { color: var(--bg); background: var(--ink-3); padding: 1px 6px; margin-right: 6px; }
+  .w-head { display: flex; gap: 14px; align-items: center; }
+  .w-mini { flex: none; display: grid; place-items: center; width: 66px; height: 66px; background: var(--bg-2); border: 2px solid var(--line); }
+  .w-mini svg { display: block; image-rendering: pixelated; }
+  .w-q { font-family: 'VT323', monospace; font-weight: 400; font-size: 44px; color: var(--blue); line-height: 1; }
+  .w-head h3 { margin: 0; font-size: clamp(17px, 2.4vw, 22px); line-height: 1.15; }
+  .w-kind { margin: 0; font-size: 18px; color: var(--gold); line-height: 1.1; }
+  .w-aka { margin: 2px 0 0; font-size: 18px; color: var(--ink-2); line-height: 1.1; }
+  .w-where { margin: 12px 0 0; font-size: 19px; line-height: 1.2; color: var(--ink); }
+  .w-where b { font-weight: 400; color: var(--bg); background: var(--sand); padding: 0 5px; margin-right: 4px; }
+  :global(:root[data-theme='light']) .w-where b { background: var(--sand-d); color: var(--bone); }
+  .w-where span { color: var(--ink-2); }
+  .w-blurb { margin: 8px 0 0; font-size: 14.5px; }
+  .w-who { margin-top: 10px; }
+  .w-sub { margin: 14px 0 4px; font-size: 18px; color: var(--ink-2); text-transform: uppercase; }
+  .w-events, .w-eu ul { list-style: none; padding: 0; margin: 0; }
+  .w-events li, .w-eu li { break-inside: avoid; padding: 3px 0; border-bottom: 2px dotted var(--line); font-size: 14px; line-height: 1.3; }
+  .w-events a, .w-eu a { display: block; color: var(--ink); text-decoration: none; }
+  .w-events a:hover .t, .w-eu a:hover .t, .w-events a:focus-visible .t, .w-eu a:focus-visible .t { color: var(--spice); text-decoration: underline; }
+  .w-events .when, .w-eu .when { display: inline-block; margin-right: 6px; font-size: 18px; line-height: 1.1; }
+  .w-none { margin: 0; font-size: 14px; color: var(--ink-2); }
+  .w-eu { margin-top: 12px; padding: 8px 10px; border: 2px dashed var(--ink-3); background: var(--bg-2); }
+  .w-eu .eu-flag { margin: 0 0 6px; font-size: 16px; color: var(--ink-2); line-height: 1.1; }
+  .w-eu .when { color: var(--ink-2); }
+  .w-eu a { color: var(--ink-2); }
+  .w-back { margin-top: auto; padding-top: 12px; align-self: flex-end; font-size: 18px; color: var(--ink-2); }
+  .w-back:hover { color: var(--spice); }
+  @media (max-width: 480px) { .world { padding: 14px 12px 12px; } }
+</style>

@@ -49,7 +49,7 @@ const starPx = stars
 <svg class="dunes" viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="xMidYMax meet" shape-rendering="crispEdges" aria-hidden="true">
   {layers.map((l) => (
     <g class={l.cls}>
-      {l.cols.map((c) => <rect x={c.x} y={c.y} width="2" height={H - c.y} />)}
+      {l.cols.filter((c) => c.y < H).map((c) => <rect x={c.x} y={c.y} width="2" height={H - c.y} />)}
     </g>
   ))}
 </svg>

@@ -1,9 +1,11 @@
 ---
 import Base from '../../layouts/Base.astro';
+import { glossHtml } from '../../lib/gloss';
 import Avatar from '../../components/Avatar.astro';
 import Sprite from '../../components/Sprite.astro';
 import { factions, factionById, characters, eraOrder, relLabel, type Faction } from '../../data/cast';
 import { eventsFor, factionLinks, eraName } from '../../data/query';
+import { sp, eventLevel, eraLevel, appear, blurbLevel, facAppear, facBlurb, lastLevel, type Level } from '../../data/spoilers';
 
 export function getStaticPaths() {
   return factions.map((f, i) => ({ params: { id: f.id }, props: { f, prev: factions[i - 1] ?? null, next: factions[i + 1] ?? null } }));
@@ -11,6 +13,7 @@ export function getStaticPaths() {
 interface Props { f: Faction; prev: Faction | null; next: Faction | null }
 const { f, prev, next } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const seen = new Set<string>();
 const evs = eventsFor('f', f.id);
 const people = characters.flatMap((c) => c.factions.filter((x) => x.id === f.id).map((x) => ({ c, rel: x.rel })));
 const order = { member: 0, trained: 1, ally: 2, enemy: 3 } as const;
@@ -30,18 +33,18 @@ const words = ['absent', 'marginal', 'a player', 'central'];
       <div>
         <p class="kicker" style="margin:0">{f.kind}</p>
         <h1>{f.name}</h1>
-        <p>{f.blurb}</p>
+        <p {...sp(facBlurb(f.id))}>{f.blurb}</p>
       </div>
     </header>
     {f.film && (
-      <aside class="film-panel pxbox"><Sprite name="reel" size={3} /><div><b class="vt">ON SCREEN</b><p>{f.film}</p></div></aside>
+      <aside class="film-panel pxbox" {...sp(2)}><Sprite name="reel" size={3} /><div><b class="vt">ON SCREEN</b><p>{f.film}</p></div></aside>
     )}
 
     <section class="arc-sec">
       <h2 class="sec-title">Weight across the ages</h2>
       <ol class="arc presence-arc">
         {eraOrder.map((e) => (
-          <li class={`p${f.presence[e] ?? 0}`}>
+          <li class={`p${f.presence[e] ?? 0}`} {...sp(eraLevel[e])}>
             <a class="arc-era vt" href={`${base}/#${e}`}>{eraName(e)}</a>
             <span class="meter" role="img" aria-label={words[f.presence[e] ?? 0]}>{[1, 2, 3].map((n) => <i class={n <= (f.presence[e] ?? 0) ? 'on' : ''}></i>)}</span>
             <p>{f.arc[e] ?? words[f.presence[e] ?? 0]}</p>
@@ -55,7 +58,7 @@ const words = ['absent', 'marginal', 'a player', 'central'];
         <h2 class="sec-title">People</h2>
         <ul class="companions">
           {people.map(({ c, rel }) => (
-            <li><a href={`${base}/characters/${c.id}/`} class="pxbox"><Avatar c={c} size={3} /><span>{c.name}</span><em class={`rel rel-${rel}`}>{relLabel[rel]}</em></a></li>
+            <li {...sp(appear(c.id))}><a href={`${base}/characters/${c.id}/`} class="pxbox"><Avatar c={c} size={3} /><span>{c.name}</span><em class={`rel rel-${rel}`}>{relLabel[rel]}</em></a></li>
           ))}
         </ul>
       </section>
@@ -67,7 +70,7 @@ const words = ['absent', 'marginal', 'a player', 'central'];
         <p class="sec-sub">How many timeline events each other faction shares with {f.name}.</p>
         <ul class="links">
           {links.map((l) => (
-            <li>
+            <li {...sp(facAppear(l.id))}>
               <a href={`${base}/factions/${l.id}/`} style={`color:${factionById[l.id].colour}`} aria-hidden="true" tabindex="-1"><Sprite name={factionById[l.id].sigil} size={2} /></a>
               <a href={`${base}/factions/${l.id}/`} class="lname">{factionById[l.id].name}</a>
               <span class="bar" style={`--w:${(l.n / maxLink) * 100}%; --c:${factionById[l.id].colour}`}></span>
@@ -82,10 +85,10 @@ const words = ['absent', 'marginal', 'a player', 'central'];
       <h2 class="sec-title">On the timeline, {evs.length} events</h2>
       <ol class="mini-events">
         {evs.map(({ ev }) => (
-          <li class="pxbox">
+          <li class="pxbox" {...sp(eventLevel(ev.id))}>
             <div class="card-meta"><span class="when">{ev.when}</span><span class="book-tag">{ev.book}</span></div>
             <h3><a href={`${base}/#${ev.id}`}>{ev.title}</a></h3>
-            <p>{ev.body}</p>
+            <p set:html={glossHtml(ev.body, seen, base)} />
           </li>
         ))}
       </ol>

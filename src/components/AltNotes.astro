@@ -2,6 +2,8 @@
 import type { AltNote } from '../data/beyond-types';
 import { kindLabel } from '../data/timeline';
 import { screens } from '../data/beyond-view';
+import { sp, eventLevel, type Level } from '../data/spoilers';
+const screenLevel: Record<string, number> = { LYNCH: 2, 'SCIFI DUNE': 2, 'SCIFI CHILDREN': 4 };
 interface Props { notes: AltNote[] }
 const { notes } = Astro.props;
 const short: Record<string, string> = { LYNCH: "Lynch's film · 1984", 'SCIFI DUNE': 'Sci Fi miniseries · 2000', 'SCIFI CHILDREN': 'Sci Fi Children · 2003', PROPHECY: 'Dune: Prophecy · 2024' };
@@ -9,7 +11,7 @@ const short: Record<string, string> = { LYNCH: "Lynch's film · 1984", 'SCIFI DU
 {notes.length > 0 && (
   <ul class="alt-notes" aria-label="Other screen versions">
     {notes.map((n) => (
-      <li class="alt-note">
+      <li class="alt-note" {...sp(Math.max(screenLevel[n.screen] ?? 1, eventLevel(n.event)) as Level)}>
         <div class="fn-head">
           <span class={`badge k-${n.kind}`}>{kindLabel[n.kind]}</span>
           <span class="fn-film">OTHER SCREEN · {short[n.screen] ?? `${screens[n.screen].title} · ${screens[n.screen].year}`}</span>

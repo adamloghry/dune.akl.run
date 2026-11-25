@@ -82,9 +82,10 @@ for (const d of docs) counts[d.k]++;
         const words = raw.split(/\s+/).filter(Boolean);
         count.textContent = hits.length ? `${hits.length} ${hits.length === 1 ? 'record' : 'records'}` : 'Nothing in the record. The archive is not the whole universe.';
         out.innerHTML = hits.slice(0, 60).map(([, d]) =>
-          `<li><a class="pxbox" href="${esc(d.u)}"><span class="r-kind k-${d.k}">${kindName[d.k]}</span>` +
+          `<li${d.p ? ` data-sp="${d.p}" data-spl="${esc(d.pl)}"` : ''}><a class="pxbox" href="${esc(d.u)}"><span class="r-kind k-${d.k}">${kindName[d.k]}</span>` +
           `<b>${mark(d.t, words)}${d.s ? `<small>${esc(d.s)}</small>` : ''}</b>` +
           `<p>${mark(snippet(d, terms), words)}</p></a></li>`).join('');
+        window.spoilRefresh?.(out);
       };
       document.querySelectorAll('.search-filters button').forEach((b) => b.addEventListener('click', () => {
         kind = b.dataset.k;

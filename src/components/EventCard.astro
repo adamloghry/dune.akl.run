@@ -7,6 +7,8 @@ import Sprite from './Sprite.astro';
 import EUNotes from './EUNotes.astro';
 import AltNotes from './AltNotes.astro';
 import { euNotesFor, altNotesFor } from '../data/beyond-view';
+import { sp, eventLevel } from '../data/spoilers';
+import { glossHtml } from '../lib/gloss';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 interface Props { side?: string; event: Event }
 const { event: e, side = '' } = Astro.props;
@@ -14,8 +16,9 @@ const films = e.films ?? [];
 const who = (tags[e.id]?.who ?? []).filter((id) => charById[id]);
 const eu = euNotesFor(e.id), alts = altNotesFor(e.id);
 const fs = (tags[e.id]?.f ?? []).filter((id) => factionById[id]);
+const seen = new Set<string>();
 ---
-<li id={e.id} class:list={[side, 'event', { approx: e.approx, 'has-film': films.length > 0 }]}>
+<li id={e.id} class:list={[side, 'event', { approx: e.approx, 'has-film': films.length > 0 }]} {...sp(eventLevel(e.id))}>
   <article class="card pxbox">
     <div class="card-meta">
       <span class="when">{e.when}</span>
@@ -23,7 +26,7 @@ const fs = (tags[e.id]?.f ?? []).filter((id) => factionById[id]);
       {e.approx && <span class="sr-only">(approximate date)</span>}
     </div>
     <h3><a href={`#${e.id}`}>{e.title}</a></h3>
-    <p>{e.body}</p>
+    <p set:html={glossHtml(e.body, seen, base)} />
     {(who.length > 0 || fs.length > 0) && (
       <div class="involved">
         {who.map((id) => <a href={`${base}/characters/${id}/`} title={charById[id].name}><Avatar c={charById[id]} size={2} /></a>)}
@@ -39,12 +42,12 @@ const fs = (tags[e.id]?.f ?? []).filter((id) => factionById[id]);
               <span class={`badge k-${f.kind}`}>{kindLabel[f.kind]}</span>
               <span class="fn-film">FILM · {f.film}</span>
             </div>
-            <p>{f.text}</p>
+            <p set:html={glossHtml(f.text, seen, base)} />
           </li>
         ))}
       </ul>
     )}
-    <EUNotes notes={eu} />
+    <EUNotes notes={eu} seen={seen} />
     <AltNotes notes={alts} />
   </article>
 </li>

@@ -3,6 +3,18 @@ import Base from '../layouts/Base.astro';
 import Avatar from '../components/Avatar.astro';
 import { charById, type Character } from '../data/cast';
 import { familyNodes, unions, edges, unionLabel, type FNode } from '../data/family';
+import { sp, type Level } from '../data/spoilers';
+// Spoiler levels for the tree: a card's name and caption, and the line that joins it.
+const nodeLevel: Record<string, Level> = {
+  paulus: 1, helena: 1, baron: 2, shaddam: 1, 'leto-i': 1, jessica: 1, wensicia: 4, irulan: 2, paul: 1, chani: 1,
+  alia: 2, hayt: 3, farad: 5, ghanima: 3, 'leto-ii': 4, 'first-son': 2, moneo: 5, siona: 5, 'duncan-gold': 5,
+  teg: 6, 'duncan-last': 6, murbella: 6, odrade: 6, 'murbella-kids': 7,
+};
+const lv = (id: string): Level => {
+  const u = unions.find((x) => x.id === id);
+  return u ? (Math.max(nodeLevel[u.a] ?? 1, nodeLevel[u.b] ?? 1) as Level) : nodeLevel[id] ?? 1;
+};
+const edgeLevel = (from: string, to: string) => Math.max(lv(from), lv(to)) as Level;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const PAD = 70, W = 1080, ROW = 170, CARD_W = 136, CARD_H = 122, AV = 22; // AV: y of the union line inside a card
@@ -63,12 +75,12 @@ const filmNotes = familyNodes.filter((n) => n.film);
     <div class="scroll-x pxbox tree-box">
       <div class="tree" style={`width:${W}px;height:${H}px`}>
         <svg class="tree-lines" viewBox={`0 0 ${W} ${H}`} width={W} height={H} aria-hidden="true" shape-rendering="crispEdges">
-          {childPaths.map((p) => <path d={p.d} class:list={['t-child', { dotted: p.e.dotted }]} />)}
-          {unionPaths.map((p) => <path d={p.d} class={`t-union ${p.u.kind}`}><title>{unionLabel[p.u.kind]}</title></path>)}
-          {unions.map((u) => { const p = uPoint(u.id); return <rect x={p.x - 4} y={p.y - 4} width="8" height="8" class={`t-knot ${u.kind}`} />; })}
+          {childPaths.map((p) => <path d={p.d} class:list={['t-child', { dotted: p.e.dotted }]} {...sp(edgeLevel(p.e.from, p.e.to), true)} />)}
+          {unionPaths.map((p) => <path d={p.d} class={`t-union ${p.u.kind}`} {...sp(lv(p.u.id), true)}><title>{unionLabel[p.u.kind]}</title></path>)}
+          {unions.map((u) => { const p = uPoint(u.id); return <rect x={p.x - 4} y={p.y - 4} width="8" height="8" class={`t-knot ${u.kind}`} {...sp(lv(u.id), true)} />; })}
         </svg>
         {childPaths.filter((p) => p.e.label).map((p) => (
-          <span class="tree-gap vt" style={`left:${p.lx}px;top:${p.ly}px`}>{p.e.label}</span>
+          <span class="tree-gap vt" style={`left:${p.lx}px;top:${p.ly}px`} {...sp(edgeLevel(p.e.from, p.e.to), true)}>{p.e.label}</span>
         ))}
         {familyNodes.map((raw) => { const n = node[raw.id];
           const inner = (
@@ -81,8 +93,8 @@ const filmNotes = familyNodes.filter((n) => n.film);
           );
           const style = `left:${n.x - CARD_W / 2}px;top:${top(n)}px;width:${CARD_W}px;height:${CARD_H}px`;
           return n.char
-            ? <a class="t-card" href={`${base}/characters/${n.char}/`} style={style}>{inner}</a>
-            : <div class="t-card no-page" style={style}>{inner}</div>;
+            ? <a class="t-card" href={`${base}/characters/${n.char}/`} style={style} {...sp(lv(n.id))}>{inner}</a>
+            : <div class="t-card no-page" style={style} {...sp(lv(n.id))}>{inner}</div>;
         })}
       </div>
     </div>
@@ -98,7 +110,7 @@ const filmNotes = familyNodes.filter((n) => n.film);
       <h2 class="sec-title">On screen</h2>
       <p class="sec-sub">Villeneuve's two films cover only the first three generations, and change them.</p>
       <ul class="tree-films">
-        {filmNotes.map((n) => <li class="pxbox"><b>{n.name}</b> <span>{n.film}</span></li>)}
+        {filmNotes.map((n) => <li class="pxbox" {...sp(Math.max(2, lv(n.id)) as Level)}><b>{n.name}</b> <span>{n.film}</span></li>)}
       </ul>
     </section>
   </div>

@@ -1,10 +1,12 @@
 ---
 import Base from '../../layouts/Base.astro';
+import { glossHtml } from '../../lib/gloss';
 import Avatar from '../../components/Avatar.astro';
 import Sprite from '../../components/Sprite.astro';
 import { characters, charById, factionById, eraOrder, relLabel, type Character } from '../../data/cast';
 import { eventsFor, companions, eraName } from '../../data/query';
 import { kindLabel } from '../../data/timeline';
+import { sp, eventLevel, eraLevel, appear, blurbLevel, facAppear, facBlurb, lastLevel, akaLevel, type Level } from '../../data/spoilers';
 
 export function getStaticPaths() {
   return characters.map((c, i) => ({
@@ -15,6 +17,7 @@ export function getStaticPaths() {
 interface Props { c: Character; prev: Character | null; next: Character | null }
 const { c, prev, next } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const seen = new Set<string>();
 const evs = eventsFor('who', c.id);
 const comp = companions(c.id).slice(0, 8);
 const lifeEras = eraOrder.filter((e) => c.eras[e] || c.arc[e]);
@@ -26,8 +29,8 @@ const lifeEras = eraOrder.filter((e) => c.eras[e] || c.arc[e]);
       <div class="portrait"><Avatar c={c} size={10} /></div>
       <div>
         <h1>{c.name}</h1>
-        {c.aka && <p class="aka vt">{c.aka}</p>}
-        <p>{c.blurb}</p>
+        {c.aka && <p class="aka vt" {...sp(akaLevel(c.id))}>{c.aka}</p>}
+        <p {...sp(blurbLevel(c.id))}>{c.blurb}</p>
         <ul class="aff">
           {c.factions.map((f) => (
             <li>
@@ -42,7 +45,7 @@ const lifeEras = eraOrder.filter((e) => c.eras[e] || c.arc[e]);
     </header>
 
     {c.film && (
-      <aside class="film-panel pxbox">
+      <aside class="film-panel pxbox" {...sp(Math.max(2, appear(c.id)) as Level)}>
         <Sprite name="reel" size={3} />
         <div><b class="vt">ON SCREEN · {c.film.actor}</b><p>{c.film.note}</p></div>
       </aside>
@@ -52,7 +55,7 @@ const lifeEras = eraOrder.filter((e) => c.eras[e] || c.arc[e]);
       <h2 class="sec-title">Through the ages</h2>
       <ol class="arc">
         {lifeEras.map((e) => (
-          <li class={c.eras[e] ?? 'none'}>
+          <li class={c.eras[e] ?? 'none'} {...sp(eraLevel[e])}>
             <a class="arc-era vt" href={`${base}/#${e}`}>{eraName(e)}</a>
             <p>{c.arc[e] ?? (c.eras[e] === 'echo' ? 'Present as memory, ghola line or bloodline.' : '')}</p>
           </li>
@@ -64,10 +67,10 @@ const lifeEras = eraOrder.filter((e) => c.eras[e] || c.arc[e]);
       <h2 class="sec-title">Their story, in {evs.length} events</h2>
       <ol class="mini-events">
         {evs.map(({ ev, era }) => (
-          <li class="pxbox">
+          <li class="pxbox" {...sp(eventLevel(ev.id))}>
             <div class="card-meta"><span class="when">{ev.when}</span><span class="book-tag">{ev.book}</span></div>
             <h3><a href={`${base}/#${ev.id}`}>{ev.title}</a></h3>
-            <p>{ev.body}</p>
+            <p set:html={glossHtml(ev.body, seen, base)} />
             {(ev.films ?? []).length > 0 && (
               <div class="mini-films">
                 {(ev.films ?? []).map((f) => <span class={`badge k-${f.kind}`} title={f.text}>{kindLabel[f.kind]}</span>)}
@@ -84,7 +87,7 @@ const lifeEras = eraOrder.filter((e) => c.eras[e] || c.arc[e]);
         <h2 class="sec-title">Most often alongside</h2>
         <ul class="companions">
           {comp.map(([id, n]) => (
-            <li><a href={`${base}/characters/${id}/`} class="pxbox"><Avatar c={charById[id]} size={3} /><span>{charById[id].name}</span><b class="vt">{n}×</b></a></li>
+            <li {...sp(appear(id))}><a href={`${base}/characters/${id}/`} class="pxbox"><Avatar c={charById[id]} size={3} /><span>{charById[id].name}</span><b class="vt">{n}×</b></a></li>
           ))}
         </ul>
       </section>
