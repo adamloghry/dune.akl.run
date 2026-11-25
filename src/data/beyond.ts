@@ -54,7 +54,7 @@ export const euBooks: Record<EUBook, EUBookInfo> = {
     year: "2006",
     series: "Sequels to Chapterhouse",
     covers: "After Chapterhouse: Dune",
-    note: 'Names Chapterhouse\'s great Enemy as the thinking machines. The authors say it follows Frank Herbert\'s notes for "Dune 7".',
+    note: "Names Chapterhouse's great Enemy as the thinking machines. The authors say it follows Frank Herbert's notes for \"Dune 7\".",
   },
   "SANDWORMS OF DUNE": {
     title: "Sandworms of Dune",
