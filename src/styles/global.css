@@ -538,3 +538,8 @@ body:has(#only-diverged:checked) .event.eu { display: none; }
 .later-books .mini-events .eu-card { border-style: dashed; }
 .later-books .mini-events .eu-retcon { border-color: var(--cut); }
 .retcon-word { color: var(--cut); font-weight: 600; }
+
+/* "share": each card's link to the event's own page */
+.perma { margin-left: auto; font-size: 18px; color: var(--ink-3); text-decoration: none; padding: 0 4px; border: 1px solid transparent; }
+.perma::after { content: ' ›'; }
+.perma:hover, .perma:focus-visible { color: var(--spice); border-color: var(--line); }

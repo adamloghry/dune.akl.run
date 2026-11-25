@@ -1,0 +1,118 @@
+---
+// One page per event, canon and later books, so a single moment can be linked and shared.
+// Its share image (/og/<id>.png) names the book but not what happens for anything past Dune.
+import Base from '../../layouts/Base.astro';
+import EventCard from '../../components/EventCard.astro';
+import EUCard from '../../components/EUCard.astro';
+import Sprite from '../../components/Sprite.astro';
+import { eventPages, neighbours, type EventPage } from '../../data/pages';
+import { levels } from '../../data/spoilers';
+import { eraBackdrop } from '../../lib/card';
+
+export function getStaticPaths() {
+  return eventPages.map((p) => ({ params: { id: p.id }, props: { p } }));
+}
+const { p } = Astro.props as { p: EventPage };
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const { prev, next } = neighbours(p.id);
+const spoil = p.level >= 3;
+const label = levels.find((l) => l.n === p.level)!;
+const body = (p.canon?.body ?? p.eu?.body ?? '').replace(/\s+/g, ' ');
+const first = body.split(/(?<=[.!?])\s/)[0];
+const share = spoil
+  ? { title: `A ${label.short} spoiler — The Golden Path`, description: `A moment from the Dune saga, from ${label.label}. The page hides spoilers past the point you have read.` }
+  : { title: `${p.title} — The Golden Path`, description: first };
+const img = `${base}/og/${p.id}.png`;
+const backdrop = eraBackdrop(p.era.id, 320, 80).toSVG({ cls: 'pix ev-scene', preserve: 'xMidYMid slice' });
+---
+<Base page="event" title={`${p.title} — The Golden Path`} description={share.description} image={img} share={share}>
+  <div class="wrap ev-page">
+    <nav class="crumbs vt" aria-label="Where this is">
+      <a href={`${base}/`}>chronicle</a> <span aria-hidden="true">›</span>
+      <a href={`${base}/#${p.era.id}`}>{p.era.num} {p.era.name}</a> <span aria-hidden="true">›</span>
+      <a href={`${base}/#${p.id}`}>on the timeline</a>
+    </nav>
+    <figure class="ev-hero pxbox">
+      <Fragment set:html={backdrop} />
+      <span class="ev-plate"><Sprite name={p.era.sprite} size={3} /></span>
+    </figure>
+
+    <ol class="solo-event">
+      {p.canon ? <EventCard event={p.canon} solo /> : <EUCard event={p.eu!} solo />}
+    </ol>
+
+    <section class="share-box pxbox" aria-labelledby="share-h">
+      <h2 class="sec-title" id="share-h">Share this event</h2>
+      <div class="share-grid">
+        <img class="share-img" src={img} width="600" height="315" loading="lazy"
+          alt={spoil ? `Share card: a ${label.short} spoiler, with the title hidden` : `Share card: ${p.title}, ${p.when}`} />
+        <div class="share-side">
+          <p>
+            {spoil
+              ? <>The preview names the book but not what happens, so the link is safe to send to someone who has not read {label.short} yet.</>
+              : <>The preview shows the title and when it happens.</>}
+          </p>
+          <div class="share-btns">
+            <button type="button" class="pxbtn" data-copy>Copy link</button>
+            <button type="button" class="pxbtn" data-share hidden>Share…</button>
+            <a class="pxbtn" href={img} download={`golden-path-${p.id}.png`}>Download image</a>
+          </div>
+          <p class="share-msg vt" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+
+    <nav class="ev-pager" aria-label="Previous and next events">
+      {prev ? <a class="pxbox" rel="prev" href={`${base}/events/${prev.id}/`}><span class="vt">‹ before</span><b data-sp={prev.level > 1 ? prev.level : undefined} data-spl={prev.level > 1 ? levels[prev.level - 1].short : undefined} data-sps={prev.level > 1 ? '' : undefined}>{prev.title}</b></a> : <span></span>}
+      {next ? <a class="pxbox nx" rel="next" href={`${base}/events/${next.id}/`}><span class="vt">after ›</span><b data-sp={next.level > 1 ? next.level : undefined} data-spl={next.level > 1 ? levels[next.level - 1].short : undefined} data-sps={next.level > 1 ? '' : undefined}>{next.title}</b></a> : <span></span>}
+    </nav>
+  </div>
+</Base>
+
+<script is:inline>
+  (() => {
+    const url = location.href.split('#')[0];
+    const msg = document.querySelector('.share-msg');
+    document.querySelector('[data-copy]')?.addEventListener('click', async () => {
+      try { await navigator.clipboard.writeText(url); msg.textContent = 'Link copied.'; }
+      catch { msg.textContent = url; }
+    });
+    const s = document.querySelector('[data-share]');
+    if (s && navigator.share) {
+      s.hidden = false;
+      s.addEventListener('click', () => navigator.share({ title: document.title, url }).catch(() => {}));
+    }
+  })();
+</script>
+
+<style>
+  .ev-page { padding-top: 24px; padding-bottom: 48px; max-width: 860px; }
+  .crumbs { font-size: 20px; color: var(--ink-3); display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; }
+  .crumbs a { color: var(--ink-2); }
+  .ev-hero { position: relative; margin: 0 0 18px; padding: 0; height: 160px; overflow: hidden; background: var(--bg-2); }
+  .ev-hero :global(.ev-scene) { width: 100%; height: 100%; display: block; }
+  .ev-plate { position: absolute; left: 14px; bottom: 14px; padding: 6px; background: var(--bg); border-top: var(--px) solid var(--spice); line-height: 0; }
+  .solo-event { list-style: none; padding: 0; margin: 0 0 24px; }
+  .solo-event :global(.event) { width: 100%; margin: 0; padding: 0; }
+  .solo-event :global(.event::before) { display: none; }
+  .solo-event :global(.card) { transform: none !important; }
+  .solo-event :global(.solo-title) { font: 400 clamp(26px, 5vw, 38px)/1.1 'Silkscreen', monospace; margin: 6px 0 12px; color: var(--ink); }
+  .share-box { padding: 16px 18px; margin-bottom: 24px; }
+  .share-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+  .share-img { width: 100%; height: auto; image-rendering: pixelated; border: 2px solid var(--line); display: block; }
+  .share-side p { margin: 0 0 12px; color: var(--ink-2); }
+  .share-btns { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pxbtn { font: 20px/1 'VT323', monospace; padding: 8px 12px; border: 2px solid var(--line); background: var(--panel-2); color: var(--ink); cursor: pointer; text-decoration: none; }
+  .pxbtn:hover, .pxbtn:focus-visible { border-color: var(--spice); color: var(--spice); }
+  .share-msg { min-height: 1.2em; color: var(--gold); font-size: 20px; word-break: break-all; }
+  .ev-pager { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .ev-pager a { display: grid; gap: 4px; padding: 12px 14px; text-decoration: none; color: var(--ink); }
+  .ev-pager a:hover b { color: var(--spice); }
+  .ev-pager .nx { text-align: right; }
+  .ev-pager .vt { color: var(--ink-3); font-size: 20px; }
+  .ev-pager b { font-weight: 600; }
+  @media (max-width: 640px) {
+    .share-grid { grid-template-columns: 1fr; }
+    .ev-hero { height: 120px; }
+  }
+</style>

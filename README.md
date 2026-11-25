@@ -12,9 +12,15 @@ This README is the authority for the handoff.
 ## Scope
 
 - **Canon:** Frank Herbert's six novels plus the appendices and glossary printed with Dune.
-  Nothing from Brian Herbert and Kevin J. Anderson.
-- **Films:** Villeneuve's two released films only. No Lynch (1984), no Sci-Fi Channel
-  miniseries, no Prophecy series. The upcoming Messiah film is out of scope until it exists.
+  They outrank everything else on the site.
+- **Films:** Villeneuve's two released films come second, marked inline as KEPT, CHANGED, CUT
+  or ADDED.
+- **Secondary tiers, always labelled:** the later novels by Brian Herbert and Kevin J. Anderson
+  (dashed cards; a RETCON tag where they contradict Frank Herbert), and the other screen versions
+  (Lynch 1984, the two Sci-Fi Channel miniseries), shown on `/beyond/` and under the events they touch.
+- **Spoilers:** every event, person, term and note has the point in the books at which it stops
+  being a spoiler (`src/data/spoilers.ts`). The shield in the header veils anything past the
+  reader's choice; nothing is veiled until they choose, or without JavaScript.
 - **Dates:** hard A.G. dates only where Herbert gives them (deep past, opening of Dune).
   Everything later is shown as an interval from the previous book and marked `≈`.
 
@@ -29,6 +35,12 @@ This README is the authority for the handoff.
 | `/web/`    | Intersections: lifelines, powers by era heatmap, allegiance matrix, collisions heatmap |
 | `/family/` | Atreides family tree across all six novels, with film differences flagged    |
 | `/beyond/` | Later novels by Brian Herbert and Kevin J. Anderson, a ledger of every retcon against Frank Herbert's text, and the other screen versions |
+| `/map/`    | Star map of the Imperium: worlds, what happens on each, by era              |
+| `/scale/`  | Every event placed by its year: true scale, zoom on Dune, Paul's lifetime, inside the novel, Leto II to the end |
+| `/glossary/` | 109 terms; the same definitions appear on hover wherever a term is used in the text |
+| `/guide/`  | What to read and watch, in which order, and what each adaptation covers      |
+| `/events/<id>/` | One page per event (canon and later books), with a share button and preview image |
+| `/og/<id>.png`, `/og/site.png` | 1200x630 pixel-art share cards drawn at build time; past Dune, the card hides the title |
 | `/search/` | Client-side search over every event, person and faction (index embedded at build; `/` opens it) |
 | `/about/`  | Canon, dating method, build commands                                        |
 | `/404.html`| Served by Cloudflare for unknown paths                                      |

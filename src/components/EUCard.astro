@@ -8,8 +8,8 @@ import { glossHtml } from '../lib/gloss';
 import Avatar from './Avatar.astro';
 import Sprite from './Sprite.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-interface Props { side?: string; event: EUEvent }
-const { event: e, side = '' } = Astro.props;
+interface Props { side?: string; solo?: boolean; event: EUEvent }
+const { event: e, side = '', solo = false } = Astro.props;
 const who = (e.who ?? []).filter((id) => charById[id]);
 const fs = (e.f ?? []).filter((id) => factionById[id]);
 const alts = altNotesFor(e.id);
@@ -23,8 +23,9 @@ const seen = new Set<string>();
       <span class={`badge eu-badge eu-k-${e.kind}`}>{euKindLabel[e.kind]}</span>
       {e.books.map((b) => <span class="book-tag eu-tag">{b}</span>)}
       {e.approx && <span class="sr-only">(approximate date)</span>}
+      {!solo && <a class="perma vt" href={`${base}/events/${e.id}/`} aria-label={`${e.title}: its own page, to share`}>share</a>}
     </div>
-    <h3><a href={`#${e.id}`}>{e.title}</a></h3>
+    {solo ? <h1 class="solo-title">{e.title}</h1> : <h3><a href={`#${e.id}`}>{e.title}</a></h3>}
     <p set:html={glossHtml(e.body, seen, base)} />
     {e.herbert && (
       <p class="eu-herbert"><b>Frank Herbert wrote</b> {e.herbert}</p>

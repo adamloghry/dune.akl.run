@@ -9,13 +9,18 @@ import Sprite from '../components/Sprite.astro';
 import Dunes from '../components/Dunes.astro';
 import { levels } from '../data/spoilers';
 
-interface Props { title?: string; description?: string; page?: 'home' | 'films' | 'about' | 'characters' | 'factions' | 'web' | 'family' | 'search' | 'beyond' | 'map' | 'glossary' | 'guide' | 'scale' | 'event'; image?: string; url?: string }
+interface Props { title?: string; description?: string; page?: 'home' | 'films' | 'about' | 'characters' | 'factions' | 'web' | 'family' | 'search' | 'beyond' | 'map' | 'glossary' | 'guide' | 'scale' | 'event'; image?: string; share?: { title: string; description: string } }
 const {
   title = 'The Golden Path — a Dune chronicle',
   description = 'The in-universe history of Frank Herbert\'s Dune, from the Butlerian Jihad to Chapterhouse, with every divergence in Denis Villeneuve\'s films marked.',
   page = 'home',
+  image,
+  share,
 } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+// Share previews: an absolute page URL and a 1200x630 pixel-art card (per event, or the site's).
+const pageUrl = new URL(Astro.url.pathname, Astro.site).href;
+const imageUrl = new URL(image ?? `${base}/og/site.png`, Astro.site).href;
 const nav = [
   { id: 'home', href: `${base}/`, label: 'chronicle' },
   { id: 'characters', href: `${base}/characters/`, label: 'people' },
@@ -39,6 +44,7 @@ const sel = (sfx: string) => [1, 2, 3, 4, 5, 6].flatMap((L) => [2, 3, 4, 5, 6, 7
 const shieldCss = `${sel('')}{cursor:pointer}${sel(':not(.t-card)')}{position:relative}`
   + `${sel('')},${sel(' *')}{color:transparent!important;text-shadow:0 0 9px var(--ink-3)!important;user-select:none}`
   + `${sel(' svg')},${sel(' img')},${sel(' .badge')}{filter:blur(4px);opacity:.45}`
+  + `${sel(' a')}{border-color:transparent!important;text-decoration-color:transparent!important}`
   + [1, 2, 3, 4, 5, 6].flatMap((L) => [2, 3, 4, 5, 6, 7].filter((k) => k > L).map((k) => `html[data-spoil="${L}"] a.gl[data-tl="${k}"]::after`)).join(',')
   + `{content:"A " attr(data-tll) " spoiler. Tap to read the glossary entry." / ''}`
   + `${sel('.t-child')},${sel('.t-union')},${sel('.t-knot')}{opacity:.12}`
@@ -52,8 +58,16 @@ const shieldCss = `${sel('')}{cursor:pointer}${sel(':not(.t-card)')}{position:re
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    <meta property="og:title" content={share?.title ?? title} />
+    <meta property="og:description" content={share?.description ?? description} />
+    <meta property="og:type" content={page === 'event' ? 'article' : 'website'} />
+    <meta property="og:site_name" content="The Golden Path" />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:image" content={imageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href={pageUrl} />
     <meta name="theme-color" content="#140c1a" />
     <style set:html={shieldCss}></style>
     <link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml" />

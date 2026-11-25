@@ -44,6 +44,7 @@ const G: Record<string, string> = {
   "'": '..#..|..#..|.#...|.....|.....|.....|.....',
   '"': '.#.#.|.#.#.|.....|.....|.....|.....|.....',
   '-': '.....|.....|.....|.###.|.....|.....|.....',
+  '~': '.....|.....|.##.#|#..#.|.....|.....|.....',
   ':': '.....|.##..|.##..|.....|.##..|.##..|.....',
   ';': '.....|.##..|.##..|.....|.##..|..#..|.#...',
   '(': '...#.|..#..|.#...|.#...|.#...|..#..|...#.',
@@ -63,7 +64,7 @@ const G: Record<string, string> = {
 };
 
 const fold = (s: string) =>
-  s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[‘’]/g, "'").replace(/[“”]/g, '"').toUpperCase();
+  s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/[–—]/g, '-').replace(/≈/g, '~').replace(/·/g, '-').replace(/…/g, '...').toUpperCase();
 
 export const textWidth = (s: string, scale = 1) => fold(s).length * 6 * scale - scale;
 

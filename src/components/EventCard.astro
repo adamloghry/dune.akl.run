@@ -10,8 +10,8 @@ import { euNotesFor, altNotesFor } from '../data/beyond-view';
 import { sp, eventLevel } from '../data/spoilers';
 import { glossHtml } from '../lib/gloss';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-interface Props { side?: string; event: Event }
-const { event: e, side = '' } = Astro.props;
+interface Props { side?: string; solo?: boolean; event: Event }
+const { event: e, side = '', solo = false } = Astro.props;
 const films = e.films ?? [];
 const who = (tags[e.id]?.who ?? []).filter((id) => charById[id]);
 const eu = euNotesFor(e.id), alts = altNotesFor(e.id);
@@ -24,8 +24,9 @@ const seen = new Set<string>();
       <span class="when">{e.when}</span>
       <span class="book-tag">{e.book}</span>
       {e.approx && <span class="sr-only">(approximate date)</span>}
+      {!solo && <a class="perma vt" href={`${base}/events/${e.id}/`} aria-label={`${e.title}: its own page, to share`}>share</a>}
     </div>
-    <h3><a href={`#${e.id}`}>{e.title}</a></h3>
+    {solo ? <h1 class="solo-title">{e.title}</h1> : <h3><a href={`#${e.id}`}>{e.title}</a></h3>}
     <p set:html={glossHtml(e.body, seen, base)} />
     {(who.length > 0 || fs.length > 0) && (
       <div class="involved">
