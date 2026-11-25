@@ -103,7 +103,7 @@ const shieldCss = `${sel('')}{cursor:pointer}${sel(':not(.t-card)')}{position:re
             <svg viewBox="0 0 10 10" shape-rendering="crispEdges" fill="currentColor" aria-hidden="true"><rect x="1" y="0" width="8" height="1"/><rect x="0" y="1" width="1" height="5"/><rect x="9" y="1" width="1" height="5"/><rect x="1" y="6" width="1" height="1"/><rect x="8" y="6" width="1" height="1"/><rect x="2" y="7" width="1" height="1"/><rect x="7" y="7" width="1" height="1"/><rect x="3" y="8" width="1" height="1"/><rect x="6" y="8" width="1" height="1"/><rect x="4" y="9" width="2" height="1"/><rect x="3" y="2" width="4" height="1"/><rect x="2" y="3" width="1" height="1"/><rect x="7" y="3" width="1" height="1"/><rect x="4" y="3" width="2" height="2"/><rect x="3" y="5" width="4" height="1"/></svg>
             <span class="shield-tag vt"></span>
           </summary>
-          <form class="shield-panel pxbox" onsubmit="return false">
+          <form class="shield-panel pxbox">
             <fieldset>
               <legend class="vt">Spoiler shield: how far have you got?</legend>
               {levels.map((l) => (
@@ -134,7 +134,7 @@ const shieldCss = `${sel('')}{cursor:pointer}${sel(':not(.t-card)')}{position:re
       </nav>
       <div class="wrap foot">
         <span>Book canon: Frank Herbert, 1965–1985. Films: Denis Villeneuve, 2021 &amp; 2024.</span>
-        <span>A fan chronicle. Not affiliated with the Herbert estate or Legendary.</span>
+        <span>A non-commercial fan site. Not affiliated with or endorsed by Herbert Properties LLC, the authors or publishers of the Dune books, Legendary, Warner Bros., Universal, the Sci Fi Channel or HBO. Dune and its names, characters and places belong to their owners. <a href={`${base}/about/#credits`}>Credits and licence</a>.</span>
       </div>
       <a class="to-top" href="#top" aria-label="Back to top">^</a>
     </footer>
@@ -154,6 +154,8 @@ const shieldCss = `${sel('')}{cursor:pointer}${sel(':not(.t-card)')}{position:re
           sync();
         });
       })();
+      // Forms on this site never submit anywhere; keep Enter from reloading the page.
+      document.querySelectorAll('form.shield-panel, form.search-box').forEach((f) => f.addEventListener('submit', (e) => e.preventDefault()));
       document.querySelector('.theme-btn')?.addEventListener('click', () => {
         const d = document.documentElement;
         d.dataset.theme = d.dataset.theme === 'light' ? 'dark' : 'light';

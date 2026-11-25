@@ -108,6 +108,26 @@ The site URL is `https://dune.akl.run`, set in `astro.config.mjs` (overridable w
 and in `flake.nix`. `wrangler.toml` attaches the `dune.akl.run` custom domain, which needs the
 `akl.run` zone in the same Cloudflare account.
 
+**Workers Builds (deploy on push):** in the Cloudflare dashboard, create a Worker from this
+repository with build command `npm ci && npm run build` and deploy command `npx wrangler deploy`.
+`wrangler.toml` already names the Worker, the `dist` assets folder and the custom domain.
+
+### Security headers, indexing
+
+`public/_headers` sets HSTS and a strict Content-Security-Policy. Inline scripts are allowed by
+SHA-256 hash only: `integrations/csp.mjs` hashes every inline script after the build and writes the
+hashes into `dist/_headers` in place of `__SCRIPT_HASHES__`, so editing a script needs no manual step.
+Styles allow `'unsafe-inline'` because components use `style` attributes. Nothing loads from another
+origin.
+
+`public/robots.txt` lets search engines index the site and asks known AI-training crawlers
+(GPTBot, ClaudeBot, CCBot, Google-Extended and others) to stay out.
+
+## Credits and licence
+
+Code: MIT (`LICENSE`). Original writing and pixel art: CC BY-NC 4.0 (`LICENSE-CONTENT.md`). Dune
+belongs to its owners; the full credits are on the about page and in `LICENSE-CONTENT.md`.
+
 ## Editing content
 
 Each event in `src/data/timeline.ts` has a `book` tag, an optional `approx` flag, and an

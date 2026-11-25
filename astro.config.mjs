@@ -1,4 +1,5 @@
 import { defineConfig } from 'astro/config';
+import csp from './integrations/csp.mjs';
 
 // Fully static output: dist/ is plain HTML, CSS and font files.
 export default defineConfig({
@@ -8,4 +9,5 @@ export default defineConfig({
   build: { format: 'directory', inlineStylesheets: 'never' },
   compressHTML: true,
   devToolbar: { enabled: false },
+  integrations: [csp()],
 });

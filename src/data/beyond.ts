@@ -422,7 +422,7 @@ export const screens: Record<Screen, ScreenInfo> = {
   LYNCH: {
     title: 'Dune',
     year: '1984',
-    maker: 'David Lynch (writer-director); produced by Raffaella De Laurentiis; Universal',
+    maker: 'David Lynch (writer-director); produced by Raffaella De Laurentiis for the Dino De Laurentiis Corporation; released by Universal Pictures',
     covers: 'Dune, in 137 minutes',
     stance:
       'Follows the plot closely but reinvents its texture: sonic weapons for the weirding way, grotesque Harkonnens, and a Paul who makes it rain. Lynch disowned the longer TV cut.',
@@ -465,7 +465,7 @@ export const altNotes: AltNote[] = [
     event: 'gom-jabbar',
     screen: 'LYNCH',
     kind: 'kept',
-    text: "The test is kept, and the novel's italic inner thoughts become whispered voice-over that runs through the whole film.",
+    text: "The test is kept. The film adds voice-over for the characters' inner thoughts, its answer to the novel's italics.",
   },
   {
     event: 'harkonnen-fief',
@@ -477,7 +477,7 @@ export const altNotes: AltNote[] = [
     event: 'hawat',
     screen: 'LYNCH',
     kind: 'added',
-    text: 'The captive Thufir is poisoned and must milk a cat each day for the antidote, a device invented for the film.',
+    text: "The captive Thufir's residual poison is kept, but the film adds a cat that supplies his antidote, an image with no source in the novel.",
   },
   {
     event: 'sandrider',
@@ -495,7 +495,7 @@ export const altNotes: AltNote[] = [
     event: 'ascension',
     screen: 'LYNCH',
     kind: 'changed',
-    text: 'Irulan introduces the film to camera, and it ends with Paul making it rain on Arrakis. Herbert objected: "Paul was a man playing god, not a god who could make it rain."',
+    text: 'Irulan introduces the film to camera, and it ends with Paul making it rain on Arrakis. In the novel there is no rain: Paul is a man whom people take for a god.',
   },
 
   // ── Sci Fi Channel, Dune (2000) ────────────────────────────────────────────

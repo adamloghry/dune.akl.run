@@ -19,7 +19,7 @@
           src = pkgs.lib.fileset.toSource {
             root = ./.;
             fileset = pkgs.lib.fileset.unions [
-              ./package.json ./package-lock.json ./astro.config.mjs ./tsconfig.json ./src ./public
+              ./package.json ./package-lock.json ./astro.config.mjs ./tsconfig.json ./integrations ./src ./public
             ];
           };
           nodejs = pkgs.nodejs_22;

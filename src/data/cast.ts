@@ -220,6 +220,8 @@ export const factions: Faction[] = [
 ];
 
 // ---------------------------------------------------------------- characters
+// Looks follow Frank Herbert's text where he gives one (Feyd's dark ringlets, Jessica's bronze hair, the
+// Baron's bulk) and are neutral where he doesn't. They never copy an actor from any film or series.
 const S = { fair: '#f1c9a0', tan: '#d9a271', olive: '#b98552', brown: '#8a5a3c', deep: '#5e3a26', pale: '#f3e4d6', grey: '#cfc6bd' };
 const H = { black: '#1d1512', brown: '#5b3a22', red: '#9b3a22', blond: '#d8b25a', grey: '#a29a94', white: '#eee7dc', bronze: '#a8662e' };
 
@@ -346,7 +348,7 @@ export const characters: Character[] = [
     blurb: 'Master of Assassins to three generations of Atreides. Captured and kept alive by poison.',
     arc: { dune: 'Dies refusing the Emperor\'s order to kill Paul.' },
     film: { actor: 'Stephen McKinley Henderson', note: 'Not seen after Part One.' },
-    look: { skin: S.deep, hair: H.white, eyes: 'dark', head: 'bald', cloth: '#2f5a3a' },
+    look: { skin: S.tan, hair: H.grey, eyes: 'dark', head: 'hair', cloth: '#2f5a3a' },
   },
   {
     id: 'baron', name: 'Baron Vladimir Harkonnen',
@@ -355,7 +357,7 @@ export const characters: Character[] = [
     blurb: 'Head of House Harkonnen, held up by suspensors, and secretly Jessica\'s father. Killed by his granddaughter; returns as a voice inside her.',
     arc: { dune: 'Destroys the Atreides; killed by Alia.', children: 'His memory possesses Alia.' },
     film: { actor: 'Stellan Skarsgård', note: 'Killed by Paul. His being Jessica\'s father is kept.' },
-    look: { skin: S.pale, eyes: 'dark', head: 'bald', wide: true, cloth: '#1a1a2a' },
+    look: { skin: S.fair, eyes: 'dark', head: 'bald', wide: true, cloth: '#2a3a6a' },
   },
   {
     id: 'feyd', name: 'Feyd-Rautha Harkonnen',
@@ -364,7 +366,7 @@ export const characters: Character[] = [
     blurb: 'The Baron\'s nephew and heir, a gladiator with a showman\'s cruelty, and a Bene Gesserit genetic insurance policy.',
     arc: { dune: 'Killed by Paul in a duel.' },
     film: { actor: 'Austin Butler', note: 'Introduced in Part Two in a black-sun arena.' },
-    look: { skin: S.pale, eyes: 'dark', head: 'bald', cloth: '#1a1a2a' },
+    look: { skin: S.fair, hair: H.black, eyes: 'dark', head: 'curly', cloth: '#2a3a6a' },
   },
   {
     id: 'kynes', name: 'Liet-Kynes',
@@ -382,7 +384,7 @@ export const characters: Character[] = [
     blurb: 'Reverend Mother and the Emperor\'s Truthsayer. Tests Paul with the gom jabbar; later plots against him.',
     arc: { dune: 'The gom jabbar.', messiah: 'Joins the conspiracy; executed on Paul\'s order.' },
     film: { actor: 'Charlotte Rampling', note: 'Kept.' },
-    look: { skin: S.pale, eyes: 'dark', head: 'veil', cloth: '#111111' },
+    look: { skin: S.fair, hair: H.grey, eyes: 'dark', head: 'long', cloth: '#111111' },
   },
   {
     id: 'irulan', name: 'Princess Irulan',
