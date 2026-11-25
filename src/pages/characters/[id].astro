@@ -21,7 +21,7 @@ const lifeEras = eraOrder.filter((e) => c.eras[e] || c.arc[e]);
 ---
 <Base page="characters" title={`${c.name} — The Golden Path`} description={c.blurb}>
   <div class="wrap">
-    <nav class="crumbs vt"><a href={`${base}/characters/`}>characters</a> / {c.id}</nav>
+    <nav class="crumbs vt" aria-label="Breadcrumb"><a href={`${base}/characters/`}>characters</a> / {c.id}</nav>
     <header class="profile pxbox">
       <div class="portrait"><Avatar c={c} size={10} /></div>
       <div>
@@ -31,7 +31,7 @@ const lifeEras = eraOrder.filter((e) => c.eras[e] || c.arc[e]);
         <ul class="aff">
           {c.factions.map((f) => (
             <li>
-              <a href={`${base}/factions/${f.id}/`} style={`color:${factionById[f.id].colour}`}>
+              <a href={`${base}/factions/${f.id}/`} style={`color:${factionById[f.id].colour}`} aria-hidden="true" tabindex="-1">
                 <Sprite name={factionById[f.id].sigil} size={2} />
               </a>
               <span><a href={`${base}/factions/${f.id}/`}>{factionById[f.id].name}</a> <em class={`rel rel-${f.rel}`}>{relLabel[f.rel]}</em></span>

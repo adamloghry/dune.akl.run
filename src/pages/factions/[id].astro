@@ -24,7 +24,7 @@ const words = ['absent', 'marginal', 'a player', 'central'];
 ---
 <Base page="factions" title={`${f.name} — The Golden Path`} description={f.blurb}>
   <div class="wrap">
-    <nav class="crumbs vt"><a href={`${base}/factions/`}>factions</a> / {f.id}</nav>
+    <nav class="crumbs vt" aria-label="Breadcrumb"><a href={`${base}/factions/`}>factions</a> / {f.id}</nav>
     <header class="profile pxbox" style={`--fc:${f.colour}`}>
       <div class="portrait sigil-portrait" style={`color:${f.colour}`}><Sprite name={f.sigil} size={10} /></div>
       <div>
@@ -43,7 +43,7 @@ const words = ['absent', 'marginal', 'a player', 'central'];
         {eraOrder.map((e) => (
           <li class={`p${f.presence[e] ?? 0}`}>
             <a class="arc-era vt" href={`${base}/#${e}`}>{eraName(e)}</a>
-            <span class="meter" aria-label={words[f.presence[e] ?? 0]}>{[1, 2, 3].map((n) => <i class={n <= (f.presence[e] ?? 0) ? 'on' : ''}></i>)}</span>
+            <span class="meter" role="img" aria-label={words[f.presence[e] ?? 0]}>{[1, 2, 3].map((n) => <i class={n <= (f.presence[e] ?? 0) ? 'on' : ''}></i>)}</span>
             <p>{f.arc[e] ?? words[f.presence[e] ?? 0]}</p>
           </li>
         ))}
@@ -68,7 +68,7 @@ const words = ['absent', 'marginal', 'a player', 'central'];
         <ul class="links">
           {links.map((l) => (
             <li>
-              <a href={`${base}/factions/${l.id}/`} style={`color:${factionById[l.id].colour}`}><Sprite name={factionById[l.id].sigil} size={2} /></a>
+              <a href={`${base}/factions/${l.id}/`} style={`color:${factionById[l.id].colour}`} aria-hidden="true" tabindex="-1"><Sprite name={factionById[l.id].sigil} size={2} /></a>
               <a href={`${base}/factions/${l.id}/`} class="lname">{factionById[l.id].name}</a>
               <span class="bar" style={`--w:${(l.n / maxLink) * 100}%; --c:${factionById[l.id].colour}`}></span>
               <b class="vt">{l.n}</b>

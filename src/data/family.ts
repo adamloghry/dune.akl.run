@@ -18,12 +18,12 @@ export interface FNode {
 
 export type UnionKind = 'married' | 'partner' | 'name-only';
 export interface FUnion { id: string; a: string; b: string; kind: UnionKind }
-export interface FEdge { from: string; to: string; dotted?: boolean; label?: string }
+export interface FEdge { from: string; to: string; dotted?: boolean; label?: string; labelOnBus?: boolean }
 
 export const familyNodes: FNode[] = [
   { id: 'paulus', name: 'Paulus Atreides', sub: 'the Old Duke, killed by a bull', x: 330, row: 0, faction: 'atreides',
     look: { skin: '#d9a271', hair: '#a29a94', eyes: 'dark', head: 'hair', cloth: '#2f5a3a' } },
-  { id: 'helena', name: 'Lady Helena', sub: "Leto's mother", x: 480, row: 0, faction: 'atreides',
+  { id: 'helena', name: "Leto's mother", sub: 'unnamed in the novels', x: 480, row: 0, faction: 'atreides',
     look: { skin: '#f1c9a0', hair: '#5b3a22', eyes: 'dark', head: 'long', cloth: '#3a2a3f' } },
   { id: 'baron', name: 'Baron Harkonnen', sub: 'secret father', char: 'baron', x: 720, row: 0 },
 
@@ -69,7 +69,8 @@ export const unions: FUnion[] = [
   { id: 'u-irulan', a: 'irulan', b: 'paul', kind: 'name-only' },
   { id: 'u-paul', a: 'paul', b: 'chani', kind: 'partner' },
   { id: 'u-alia', a: 'alia', b: 'hayt', kind: 'married' },
-  { id: 'u-ghanima', a: 'farad', b: 'ghanima', kind: 'married' },
+  { id: 'u-ghanima', a: 'farad', b: 'ghanima', kind: 'partner' },
+  { id: 'u-leto-gh', a: 'ghanima', b: 'leto-ii', kind: 'name-only' },
   { id: 'u-siona', a: 'siona', b: 'duncan-gold', kind: 'partner' },
   { id: 'u-murbella', a: 'duncan-last', b: 'murbella', kind: 'partner' },
 ];
@@ -87,7 +88,7 @@ export const edges: FEdge[] = [
   { from: 'u-paul', to: 'first-son' },
   { from: 'u-ghanima', to: 'moneo', dotted: true, label: '≈3,500 years of Leto\'s breeding' },
   { from: 'moneo', to: 'siona' },
-  { from: 'u-ghanima', to: 'teg', dotted: true, label: 'the Atreides line, ≈5,000 years on' },
+  { from: 'u-siona', to: 'teg', dotted: true, label: "≈1,500 years of Siona's line", labelOnBus: true },
   { from: 'teg', to: 'odrade' },
   { from: 'u-murbella', to: 'murbella-kids' },
 ];

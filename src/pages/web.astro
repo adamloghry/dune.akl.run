@@ -29,7 +29,7 @@ const relMark = { member: '■', trained: '◆', ally: '○', enemy: '✕' } as 
       <p class="sec-sub">Solid: alive in that era. Hatched: present as memory, ghola line or bloodline.</p>
       <div class="scroll-x pxbox">
         <table class="grid-table">
-          <thead><tr><th></th>{eraOrder.map((e) => <th><a href={`${base}/#${e}`}>{eraShort[e]}</a></th>)}</tr></thead>
+          <thead><tr><th><span class="sr-only">Character</span></th>{eraOrder.map((e) => <th><a href={`${base}/#${e}`}>{eraShort[e]}</a></th>)}</tr></thead>
           <tbody>
             {characters.map((c) => (
               <tr>
@@ -51,7 +51,7 @@ const relMark = { member: '■', trained: '◆', ally: '○', enemy: '✕' } as 
       <p class="sec-sub">Brighter means more central to that era's story.</p>
       <div class="scroll-x pxbox">
         <table class="grid-table heat">
-          <thead><tr><th></th>{eraOrder.map((e) => <th><a href={`${base}/#${e}`}>{eraShort[e]}</a></th>)}</tr></thead>
+          <thead><tr><th><span class="sr-only">Faction</span></th>{eraOrder.map((e) => <th><a href={`${base}/#${e}`}>{eraShort[e]}</a></th>)}</tr></thead>
           <tbody>
             {factions.map((f) => (
               <tr>
@@ -73,7 +73,7 @@ const relMark = { member: '■', trained: '◆', ally: '○', enemy: '✕' } as 
       <div class="scroll-x pxbox">
         <table class="grid-table matrix">
           <thead>
-            <tr><th></th>{factions.map((f) => <th class="sig"><a href={`${base}/factions/${f.id}/`} style={`color:${f.colour}`} title={f.name}><Sprite name={f.sigil} size={2} /></a></th>)}</tr>
+            <tr><th><span class="sr-only">Character</span></th>{factions.map((f) => <th class="sig"><a href={`${base}/factions/${f.id}/`} style={`color:${f.colour}`} title={f.name}><Sprite name={f.sigil} size={2} /></a></th>)}</tr>
           </thead>
           <tbody>
             {characters.map((c) => (
@@ -96,7 +96,7 @@ const relMark = { member: '■', trained: '◆', ally: '○', enemy: '✕' } as 
       <div class="scroll-x pxbox">
         <table class="grid-table matrix tri">
           <thead>
-            <tr><th></th>{factions.map((f) => <th class="sig"><a href={`${base}/factions/${f.id}/`} style={`color:${f.colour}`} title={f.name}><Sprite name={f.sigil} size={2} /></a></th>)}</tr>
+            <tr><th><span class="sr-only">Faction</span></th>{factions.map((f) => <th class="sig"><a href={`${base}/factions/${f.id}/`} style={`color:${f.colour}`} title={f.name}><Sprite name={f.sigil} size={2} /></a></th>)}</tr>
           </thead>
           <tbody>
             {factions.map((a, i) => (
@@ -105,7 +105,7 @@ const relMark = { member: '■', trained: '◆', ally: '○', enemy: '✕' } as 
                 {factions.map((b, j) => {
                   if (j >= i) return <td></td>;
                   const n = pair(a.id, b.id);
-                  return <td>{n > 0 && <span class="heatpx" style={`--a:${0.15 + 0.85 * (n / maxPair)}`} title={`${a.name} × ${b.name}: ${n} shared events`}>{n}</span>}</td>;
+                  return <td>{n > 0 && <span class:list={["heatpx", { hot: n / maxPair > 0.5 }]} style={`--a:${0.15 + 0.85 * (n / maxPair)}`} title={`${a.name} × ${b.name}: ${n} shared events`}>{n}</span>}</td>;
                 })}
               </tr>
             ))}

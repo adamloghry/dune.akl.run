@@ -86,7 +86,7 @@ export const eras: Era[] = [
         when: '88 B.G.',
         title: 'The Battle of Corrin',
         book: 'APPENDIX',
-        body: 'A space battle near Sigma Draconis settles the ascendancy of the ruling house from Salusa Secundus, which takes the name Corrino.  In Dune, the Atreides–Harkonnen feud is traced to a Harkonnen banished for cowardice after this battle.',
+        body: 'A space battle near Sigma Draconis settles the ascendancy of the ruling house from Salusa Secundus, which takes the name Corrino. In Dune, the Atreides–Harkonnen feud is traced to a Harkonnen banished for cowardice after this battle.',
       },
     ],
   },
@@ -160,7 +160,7 @@ export const eras: Era[] = [
     from: 10190,
     to: 10193,
     summary:
-      'The novel spans roughly two years. The Emperor gives Arrakis to House Atreides as a trap; the Atreides fall; the duke\'s son becomes the Fremen messiah and takes the throne. Villeneuve splits the book across two films and moves its centre of gravity.',
+      'The novel spans roughly two years. The Emperor gives Arrakis to House Atreides as a trap; the Atreides fall; the duke\'s son becomes the Fremen messiah and takes the throne. Villeneuve splits the book across two films and moves its center of gravity.',
     events: [
       {
         id: 'gom-jabbar',
@@ -233,7 +233,7 @@ export const eras: Era[] = [
         when: '10,191 A.G.',
         title: 'The awakening in the stilltent',
         book: 'DUNE',
-        body: "Sheltering from the storm in a stilltent, steeped in spice, Paul's prescience opens fully. He sees the jihad that will be fought in his name, understands he is the Kwisatz Haderach, and realises that Jessica is the Baron's daughter: he is part Harkonnen.",
+        body: "Sheltering from the storm in a stilltent, steeped in spice, Paul's prescience opens fully. He sees the jihad that will be fought in his name, understands he is the Kwisatz Haderach, and realizes that Jessica is the Baron's daughter: he is part Harkonnen.",
         films: [
           {
             film: 'PART ONE',
@@ -252,7 +252,7 @@ export const eras: Era[] = [
         when: '10,191 A.G.',
         title: 'Stilgar\'s troop and the duel with Jamis',
         book: 'DUNE',
-        body: 'Stilgar\'s Fremen find Paul and Jessica. Jamis invokes the amtal and fights Paul to the death. Paul kills a man for the first time, weeps for him ("he gives moisture to the dead"), takes the tribe name Usul and chooses Muad\'Dib, and inherits Jamis\'s household, including his widow Harah.',
+        body: 'Stilgar\'s Fremen find Paul and Jessica. Jamis invokes the amtal and fights Paul to the death. Paul kills with a blade for the first time and weeps for Jamis ("he gives moisture to the dead"), takes the tribe name Usul and chooses Muad\'Dib, and inherits Jamis\'s household, including his widow Harah.',
         films: [
           {
             film: 'PART ONE',
@@ -299,7 +299,7 @@ export const eras: Era[] = [
           {
             film: 'PART TWO',
             kind: 'changed',
-            text: 'The biggest change in the films. Chani is a sceptic who rejects the prophecy, warns that it is a tool of control, and walks away from Paul at the end. She becomes the audience\'s guide to the critique the books make more slowly.',
+            text: 'The biggest change in the films. Chani is a skeptic who rejects the prophecy, warns that it is a tool of control, and walks away from Paul at the end. She becomes the audience\'s guide to the critique the books make more slowly.',
           },
         ],
       },
@@ -314,7 +314,7 @@ export const eras: Era[] = [
           {
             film: 'PART TWO',
             kind: 'kept',
-            text: 'The first worm ride is kept, staged as the ride on a single giant worm.',
+            text: 'The first worm ride is kept, played as one spectacular ride on an unusually large maker.',
           },
         ],
       },
@@ -334,6 +334,21 @@ export const eras: Era[] = [
         ],
       },
       {
+        id: 'rabban',
+        when: '≈10,192 A.G.',
+        approx: true,
+        title: 'Rabban, the Beast',
+        book: 'DUNE',
+        body: 'The Baron hands Arrakis to his brutal nephew Glossu Rabban with orders to squeeze it dry, so that Feyd-Rautha can later arrive as the people\'s savior. Muad\'Dib\'s raids turn the plan into a slow Harkonnen defeat.',
+        films: [
+          {
+            film: 'PART TWO',
+            kind: 'changed',
+            text: 'The Feyd-as-savior plan is cut. Rabban is simply failing, and Gurney kills him during the final battle.',
+          },
+        ],
+      },
+      {
         id: 'water-of-life',
         when: '≈10,193 A.G.',
         approx: true,
@@ -344,27 +359,12 @@ export const eras: Era[] = [
           {
             film: 'PART TWO',
             kind: 'added',
-            text: 'Paul goes south and proclaims himself the Lisan al-Gaib before a war council of fundamentalists. The council scene and the split between sceptical northerners and southern believers are inventions of the film.',
+            text: 'Paul goes south and proclaims himself the Lisan al-Gaib before a war council of fundamentalists. The council scene and the split between skeptical northerners and southern believers are inventions of the film.',
           },
           {
             film: 'PART TWO',
             kind: 'changed',
             text: 'The drinking is kept but framed as a choice to accept the messiah role in order to lead the south, not as a search for lost prescience. Paul\'s waking becomes a turn toward ruthlessness.',
-          },
-        ],
-      },
-      {
-        id: 'rabban',
-        when: '≈10,192 A.G.',
-        approx: true,
-        title: 'Rabban, the Beast',
-        book: 'DUNE',
-        body: 'The Baron hands Arrakis to his brutal nephew Glossu Rabban with orders to squeeze it dry, so that Feyd-Rautha can later arrive as the people\'s saviour. Muad\'Dib\'s raids turn the plan into a slow Harkonnen defeat.',
-        films: [
-          {
-            film: 'PART TWO',
-            kind: 'changed',
-            text: 'The Feyd-as-saviour plan is cut. Rabban is simply failing, and Gurney kills him during the final battle.',
           },
         ],
       },
@@ -458,7 +458,7 @@ export const eras: Era[] = [
         approx: true,
         title: 'Muad\'Dib\'s Jihad',
         book: 'MESSIAH',
-        body: 'Fremen legions conquer the Imperium. Paul tallies it himself: sixty-one billion dead, ninety planets sterilised, five hundred demoralised, the followers of forty religions wiped out. He compares himself unfavourably to Hitler.',
+        body: 'Fremen legions conquer the Imperium. Paul tallies it himself: sixty-one billion dead, ninety planets sterilized, five hundred demoralized, the followers of forty religions wiped out. He compares himself unfavorably to Hitler.',
       },
       {
         id: 'conspiracy',
@@ -474,7 +474,7 @@ export const eras: Era[] = [
         approx: true,
         title: 'Blindness, twins and the walk into the desert',
         book: 'MESSIAH',
-        body: 'A stone burner blinds Paul, but prescience lets him "see". Irulan has been secretly feeding Chani contraceptives; the delay damages her and she dies giving birth to twins, Leto II and Ghanima. Scytale offers to restore Chani as a ghola in exchange for Paul\'s throne; Paul kills him. Under that pressure Hayt\'s original memories break through and he is Duncan again, and Alia\'s love. Paul walks blind into the desert, as Fremen custom demands, leaving Alia as regent.',
+        body: 'A stone burner blinds Paul, but prescience lets him "see". Irulan has been secretly feeding Chani contraceptives; the delay damages her and she dies giving birth to twins, Leto II and Ghanima. Chani\'s death triggers Hayt\'s hidden order to kill Paul; the conflict breaks his conditioning and he is Duncan again, and Alia\'s love. Scytale offers to restore Chani as a ghola in exchange for Paul\'s throne; Paul kills him. Paul walks blind into the desert, as Fremen custom demands, leaving Alia as regent.',
       },
     ],
   },
@@ -512,7 +512,7 @@ export const eras: Era[] = [
         approx: true,
         title: 'Jacurutu',
         book: 'CHILDREN',
-        body: 'On Jessica\'s orders, Gurney takes Leto to the lost sietch of Jacurutu and forces a massive spice overdose on him, a test for Abomination. Leto survives and, in the trance, sees the Golden Path in full.',
+        body: 'Leto goes looking for the lost sietch of Jacurutu, where Gurney, on Jessica\'s orders, captures him and forces a massive spice overdose on him, a test for Abomination. Leto survives and, in the trance, sees the Golden Path in full.',
       },
       {
         id: 'duncan-stilgar',
@@ -528,7 +528,7 @@ export const eras: Era[] = [
         approx: true,
         title: 'Leto II takes the sandtrout skin',
         book: 'CHILDREN',
-        body: 'In the desert, Leto lets sandtrout, the larval stage of the sandworm, cover his body as a living membrane. He becomes nearly invulnerable and begins a transformation that will take millennia. He confronts the Preacher, who is Paul; Paul is then killed by a priest. Alia, recognising what she has become, throws herself from a window.',
+        body: 'In the desert, Leto lets sandtrout, the larval stage of the sandworm, cover his body as a living membrane. He becomes nearly invulnerable and begins a transformation that will take millennia. He confronts the Preacher, who is Paul; Paul is then killed by a priest. Alia, recognizing what she has become, throws herself from a window.',
       },
       {
         id: 'golden-path',
@@ -683,7 +683,7 @@ export const eras: Era[] = [
 export const bookInfo: Record<Book, { title: string; year: string; note: string }> = {
   APPENDIX: { title: 'Dune: appendices & glossary', year: '1965', note: 'The source for the deep past and its dates.' },
   DUNE: { title: 'Dune', year: '1965', note: 'Adapted in Part One (2021) and Part Two (2024).' },
-  MESSIAH: { title: 'Dune Messiah', year: '1969', note: 'Not covered by the two released films.' },
+  MESSIAH: { title: 'Dune Messiah', year: '1969', note: 'Not covered by the two released films. Villeneuve\'s Dune: Part Three adapts it.' },
   CHILDREN: { title: 'Children of Dune', year: '1976', note: 'Not adapted by Villeneuve.' },
   'GOD EMPEROR': { title: 'God Emperor of Dune', year: '1981', note: 'Not adapted.' },
   HERETICS: { title: 'Heretics of Dune', year: '1984', note: 'Not adapted.' },
