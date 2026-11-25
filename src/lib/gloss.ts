@@ -25,8 +25,8 @@
 // FIRST OCCURRENCE: pass one `seen` Set per card or page. Each term is wrapped only the first time
 // it appears across all calls that share the set; its id is then added to the set.
 
-import { glossary, termById, type Term } from '../data/glossary';
-import { termLevel, levelShort } from '../data/spoilers';
+import { glossary, termById, type Term } from "../data/glossary";
+import { termLevel, levelShort } from "../data/spoilers";
 
 type Pattern = { text: string; id: string };
 
@@ -45,7 +45,10 @@ for (const list of byFirst.values()) list.sort((a, b) => b.text.length - a.text.
 
 /** HTML-escape text for element content and double- or single-quoted attributes. */
 export function escapeHtml(s: string): string {
-  return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
+  return s.replace(
+    /[&<>"']/g,
+    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!,
+  );
 }
 
 type Hit = { start: number; end: number; id: string };
@@ -77,8 +80,8 @@ function scan(text: string): Hit[] {
  * @param seen term ids already glossed in this card or page; updated in place
  * @param base site base path without trailing slash, e.g. `import.meta.env.BASE_URL.replace(/\/$/, '')`
  */
-export function glossHtml(text: string, seen: Set<string> = new Set(), base = ''): string {
-  let out = '';
+export function glossHtml(text: string, seen: Set<string> = new Set(), base = ""): string {
+  let out = "";
   let at = 0;
   for (const h of scan(text)) {
     out += escapeHtml(text.slice(at, h.start));
@@ -88,7 +91,7 @@ export function glossHtml(text: string, seen: Set<string> = new Set(), base = ''
     } else {
       seen.add(h.id);
       const t = termById[h.id];
-      out += `<a class="gl" href="${escapeHtml(`${base}/glossary/#gl-${t.id}`)}" data-tip="${escapeHtml(t.def)}"${termLevel[t.id] ? ` data-tl="${termLevel[t.id]}" data-tll="${levelShort[termLevel[t.id]]}"` : ''}>${word}</a>`;
+      out += `<a class="gl" href="${escapeHtml(`${base}/glossary/#gl-${t.id}`)}" data-tip="${escapeHtml(t.def)}"${termLevel[t.id] ? ` data-tl="${termLevel[t.id]}" data-tll="${levelShort[termLevel[t.id]]}"` : ""}>${word}</a>`;
     }
     at = h.end;
   }

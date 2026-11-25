@@ -16,3 +16,5 @@ Disallow: /
 
 User-agent: *
 Allow: /
+
+Sitemap: https://dune.akl.run/sitemap-index.xml

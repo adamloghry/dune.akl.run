@@ -100,12 +100,7 @@ const filmNotes = familyNodes.filter((n) => n.film);
         })}
       </div>
     </div>
-    <script is:inline>
-      (() => {
-        const box = document.querySelector('.tree-box'), paul = document.querySelector('.t-card[href*="/paul"], .t-card[href*="characters-paul"]');
-        if (box && paul && box.scrollWidth > box.clientWidth) box.scrollLeft = paul.offsetLeft - box.clientWidth / 2 + paul.offsetWidth / 2;
-      })();
-    </script>
+    <script src="../scripts/family.js"></script>
     <p class="vt scroll-hint">Scroll sideways to see the whole tree. Tap a portrait to open that person's page.</p>
 
     <section class="arc-sec">

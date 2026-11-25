@@ -233,14 +233,7 @@ const canonCount = worlds.filter((w) => !w.euOnly).length;
       <li><i class="k-eu"></i> later books only, not Frank Herbert</li>
       <li><i class="k-q">?</i> location unknown in the books</li>
     </ul>
-    <script is:inline>
-      (() => {
-        const box = document.querySelector('.map-box'), dune = document.getElementById('pl-arrakis');
-        if (!box || !dune || box.scrollWidth <= box.clientWidth) return;
-        const b = box.getBoundingClientRect(), d = dune.getBoundingClientRect();
-        box.scrollLeft = d.left - b.left - box.clientWidth / 2 + d.width / 2;
-      })();
-    </script>
+    <script src="../scripts/map.js"></script>
     <p class="vt scroll-hint">On a small screen, scroll the map sideways. Tap a world to jump to its entry.</p>
 
     <nav class="w-index" aria-label="Worlds">

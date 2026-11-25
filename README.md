@@ -46,14 +46,14 @@ This README is the authority for the handoff.
 | `/404.html`| Served by Cloudflare for unknown paths                                      |
 
 The timeline has two CSS-only toggles (they work with JavaScript off, via `:has()`):
-**show film notes** and **only what the films touch**. The only JavaScript on the site is ~10
-lines for the day/night theme switch, which defaults to the system setting.
+**show film notes** and **only what the films touch**. JavaScript adds the theme and art switches, the spoiler shield, search and sharing.
 
 ## Layout
 
 ```
-flake.nix               Nix: package (static site), devShell, deploy app
-wrangler.toml           Cloudflare Workers static-assets config (free tier)
+flake.nix, nix/         Nix (flake-parts): package, devenv shell, checks, treefmt, deploy app
+wrangler.jsonc          Cloudflare Workers static-assets config (free tier)
+tests/                  unit/ (Vitest), bombadil/ (browser properties), e2e/serve.mjs (local server with _headers)
 astro.config.mjs        static output, directory URLs, trailing slashes
 src/data/timeline.ts    eras, events, film notes
 src/data/cast.ts        characters, factions, and the event → people/factions tags
@@ -64,9 +64,10 @@ src/data/beyond.ts      later books and other screen versions (secondary tiers; 
 src/data/sprites.ts     pixel sprites as character grids (palette chars → CSS vars)
 src/components/         Sprite (grid → merged-run SVG), Dunes (seeded landscape), EventCard, Avatar (procedural portrait)
 src/layouts/Base.astro  shell, nav, theme switch, footer
+src/scripts/            the site's JavaScript (bundled by Astro; no inline scripts)
 src/pages/              index, films, about, 404, web, family, search, characters/, factions/
 src/styles/global.css   tokens (dark = Arrakis night, light = Arrakis day), all styling
-public/                 favicon, robots.txt, _headers (immutable caching for hashed assets)
+public/                 favicon, robots.txt, _headers, assets/js/boot.js
 ```
 
 Design notes:
@@ -79,49 +80,55 @@ Design notes:
 - **Motion** (worm rising, ornithopter, twinkling stars) is CSS `steps()` animation and is
   switched off under `prefers-reduced-motion`.
 
-## Build
+## Build and test
+
+The repo is set up the same way as akl.run: a flake-parts flake with a devenv shell, treefmt
+(prettier and nixfmt), Vitest unit tests, Bombadil browser properties and a GitHub Actions job that
+runs them all.
 
 ```sh
-nix develop                 # node 22 + wrangler
-npm ci && npm run dev       # http://localhost:4321
-nix build                   # reproducible static site in ./result
+nix develop --impure        # node 24, npm install, treefmt pre-commit hook (or: direnv allow)
+npm run dev                 # http://localhost:4321
+npm run build               # static site in dist/
+npm test                    # Vitest: data cross-references, _headers and robots.txt
+npm run check               # astro check (type errors fail it)
+npm run test:bombadil       # Bombadil clicks, types and resizes across the built site
+nix build                   # the same site, reproducibly, in ./result
+nix flake check --impure    # build, astro-check, unit, csp-output and treefmt
+nix fmt                     # format everything treefmt owns
 ```
 
 The flake uses `importNpmLock`, which reads `package-lock.json` directly. There is no
 `npmDepsHash` to update when dependencies change: run `npm install`, commit the lockfile, rebuild.
 
-## Deploy to Cloudflare (free tier)
+Bombadil needs Chromium: it uses `$CHROME`, or builds `nixpkgs#chromium` once and caches the
+path in `tmp/`. On a failure it leaves a trace in `tmp/bombadil-*/trace.bin`; CI uploads it.
 
-Either target is free for a static site.
+## Deploy (Cloudflare Workers static assets, free tier)
 
-**Workers static assets (recommended):**
+**Workers Builds** deploys every push to `main`: build command `npm ci && npm run build`, deploy
+command `npx wrangler deploy`. `wrangler.jsonc` names the Worker, the `dist` assets folder and the
+`dune.akl.run` custom domain (the `akl.run` zone is in the same Cloudflare account).
 
-```sh
-npx wrangler login          # once
-nix run .#deploy            # builds via Nix, then `wrangler deploy`
-```
+**From a workstation:** `nix build && nix run .#deploy`, with `CLOUDFLARE_API_TOKEN` and
+`CLOUDFLARE_ACCOUNT_ID` set. On `main` it deploys production; on any other branch it uploads a
+preview version under the branch name. This is the same deploy app as akl.run's.
 
-**Pages:** `npm run build && npx wrangler pages deploy dist --project-name dune-akl-run`, or
-connect the repo in the dashboard with build command `npm run build` and output `dist`.
-
-The site URL is `https://dune.akl.run`, set in `astro.config.mjs` (overridable with `SITE_URL`)
-and in `flake.nix`. `wrangler.toml` attaches the `dune.akl.run` custom domain, which needs the
-`akl.run` zone in the same Cloudflare account.
-
-**Workers Builds (deploy on push):** in the Cloudflare dashboard, create a Worker from this
-repository with build command `npm ci && npm run build` and deploy command `npx wrangler deploy`.
-`wrangler.toml` already names the Worker, the `dist` assets folder and the custom domain.
+The site URL is `https://dune.akl.run`, set in `astro.config.mjs` (overridable with `SITE_URL`).
 
 ### Security headers, indexing
 
-`public/_headers` sets HSTS and a strict Content-Security-Policy. Inline scripts are allowed by
-SHA-256 hash only: `integrations/csp.mjs` hashes every inline script after the build and writes the
-hashes into `dist/_headers` in place of `__SCRIPT_HASHES__`, so editing a script needs no manual step.
-Styles allow `'unsafe-inline'` because components use `style` attributes. Nothing loads from another
-origin.
+`public/_headers` sets HSTS and a strict Content-Security-Policy with `script-src 'self'`: there
+are no inline scripts or inline event handlers. `public/assets/js/boot.js` sets the theme, art
+style and spoiler level before first paint (linked with a `?v=` content hash through
+`src/lib/asset.ts`); everything else is in `src/scripts/` and bundled by Astro. The `csp-output`
+flake check fails the build if an inline script or handler comes back. Styles still allow
+`'unsafe-inline'`, because the family tree, map and web views position and colour elements with
+`style` attributes. Nothing loads from another origin.
 
-`public/robots.txt` lets search engines index the site and asks known AI-training crawlers
-(GPTBot, ClaudeBot, CCBot, Google-Extended and others) to stay out.
+`public/robots.txt` lets search engines index the site, asks known AI-training crawlers
+(GPTBot, ClaudeBot, CCBot, Google-Extended and others) to stay out, and points to the sitemap
+that `@astrojs/sitemap` writes.
 
 ## Credits and licence
 

@@ -1,18 +1,28 @@
 // Types for material outside the core canon (Frank Herbert's six novels + Villeneuve's films).
 // Everything typed here renders as secondary: dashed, labelled, and switchable.
 
-import type { FilmKind } from './timeline';
-import type { EraId } from './cast';
+import type { FilmKind } from "./timeline";
+import type { EraId } from "./cast";
 
 // Novels by Brian Herbert and Kevin J. Anderson (1999–).
 export type EUBook =
-  | 'HOUSE ATREIDES' | 'HOUSE HARKONNEN' | 'HOUSE CORRINO'
-  | 'THE BUTLERIAN JIHAD' | 'THE MACHINE CRUSADE' | 'THE BATTLE OF CORRIN'
-  | 'HUNTERS OF DUNE' | 'SANDWORMS OF DUNE'
-  | 'PAUL OF DUNE' | 'THE WINDS OF DUNE'
-  | 'SISTERHOOD OF DUNE' | 'MENTATS OF DUNE' | 'NAVIGATORS OF DUNE'
-  | 'THE DUKE OF CALADAN' | 'THE LADY OF CALADAN' | 'THE HEIR OF CALADAN'
-  | 'PRINCESS OF DUNE';
+  | "HOUSE ATREIDES"
+  | "HOUSE HARKONNEN"
+  | "HOUSE CORRINO"
+  | "THE BUTLERIAN JIHAD"
+  | "THE MACHINE CRUSADE"
+  | "THE BATTLE OF CORRIN"
+  | "HUNTERS OF DUNE"
+  | "SANDWORMS OF DUNE"
+  | "PAUL OF DUNE"
+  | "THE WINDS OF DUNE"
+  | "SISTERHOOD OF DUNE"
+  | "MENTATS OF DUNE"
+  | "NAVIGATORS OF DUNE"
+  | "THE DUKE OF CALADAN"
+  | "THE LADY OF CALADAN"
+  | "THE HEIR OF CALADAN"
+  | "PRINCESS OF DUNE";
 
 export interface EUBookInfo {
   title: string;
@@ -24,7 +34,7 @@ export interface EUBookInfo {
 
 // 'expands' = adds detail Frank Herbert never wrote, without contradicting him.
 // 'retcon'  = changes, contradicts or reinterprets something Frank Herbert did write.
-export type EUKind = 'expands' | 'retcon';
+export type EUKind = "expands" | "retcon";
 
 /** A stand-alone event that exists only in the later books. Rendered as a dashed, labelled card. */
 export interface EUEvent {
@@ -52,7 +62,7 @@ export interface EUNote {
 }
 
 // Screen versions other than Villeneuve's.
-export type Screen = 'LYNCH' | 'SCIFI DUNE' | 'SCIFI CHILDREN' | 'PROPHECY';
+export type Screen = "LYNCH" | "SCIFI DUNE" | "SCIFI CHILDREN" | "PROPHECY";
 
 export interface ScreenInfo {
   title: string;

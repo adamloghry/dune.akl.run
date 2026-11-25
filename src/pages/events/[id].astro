@@ -69,21 +69,7 @@ const backdrop = eraBackdrop(p.era.id, 320, 80).toSVG({ cls: 'pix ev-scene', pre
   </div>
 </Base>
 
-<script is:inline>
-  (() => {
-    const url = location.href.split('#')[0];
-    const msg = document.querySelector('.share-msg');
-    document.querySelector('[data-copy]')?.addEventListener('click', async () => {
-      try { await navigator.clipboard.writeText(url); msg.textContent = 'Link copied.'; }
-      catch { msg.textContent = url; }
-    });
-    const s = document.querySelector('[data-share]');
-    if (s && navigator.share) {
-      s.hidden = false;
-      s.addEventListener('click', () => navigator.share({ title: document.title, url }).catch(() => {}));
-    }
-  })();
-</script>
+<script src="../../scripts/share.js"></script>
 
 <style>
   .ev-page { padding-top: 24px; padding-bottom: 48px; max-width: 860px; }

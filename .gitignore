@@ -3,3 +3,11 @@ dist/
 result
 .astro/
 .wrangler/
+tmp/
+coverage/
+.direnv/
+.devenv/
+.devenv.flake.nix
+.pre-commit-config.yaml
+tests/e2e/node_modules/
+.DS_Store

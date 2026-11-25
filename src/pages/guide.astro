@@ -157,6 +157,7 @@ const pubOrder = Object.entries(euBooks) as [EUBook, (typeof euBooks)[EUBook]][]
   .g-feel, .g-era, .g-note { color: var(--ink-2); }
   .g-label { font-family: 'VT323', monospace; font-size: 18px; line-height: 1; color: var(--ink-3); margin-right: 4px; }
   .g-era a { white-space: nowrap; }
+  @media (max-width: 360px) { .g-era a { white-space: normal; } }
   .g-films { padding: 8px 10px; background: var(--panel-2); border-left: var(--px) solid var(--added); color: var(--ink); }
   .g-tag { font-family: 'VT323', monospace; font-size: 17px; line-height: 1; padding: 2px 6px 1px; border: 2px solid currentColor; color: var(--added); margin-right: 4px; }
 
