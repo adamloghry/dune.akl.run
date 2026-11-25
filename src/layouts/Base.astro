@@ -78,6 +78,9 @@ const shieldCss = `${sel('')}{cursor:pointer}${sel(':not(.t-card)')}{position:re
           document.documentElement.dataset.theme = t || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
         } catch { document.documentElement.dataset.theme = 'dark'; }
         try {
+          if (localStorage.getItem('look') === 'film') document.documentElement.dataset.look = 'film';
+        } catch {}
+        try {
           const s = localStorage.getItem('spoil');
           if (s && +s >= 1 && +s < 7) document.documentElement.dataset.spoil = s;
         } catch {}
@@ -110,6 +113,10 @@ const shieldCss = `${sel('')}{cursor:pointer}${sel(':not(.t-card)')}{position:re
             <p>Anything from later in the saga is blurred. Tap a blurred box to read it anyway. Your choice stays on this device.</p>
           </form>
         </details>
+        <button class="look-btn" type="button" aria-pressed="false" aria-label="Art style: book. Switch to film style" title="Art style: book or film">
+          <span class="lb-book"><svg viewBox="0 0 10 10" shape-rendering="crispEdges" fill="currentColor"><rect x="0" y="1" width="4" height="8"/><rect x="6" y="1" width="4" height="8"/><rect x="4" y="2" width="2" height="7"/><rect x="1" y="2" width="2" height="1" fill="var(--panel)"/><rect x="7" y="2" width="2" height="1" fill="var(--panel)"/><rect x="1" y="4" width="2" height="1" fill="var(--panel)"/><rect x="7" y="4" width="2" height="1" fill="var(--panel)"/></svg><b>BOOK</b></span>
+          <span class="lb-film"><svg viewBox="0 0 10 10" shape-rendering="crispEdges" fill="currentColor"><rect x="0" y="1" width="10" height="8"/><rect x="1" y="2" width="1" height="1" fill="var(--panel)"/><rect x="1" y="4" width="1" height="1" fill="var(--panel)"/><rect x="1" y="6" width="1" height="1" fill="var(--panel)"/><rect x="8" y="2" width="1" height="1" fill="var(--panel)"/><rect x="8" y="4" width="1" height="1" fill="var(--panel)"/><rect x="8" y="6" width="1" height="1" fill="var(--panel)"/><rect x="3" y="3" width="4" height="4" fill="var(--panel)"/></svg><b>FILM</b></span>
+        </button>
         <button class="theme-btn" type="button" aria-label="Switch between day and night">
           <svg class="icon-sun" viewBox="0 0 10 10" shape-rendering="crispEdges" fill="currentColor"><rect x="3" y="3" width="4" height="4"/><rect x="4" y="0" width="2" height="2"/><rect x="4" y="8" width="2" height="2"/><rect x="0" y="4" width="2" height="2"/><rect x="8" y="4" width="2" height="2"/><rect x="1" y="1" width="1" height="1"/><rect x="8" y="1" width="1" height="1"/><rect x="1" y="8" width="1" height="1"/><rect x="8" y="8" width="1" height="1"/></svg>
           <svg class="icon-moon" viewBox="0 0 10 10" shape-rendering="crispEdges" fill="currentColor"><rect x="3" y="1" width="4" height="1"/><rect x="2" y="2" width="3" height="1"/><rect x="1" y="3" width="3" height="4"/><rect x="2" y="7" width="3" height="1"/><rect x="3" y="8" width="5" height="1"/><rect x="7" y="7" width="2" height="1"/></svg>
@@ -132,6 +139,21 @@ const shieldCss = `${sel('')}{cursor:pointer}${sel(':not(.t-card)')}{position:re
       <a class="to-top" href="#top" aria-label="Back to top">^</a>
     </footer>
     <script is:inline>
+      (() => {
+        // Art style: book (hi-bit, default) or film (cinematic). Only the pictures change.
+        const b = document.querySelector('.look-btn'), d = document.documentElement;
+        const sync = () => {
+          const film = d.dataset.look === 'film';
+          b?.setAttribute('aria-pressed', String(film));
+          b?.setAttribute('aria-label', film ? 'Art style: film. Switch to book style' : 'Art style: book. Switch to film style');
+        };
+        sync();
+        b?.addEventListener('click', () => {
+          if (d.dataset.look === 'film') delete d.dataset.look; else d.dataset.look = 'film';
+          try { d.dataset.look ? localStorage.setItem('look', 'film') : localStorage.removeItem('look'); } catch {}
+          sync();
+        });
+      })();
       document.querySelector('.theme-btn')?.addEventListener('click', () => {
         const d = document.documentElement;
         d.dataset.theme = d.dataset.theme === 'light' ? 'dark' : 'light';

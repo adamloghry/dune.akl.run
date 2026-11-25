@@ -1,7 +1,7 @@
 ---
+import { lookIds } from '../lib/style';
 import Base from '../layouts/Base.astro';
 import Sprite from '../components/Sprite.astro';
-import Dunes from '../components/Dunes.astro';
 import EventCard from '../components/EventCard.astro';
 import EUCard from '../components/EUCard.astro';
 import { spineFor, euEvents, altNotes } from '../data/beyond-view';
@@ -32,7 +32,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <Base page="home">
   <section class="hero">
-    <Dunes />
+    <div class="hero-art" aria-hidden="true">{lookIds.map((l) => <img class={`lk lk-${l}`} src={`${base}/art/${l}/hero.png`} width="480" height="120" alt="" />)}</div>
     <div class="motes" aria-hidden="true">{motes.map((m) => <i style={`--x:${m.x}%;--d:${m.d}s;--delay:${m.delay}s;--dx:${m.dx}px`}></i>)}</div>
     <div class="actor worm-rise"><Sprite name="worm" size={5} /></div>
     <div class="actor thopter-fly"><Sprite name="thopter" size={4} /></div>
@@ -99,9 +99,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
               <div class="span">{era.span}</div>
               <p {...sp(eraLevel[era.id as EraId])}>{era.summary}</p>
               <div class="books">{era.books.map((b) => <span class="book-tag">{b}</span>)}</div>
-              <div class="era-land" style={`--sky:${land[era.id].sky};--l1:${land[era.id].l[0]};--l2:${land[era.id].l[1]};--l3:${land[era.id].l[2]}`}>
-                <Dunes seed={era.from + 77} height={40} stars={false} />
-                <span>{land[era.id].label}</span>
+              <div class="era-land" style={`--sky:${land[era.id].sky}`}>
+                {lookIds.map((l) => <img class={`lk lk-${l}`} src={`${base}/art/${l}/era/${era.id}.png`} width="320" height="80" loading="lazy" decoding="async" alt={`Arrakis in this era: ${land[era.id].label.split('·')[1]?.trim() ?? ''}`} />)}
+                <span aria-hidden="true">{land[era.id].label}</span>
               </div>
             </div>
           </header>

@@ -112,6 +112,8 @@ a:hover { color: var(--gold); }
 /* ---------- hero ---------- */
 .hero { position: relative; isolation: isolate; overflow: hidden; background: linear-gradient(var(--sky-1), var(--sky-2) 70%); border-bottom: var(--px) solid var(--line); }
 .hero .sky { position: absolute; top: 0; left: 0; width: 100%; height: auto; z-index: -2; }
+.hero-art { position: absolute; left: 0; right: 0; bottom: 0; z-index: -1; -webkit-mask-image: linear-gradient(transparent, #000 32%); mask-image: linear-gradient(transparent, #000 32%); }
+.hero-art img { width: 100%; height: clamp(150px, 25vw, 340px); object-fit: cover; object-position: 50% 100%; image-rendering: pixelated; }
 .hero .dunes, footer .dunes { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: auto; z-index: -1; }
 .sky .star { fill: var(--star); } .sky .tw { animation: twinkle 3.2s steps(2) infinite; }
 .sky .moon rect { fill: var(--moon); } .sky .moon .crater { fill: var(--sand); opacity: 0.45; }
@@ -268,7 +270,12 @@ footer .foot { position: relative; padding-top: 18px; font-family: 'VT323', mono
 .crumbs { margin: 28px 0 0; font-size: 20px; color: var(--ink-3); }
 .crumbs a { color: var(--ink-2); }
 .aka { color: var(--gold); font-size: 20px; margin: 0 0 8px; display: block; }
-.avatar { display: block; image-rendering: pixelated; flex: none; }
+.avatar { display: block; flex: none; line-height: 0; }
+.avatar img { width: 100%; height: 100%; image-rendering: pixelated; }
+/* art style: book (hi-bit) by default, film (cinematic) when chosen in the top bar */
+.lk { display: block; }
+.lk-film, html[data-look='film'] .lk-book { display: none; }
+html[data-look='film'] .lk-film { display: block; }
 .rel { font-style: normal; font-family: 'VT323', monospace; font-size: 18px; }
 .rel-member { color: var(--kept); } .rel-trained { color: var(--blue); } .rel-ally { color: var(--gold); } .rel-enemy { color: var(--cut); }
 
@@ -304,7 +311,7 @@ footer .foot { position: relative; padding-top: 18px; font-family: 'VT323', mono
 .profile h1 { margin: 0 0 4px; font-size: clamp(24px, 4.5vw, 44px); line-height: 1.05; }
 .profile p { margin: 0 0 10px; }
 .portrait { background: var(--bg-2); padding: 8px; line-height: 0; border: 2px solid var(--line); }
-.portrait .avatar, .portrait .sprite { width: clamp(96px, 22vw, 160px); height: auto; }
+.portrait .avatar, .portrait .sprite { width: clamp(96px, 22vw, 160px) !important; height: auto !important; aspect-ratio: 1; }
 @media (max-width: 600px) { .profile { grid-template-columns: 1fr; } .portrait { width: max-content; } }
 .aff { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 6px; }
 .aff li { display: flex; align-items: center; gap: 10px; }
@@ -375,10 +382,9 @@ footer .foot { position: relative; padding-top: 18px; font-family: 'VT323', mono
 .heatpx { display: grid; place-items: center; width: 100%; height: 30px; font-family: 'VT323', monospace; font-size: 18px; color: var(--ink); background: color-mix(in srgb, var(--spice) calc(var(--a) * 100%), var(--bg-2)); }
 
 /* era landscape: the state of Arrakis */
-.era-land { position: relative; height: 54px; margin-top: 14px; overflow: hidden; border: 2px solid var(--line); background: var(--sky); isolation: isolate; }
-.era-land .dunes { position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); width: max(100%, 900px); height: auto; z-index: -1; }
-.era-land .sky { display: none; }
-.era-land span { position: absolute; right: 8px; top: 4px; font-family: 'VT323', monospace; font-size: 17px; color: var(--bone); text-shadow: 2px 2px 0 var(--shadow); }
+.era-land { position: relative; height: clamp(72px, 12vw, 120px); margin-top: 14px; overflow: hidden; border: 2px solid var(--line); background: var(--sky); }
+.era-land img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 100%; image-rendering: pixelated; }
+.era-land span { position: absolute; right: 8px; top: 4px; font-family: 'VT323', monospace; font-size: 17px; color: var(--bone); text-shadow: 2px 2px 0 var(--shadow); background: color-mix(in srgb, var(--shadow) 55%, transparent); padding: 0 6px; }
 .era-land .dune-1 rect { fill: var(--l1); } .era-land .dune-2 rect { fill: var(--l2); } .era-land .dune-3 rect { fill: var(--l3); }
 
 /* hero spice motes */
@@ -543,3 +549,13 @@ body:has(#only-diverged:checked) .event.eu { display: none; }
 .perma { margin-left: auto; font-size: 18px; color: var(--ink-3); text-decoration: none; padding: 0 4px; border: 1px solid transparent; }
 .perma::after { content: ' ›'; }
 .perma:hover, .perma:focus-visible { color: var(--spice); border-color: var(--line); }
+
+/* book or film art switch in the top bar */
+.look-btn { display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 8px; border: 2px solid var(--line); background: var(--panel); color: var(--ink-2); font: 18px/1 'VT323', monospace; cursor: pointer; }
+.look-btn:hover, .look-btn:focus-visible { border-color: var(--spice); color: var(--spice); }
+.look-btn svg { width: 18px; height: 18px; flex: none; }
+.look-btn .lb-film, html[data-look='film'] .look-btn .lb-book { display: none; }
+html[data-look='film'] .look-btn .lb-film { display: inline-flex; }
+.look-btn .lb-book { display: inline-flex; }
+.look-btn span { display: inline-flex; align-items: center; gap: 5px; }
+@media (max-width: 420px) { .look-btn b { display: none; } }

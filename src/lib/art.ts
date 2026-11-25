@@ -26,12 +26,12 @@ const dist = (a: string, b: string) => {
 };
 
 /** 4-tone shade picker: t in 0..1 (0 = darkest), dithered between neighbouring tones. */
-function tone(ramp: string[], t: number, x: number, y: number) {
+export function tone(ramp: string[], t: number, x: number, y: number) {
   const f = Math.max(0, Math.min(0.999, t)) * (ramp.length - 1);
   const k = Math.floor(f);
   return f - k > bayer(x, y) ? ramp[Math.min(ramp.length - 1, k + 1)] : ramp[k];
 }
-const rampFor = (base: string) => [shade(base, 0.45), shade(base, 0.7), base, lerp(base, '#fff1d6', 0.35)];
+export const rampFor = (base: string) => [shade(base, 0.45), shade(base, 0.7), base, lerp(base, '#fff1d6', 0.35)];
 
 // ---------------------------------------------------------------- portraits
 export interface PortraitOpts { bg: string; mentat?: boolean; style?: ArtStyle; accent?: string }
@@ -278,7 +278,7 @@ export function arrakeen(o: SceneOpts = {}): Pix {
 const CINE = ['#0e0b0a', '#2b231e', '#5a4a3c', '#9a8266', '#d6c3a0', '#f2e6cc'];
 const CODEX = ['#0b0a10', '#4a1f3c', '#8a3a3a', '#d8743a', '#f4b062', '#e0a458', '#f0cfa0', '#d8a070', '#a86a40', '#6e3e24', '#3a2418', '#8a8a9a', '#1d2a4a', '#2f5a8a', '#5f9fd0', '#2a5a3a', '#4f8f4a', '#8a1f2a', '#c8452e', '#6b3a10', '#c89020', '#f2c94a', '#f6ead2', '#6a3a7a', '#a87acb', '#5a3a2a', '#c9a27a'];
 
-function style(p: Pix, s: ArtStyle, kind: 'portrait' | 'scene', accent?: string): Pix {
+export function style(p: Pix, s: ArtStyle, kind: 'portrait' | 'scene', accent?: string): Pix {
   if (s === 'hibit') return p;
   if (s === 'cine') {
     const out = new Pix(p.w, p.h);
@@ -288,7 +288,9 @@ function style(p: Pix, s: ArtStyle, kind: 'portrait' | 'scene', accent?: string)
       // keep strong blues (Ibad eyes, windows) and hot oranges as the only accents
       const n = parseInt(c.slice(1, 7), 16), R = n >> 16, G = (n >> 8) & 255, B = n & 255;
       if (B > 150 && B > R + 40) { out.set(x, y, '#4f8fe0'); continue; }
-      if (kind === 'scene' && R > 220 && G < 160 && B < 90) { out.set(x, y, '#e8742a'); continue; }
+      if (kind === 'scene' && R > 220 && G < 120 && B < 90) { out.set(x, y, '#e8742a'); continue; }
+      // plantings and forest keep a muted olive, so the greening of Arrakis still reads
+      if (kind === 'scene' && G > R + 12 && G > B + 12) { out.set(x, y, tone(['#1e2618', '#3a4628', '#66744a', '#98a070'], lum(c) * 1.3, x, y)); continue; }
       // harder contrast curve, then dithered posterise to the sand/ash ramp
       let l = lum(c);
       l = Math.max(0, Math.min(1, (l - 0.5) * 1.35 + 0.5));
