@@ -1,0 +1,56 @@
+---
+// "In the later books" for a person or power page: the Brian Herbert & Kevin J. Anderson events
+// that involve them, and what those books add to the canon events they are in. Always dashed and
+// labelled, so it never reads as Frank Herbert.
+import { euEvents, euNotes, euBooks, euKindLabel, euAuthors } from '../data/beyond-view';
+import { tags } from '../data/cast';
+import { allEvents } from '../data/query';
+import { sp, eventLevel, type Level } from '../data/spoilers';
+import { glossHtml } from '../lib/gloss';
+interface Props { who?: string; f?: string; name: string }
+const { who, f, name } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const hit = (w?: string[], fs?: string[]) => (who ? (w ?? []).includes(who) : (fs ?? []).includes(f!));
+const evs = euEvents.filter((e) => hit(e.who, e.f));
+const title = Object.fromEntries(allEvents.map((p) => [p.ev.id, p.ev.title]));
+// Notes count for a person if they are tagged on the event or named in the note itself.
+const named: Record<string, string> = { mohiam: 'Mohiam', irulan: 'Irulan', shaddam: 'Shaddam', gurney: 'Gurney', thufir: 'Thufir', feyd: 'Feyd', stilgar: 'Stilgar', kynes: 'Kynes', alia: 'Alia', farad: "Farad'n", scytale: 'Scytale', teg: 'Teg', odrade: 'Odrade', murbella: 'Murbella', sheeana: 'Sheeana' };
+const notes = euNotes.filter((n) => hit(tags[n.event]?.who, tags[n.event]?.f) || (who && named[who] && n.text.includes(named[who])));
+const seen = new Set<string>();
+const books = (ids: string[]) => ids.map((b) => euBooks[b as keyof typeof euBooks]?.title ?? b).join(', ');
+---
+{(evs.length > 0 || notes.length > 0) && (
+  <section class="arc-sec later-books" aria-labelledby="later-h">
+    <h2 class="sec-title" id="later-h">In the later books</h2>
+    <p class="eu-flag vt"><span>LATER BOOKS</span> not Frank Herbert · {euAuthors}</p>
+    <p class="sec-sub">
+      What the novels written since 1999 add about {name}. Frank Herbert's books outrank them here;
+      a <b class="retcon-word">retcon</b> marks a place where they contradict him.
+    </p>
+    <ol class="mini-events">
+      {evs.map((e) => (
+        <li class:list={['pxbox', 'eu-card', `eu-${e.kind}`]} {...sp(eventLevel(e.id))}>
+          <div class="card-meta">
+            <span class="when">{e.when}</span>
+            <span class={`badge eu-badge eu-k-${e.kind}`}>{euKindLabel[e.kind]}</span>
+            <span class="book-tag eu-tag">{books(e.books)}</span>
+          </div>
+          <h3><a href={`${base}/#${e.id}`}>{e.title}</a></h3>
+          <p set:html={glossHtml(e.body, seen, base)} />
+          {e.herbert && <p class="eu-herbert"><b>Frank Herbert wrote</b> {e.herbert}</p>}
+        </li>
+      ))}
+      {notes.map((n) => (
+        <li class:list={['pxbox', 'eu-card', `eu-${n.kind}`]} {...sp(Math.max(2, eventLevel(n.event)) as Level)}>
+          <div class="card-meta">
+            <span class={`badge eu-badge eu-k-${n.kind}`}>{euKindLabel[n.kind]}</span>
+            <span class="book-tag eu-tag">{books(n.books)}</span>
+          </div>
+          <h3><a href={`${base}/#${n.event}`}>{title[n.event]}</a></h3>
+          <p set:html={glossHtml(n.text, seen, base)} />
+          {n.herbert && <p class="eu-herbert"><b>Frank Herbert wrote</b> {n.herbert}</p>}
+        </li>
+      ))}
+    </ol>
+  </section>
+)}

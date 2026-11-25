@@ -14,18 +14,20 @@ export interface FNode {
   x: number;
   row: number;
   film?: string; // short note when the films differ
+  eu?: string; // what the later books (Brian Herbert & Kevin J. Anderson) add about this person
 }
 
 export type UnionKind = 'married' | 'partner' | 'name-only';
 export interface FUnion { id: string; a: string; b: string; kind: UnionKind }
-export interface FEdge { from: string; to: string; dotted?: boolean; label?: string; labelOnBus?: boolean }
+export interface FEdge { from: string; to: string; dotted?: boolean; label?: string; labelOnBus?: boolean; eu?: boolean } // eu: only in the later books
 
 export const familyNodes: FNode[] = [
   { id: 'paulus', name: 'Paulus Atreides', sub: 'the Old Duke, killed by a bull', x: 330, row: 0, faction: 'atreides',
     look: { skin: '#d9a271', hair: '#a29a94', eyes: 'dark', head: 'hair', cloth: '#2f5a3a' } },
-  { id: 'helena', name: "Leto's mother", sub: 'unnamed in the novels', x: 480, row: 0, faction: 'atreides',
+  { id: 'helena', name: "Leto's mother", sub: 'unnamed by Frank Herbert', x: 480, row: 0, faction: 'atreides', eu: 'Helena Richese',
     look: { skin: '#f1c9a0', hair: '#5b3a22', eyes: 'dark', head: 'long', cloth: '#3a2a3f' } },
   { id: 'baron', name: 'Baron Harkonnen', sub: 'secret father', char: 'baron', x: 720, row: 0 },
+  { id: 'mohiam', name: 'Mohiam', sub: 'Reverend Mother', char: 'mohiam', x: 900, row: 0, eu: "Jessica's mother" },
 
   { id: 'shaddam', name: 'Shaddam IV', sub: 'Padishah Emperor', char: 'shaddam', x: 110, row: 1 },
   { id: 'leto-i', name: 'Duke Leto', char: 'leto-i', x: 405, row: 1 },
@@ -78,6 +80,7 @@ export const unions: FUnion[] = [
 export const edges: FEdge[] = [
   { from: 'u-paulus', to: 'leto-i' },
   { from: 'baron', to: 'jessica' },
+  { from: 'mohiam', to: 'jessica', eu: true },
   { from: 'shaddam', to: 'wensicia' },
   { from: 'shaddam', to: 'irulan' },
   { from: 'u-leto', to: 'paul' },

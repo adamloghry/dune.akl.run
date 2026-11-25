@@ -6,7 +6,7 @@ import { familyNodes, unions, edges, unionLabel, type FNode } from '../data/fami
 import { sp, type Level } from '../data/spoilers';
 // Spoiler levels for the tree: a card's name and caption, and the line that joins it.
 const nodeLevel: Record<string, Level> = {
-  paulus: 1, helena: 1, baron: 2, shaddam: 1, 'leto-i': 1, jessica: 1, wensicia: 4, irulan: 2, paul: 1, chani: 1,
+  paulus: 1, helena: 1, baron: 2, mohiam: 1, shaddam: 1, 'leto-i': 1, jessica: 1, wensicia: 4, irulan: 2, paul: 1, chani: 1,
   alia: 2, hayt: 3, farad: 5, ghanima: 3, 'leto-ii': 4, 'first-son': 2, moneo: 5, siona: 5, 'duncan-gold': 5,
   teg: 6, 'duncan-last': 6, murbella: 6, odrade: 6, 'murbella-kids': 7,
 };
@@ -14,10 +14,10 @@ const lv = (id: string): Level => {
   const u = unions.find((x) => x.id === id);
   return u ? (Math.max(nodeLevel[u.a] ?? 1, nodeLevel[u.b] ?? 1) as Level) : nodeLevel[id] ?? 1;
 };
-const edgeLevel = (from: string, to: string) => Math.max(lv(from), lv(to)) as Level;
+const edgeLevel = (from: string, to: string, eu?: boolean) => Math.max(lv(from), lv(to), eu ? 2 : 1) as Level;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-const PAD = 70, W = 1080, ROW = 170, CARD_W = 136, CARD_H = 122, AV = 22; // AV: y of the union line inside a card
+const PAD = 70, W = 1080, ROW = 170, CARD_W = 136, CARD_H = 134, AV = 22; // AV: y of the union line inside a card
 const rows = Math.max(...familyNodes.map((n) => n.row)) + 1;
 const H = rows * ROW;
 const node = Object.fromEntries(familyNodes.map((n) => [n.id, { ...n, x: n.x + PAD }]));
@@ -42,12 +42,12 @@ const unionPaths = unions.map((u) => {
 const childPaths = edges.map((e) => {
   const to = node[e.to];
   const src = e.from.startsWith('u-') ? uPoint(e.from) : { x: node[e.from].x, y: top(node[e.from]) + CARD_H, row: node[e.from].row };
-  const bus = (src.row + 1) * ROW - 22;
+  const bus = (src.row + 1) * ROW - (e.eu ? 34 : 22);
   const d = `M${src.x} ${src.y} V${bus} H${to.x} V${top(to)}`;
   const far = to.row - src.row > 1;
   // label: beside the long vertical run of a far edge, else to the right of the child card
-  const lx = e.labelOnBus ? Math.min(src.x, to.x) + 24 : far ? to.x + 10 : to.x + CARD_W / 2 + 10;
-  const ly = e.labelOnBus ? bus - 22 : far ? (to.row - 1) * ROW + 30 : top(to) + 16;
+  const lx = e.eu ? Math.max(src.x, to.x) - 120 : e.labelOnBus ? Math.min(src.x, to.x) + 24 : far ? to.x + 10 : to.x + CARD_W / 2 + 10;
+  const ly = e.eu ? bus - 20 : e.labelOnBus ? bus - 22 : far ? (to.row - 1) * ROW + 30 : top(to) + 16;
   return { e, d, lx, ly };
 });
 const filmNotes = familyNodes.filter((n) => n.film);
@@ -69,18 +69,19 @@ const filmNotes = familyNodes.filter((n) => n.film);
         <span><i class="k-line name-only"></i> in name only</span>
         <span><i class="k-line dotted"></i> many generations</span>
         <span><i class="k-film"></i> the films differ</span>
+        <span><i class="k-line eu"></i> later books only, not Frank Herbert</span>
       </p>
     </header>
 
     <div class="scroll-x pxbox tree-box">
       <div class="tree" style={`width:${W}px;height:${H}px`}>
         <svg class="tree-lines" viewBox={`0 0 ${W} ${H}`} width={W} height={H} aria-hidden="true" shape-rendering="crispEdges">
-          {childPaths.map((p) => <path d={p.d} class:list={['t-child', { dotted: p.e.dotted }]} {...sp(edgeLevel(p.e.from, p.e.to), true)} />)}
+          {childPaths.map((p) => <path d={p.d} class:list={['t-child', { dotted: p.e.dotted, eu: p.e.eu }]} {...sp(edgeLevel(p.e.from, p.e.to, p.e.eu), true)} />)}
           {unionPaths.map((p) => <path d={p.d} class={`t-union ${p.u.kind}`} {...sp(lv(p.u.id), true)}><title>{unionLabel[p.u.kind]}</title></path>)}
           {unions.map((u) => { const p = uPoint(u.id); return <rect x={p.x - 4} y={p.y - 4} width="8" height="8" class={`t-knot ${u.kind}`} {...sp(lv(u.id), true)} />; })}
         </svg>
         {childPaths.filter((p) => p.e.label).map((p) => (
-          <span class="tree-gap vt" style={`left:${p.lx}px;top:${p.ly}px`} {...sp(edgeLevel(p.e.from, p.e.to), true)}>{p.e.label}</span>
+          <span class:list={['tree-gap', 'vt', { 'eu-gap': p.e.eu }]} style={`left:${p.lx}px;top:${p.ly}px`} {...sp(edgeLevel(p.e.from, p.e.to, p.e.eu), true)}>{p.e.label}</span>
         ))}
         {familyNodes.map((raw) => { const n = node[raw.id];
           const inner = (
@@ -89,6 +90,7 @@ const filmNotes = familyNodes.filter((n) => n.film);
               <b>{n.name}</b>
               {n.sub && <small>{n.sub}</small>}
               {n.film && <i class="t-film" title={n.film}>FILM</i>}
+              {n.eu && <em class="t-eu" {...sp(2, true)}>LATER BOOKS<br />{n.eu}</em>}
             </>
           );
           const style = `left:${n.x - CARD_W / 2}px;top:${top(n)}px;width:${CARD_W}px;height:${CARD_H}px`;

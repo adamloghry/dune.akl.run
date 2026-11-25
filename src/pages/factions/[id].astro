@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import { glossHtml } from '../../lib/gloss';
 import Avatar from '../../components/Avatar.astro';
 import Sprite from '../../components/Sprite.astro';
+import LaterBooks from '../../components/LaterBooks.astro';
 import { factions, factionById, characters, eraOrder, relLabel, type Faction } from '../../data/cast';
 import { eventsFor, factionLinks, eraName } from '../../data/query';
 import { sp, eventLevel, eraLevel, appear, blurbLevel, facAppear, facBlurb, lastLevel, type Level } from '../../data/spoilers';
@@ -93,6 +94,8 @@ const words = ['absent', 'marginal', 'a player', 'central'];
         ))}
       </ol>
     </section>
+
+    <LaterBooks f={f.id} name={f.name} />
 
     <nav class="pager">
       {prev ? <a class="btn ghost" href={`${base}/factions/${prev.id}/`}>&lt; {prev.name}</a> : <span></span>}

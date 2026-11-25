@@ -3,6 +3,7 @@ import Base from '../../layouts/Base.astro';
 import { glossHtml } from '../../lib/gloss';
 import Avatar from '../../components/Avatar.astro';
 import Sprite from '../../components/Sprite.astro';
+import LaterBooks from '../../components/LaterBooks.astro';
 import { characters, charById, factionById, eraOrder, relLabel, type Character } from '../../data/cast';
 import { eventsFor, companions, eraName } from '../../data/query';
 import { kindLabel } from '../../data/timeline';
@@ -81,6 +82,8 @@ const lifeEras = eraOrder.filter((e) => c.eras[e] || c.arc[e]);
         ))}
       </ol>
     </section>
+
+    <LaterBooks who={c.id} name={c.name} />
 
     {comp.length > 0 && (
       <section class="arc-sec">

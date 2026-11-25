@@ -530,3 +530,11 @@ body:has(#only-diverged:checked) .event.eu { display: none; }
 .foot-nav { position: relative; display: flex; flex-wrap: wrap; gap: 4px 14px; padding-top: 14px; font-size: 20px; }
 .foot-nav a { color: var(--ink-2); }
 .foot-nav a:hover, .foot-nav a[aria-current='page'] { color: var(--gold); }
+.k-line.eu { border-top: 3px dashed var(--ink-2); }
+.t-child.eu { stroke: var(--ink-2); stroke-dasharray: 6 4; }
+.t-eu { display: block; margin-top: auto; font-style: normal; font-family: 'VT323', monospace; font-size: 15px; line-height: 1; color: var(--ink-2); border-top: 2px dashed var(--line); padding-top: 3px; width: 100%; }
+.tree-gap.eu-gap { color: var(--ink-2); }
+.later-books .eu-flag { margin: 0 0 8px !important; }
+.later-books .mini-events .eu-card { border-style: dashed; }
+.later-books .mini-events .eu-retcon { border-color: var(--cut); }
+.retcon-word { color: var(--cut); font-weight: 600; }
