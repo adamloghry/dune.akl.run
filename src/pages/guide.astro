@@ -19,9 +19,7 @@ const pubOrder = Object.entries(euBooks) as [EUBook, (typeof euBooks)[EUBook]][]
       <p class="kicker">where to begin</p>
       <h1>Reading and watching guide</h1>
       <p class="sec-sub">
-        Where to start, what order to go in, and what each book and film adds. Spoiler-light: no
-        deaths and no twists below. Frank Herbert's six novels come first, then Denis Villeneuve's
-        films. The later books and the other adaptations sit in dashed boxes at the end.
+        Where to start, what order to go in, and what each adds. No deaths or twists below.
       </p>
     </header>
 
@@ -43,8 +41,7 @@ const pubOrder = Object.entries(euBooks) as [EUBook, (typeof euBooks)[EUBook]][]
     <section class="g-sec" aria-labelledby="herbert-h">
       <h2 id="herbert-h" class="sec-title">Frank Herbert's six novels</h2>
       <p class="sec-sub">
-        Read them in publication order, which is also story order. The appendices and glossary at the
-        back of Dune are part of the record too: <a href={`${base}/#old-empire`}>{eraName['old-empire']}</a> and
+        Read them in publication order, which is also story order. Dune's appendices are part of the record too: <a href={`${base}/#old-empire`}>{eraName['old-empire']}</a> and
         <a href={`${base}/#imperium`}>{eraName.imperium}</a> come from them.
       </p>
       <ol class="g-books">
@@ -69,8 +66,7 @@ const pubOrder = Object.entries(euBooks) as [EUBook, (typeof euBooks)[EUBook]][]
     <section class="g-sec" aria-labelledby="films-h">
       <h2 id="films-h" class="sec-title">Denis Villeneuve's films</h2>
       <p class="sec-sub">
-        Two films adapt the first novel. Every place they differ from it is marked on the timeline and
-        collected on the <a href={`${base}/films/`}>films page</a>.
+        Two films adapt the first novel. Their changes are marked on the timeline and listed on the <a href={`${base}/films/`}>films page</a>.
       </p>
       <ul class="g-films-list">
         {villeneuveFilms.map((f) => (
@@ -83,7 +79,7 @@ const pubOrder = Object.entries(euBooks) as [EUBook, (typeof euBooks)[EUBook]][]
         <li class="pxbox g-film g-next">
           <h3>{partThree.title} <span class="badge g-sched">SCHEDULED</span></h3>
           <p><span class="g-label">adapts</span> {partThree.adapts}.</p>
-          <p class="g-note">Scheduled to open in theaters on {partThree.release}, as of {partThree.checked}. This site will add its notes once the film is out.</p>
+          <p class="g-note">Due in theaters {partThree.release} (as of {partThree.checked}). Notes will follow its release.</p>
         </li>
       </ul>
     </section>
@@ -93,9 +89,8 @@ const pubOrder = Object.entries(euBooks) as [EUBook, (typeof euBooks)[EUBook]][]
       <div class="pxbox eu-card g-later">
         <p class="eu-flag vt"><span>LATER BOOKS</span> not Frank Herbert · {euAuthors}</p>
         <p class="g-later-intro">
-          Since 1999, {euAuthors} have written {pubOrder.length} more novels set before, between and
-          after Frank Herbert's. They are not his work, and they sometimes change what he wrote. Read
-          his six first. The <a href={`${base}/beyond/`}>Beyond Herbert</a> page lists every change.
+          Since 1999, {euAuthors} have written {pubOrder.length} more novels around Frank Herbert's.
+          They sometimes change what he wrote. Read his six first; <a href={`${base}/beyond/`}>Beyond Herbert</a> lists every change.
         </p>
         <div class="g-cols">
           <div>
@@ -118,7 +113,7 @@ const pubOrder = Object.entries(euBooks) as [EUBook, (typeof euBooks)[EUBook]][]
 
     <section class="g-sec" aria-labelledby="screens-h">
       <h2 id="screens-h" class="sec-title">Other screen versions</h2>
-      <p class="sec-sub">For comparison only. Each one departs further from the books than Villeneuve's films.</p>
+      <p class="sec-sub">For comparison only. All stray further from the books than Villeneuve's films.</p>
       <ul class="g-screens">
         {otherScreens.map((s) => (
           <li class="pxbox eu-card">

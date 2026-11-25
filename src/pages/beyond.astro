@@ -25,10 +25,8 @@ const anchorTitle = (id: string) => {
       <p class="kicker">outside the record</p>
       <h1>Beyond Herbert</h1>
       <p class="sec-sub">
-        Since 1999, {euAuthors} have written {Object.keys(euBooks).length} more Dune novels, and
-        there are four more screen versions besides Villeneuve's. None of it outranks Frank Herbert's six
-        novels or Villeneuve's films on this site. It is shown in dashed boxes, and every place a
-        later book changes what Frank Herbert wrote is marked as a retcon.
+        {Object.keys(euBooks).length} later novels by {euAuthors}, and four other screen versions. All
+        rank below Frank Herbert and Villeneuve here, in dashed boxes; changes to Herbert are marked as retcons.
       </p>
     </header>
 
@@ -41,7 +39,7 @@ const anchorTitle = (id: string) => {
 
     <section class="film-block" aria-labelledby="ret-h">
       <h2 id="ret-h"><span class="badge eu-badge eu-k-retcon">RETCON</span> What the later books change</h2>
-      <p class="sec-sub">Frank Herbert's own text on the left. The site's main timeline follows the left column.</p>
+      <p class="sec-sub">Frank Herbert on the left; the timeline follows him.</p>
       <table class="ledger">
         <thead><tr><th>Event</th><th>Frank Herbert wrote</th><th>The later books say</th></tr></thead>
         <tbody>
@@ -58,7 +56,7 @@ const anchorTitle = (id: string) => {
 
     <section class="film-block" aria-labelledby="books-h">
       <h2 id="books-h">The later novels</h2>
-      <p class="sec-sub">Grouped by series, with the part of the timeline each one covers.</p>
+      <p class="sec-sub">By series, with the part of the timeline each covers.</p>
       {[...series.entries()].map(([name, books]) => (
         <>
           <h3 class="series-h">{name}</h3>
@@ -74,8 +72,7 @@ const anchorTitle = (id: string) => {
     <section class="film-block" aria-labelledby="scr-h">
       <h2 id="scr-h">Other screen versions</h2>
       <p class="sec-sub">
-        Villeneuve's films are the screen canon here. These versions are listed for comparison and
-        hidden on the timeline until you switch them on.
+        For comparison. Off on the timeline until you switch them on.
       </p>
       {(Object.entries(screens) as [Screen, (typeof screens)[Screen]][]).map(([k, s]) => (
         <article class="screen-card pxbox">

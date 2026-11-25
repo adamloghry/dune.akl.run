@@ -24,8 +24,7 @@ const books = (ids: string[]) => ids.map((b) => euBooks[b as keyof typeof euBook
     <h2 class="sec-title" id="later-h">In the later books</h2>
     <p class="eu-flag vt"><span>LATER BOOKS</span> not Frank Herbert · {euAuthors}</p>
     <p class="sec-sub">
-      What the novels written since 1999 add about {name}. Frank Herbert's books outrank them here;
-      a <b class="retcon-word">retcon</b> marks a place where they contradict him.
+      What the post-1999 novels add about {name}. A <b class="retcon-word">retcon</b> contradicts Frank Herbert.
     </p>
     <ol class="mini-events">
       {evs.map((e) => (

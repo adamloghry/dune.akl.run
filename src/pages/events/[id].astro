@@ -20,7 +20,7 @@ const label = levels.find((l) => l.n === p.level)!;
 const body = (p.canon?.body ?? p.eu?.body ?? '').replace(/\s+/g, ' ');
 const first = body.split(/(?<=[.!?])\s/)[0];
 const share = spoil
-  ? { title: `A ${label.short} spoiler — The Golden Path`, description: `A moment from the Dune saga, from ${label.label}. The page hides spoilers past the point you have read.` }
+  ? { title: `A ${label.short} spoiler — The Golden Path`, description: `A moment from ${label.label}. Spoilers past your point stay hidden.` }
   : { title: `${p.title} — The Golden Path`, description: first };
 const img = `${base}/og/${p.id}.png`;
 ---
@@ -48,7 +48,7 @@ const img = `${base}/og/${p.id}.png`;
         <div class="share-side">
           <p>
             {spoil
-              ? <>The preview names the book but not what happens, so the link is safe to send to someone who has not read {label.short} yet.</>
+              ? <>The preview hides what happens, so it's safe to send to someone who hasn't read {label.short}.</>
               : <>The preview shows the title and when it happens.</>}
           </p>
           <div class="share-btns">

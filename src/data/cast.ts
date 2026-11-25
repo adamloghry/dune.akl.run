@@ -84,7 +84,7 @@ export const factions: Faction[] = [
     sigil: "hawk",
     colour: "#3f8f4f",
     blurb:
-      "A Great House from Caladan, known for loyalty it earns rather than buys. The Emperor fears its popularity; the Bene Gesserit want its bloodline. Every later age of the saga runs through Atreides descendants.",
+      "A Great House from Caladan that earns loyalty rather than buying it. The Emperor fears its popularity; the Bene Gesserit want its bloodline. Every later era runs through its descendants.",
     presence: {
       "old-empire": 1,
       imperium: 2,
@@ -103,7 +103,7 @@ export const factions: Faction[] = [
       "god-emperor": "Leto II is the dynasty; Siona carries the line he bred to be invisible.",
       heretics: "Atreides genes run on in Odrade and her father, Miles Teg.",
     },
-    film: "Recognizably the same house, with the Caladan years compressed into a prologue.",
+    film: "Much the same, with the Caladan years compressed into a prologue.",
   },
   {
     id: "harkonnen",
@@ -112,7 +112,7 @@ export const factions: Faction[] = [
     sigil: "griffin",
     colour: "#4a6fb5",
     blurb:
-      "A Great House from Giedi Prime, rich from decades of spice and ruled by cruelty. Its leader, Baron Vladimir, is the saga's first villain and, through his descendants, a recurring ghost.",
+      "A Great House from Giedi Prime, rich from decades of spice and ruled by cruelty. Baron Vladimir, its head, is the saga's first villain and, through his descendants, a recurring ghost.",
     presence: {
       "old-empire": 1,
       imperium: 3,
@@ -155,7 +155,7 @@ export const factions: Faction[] = [
     sigil: "hood",
     colour: "#8e7fb0",
     blurb:
-      "A sisterhood of mental and physical training, founded after the Butlerian Jihad, running a breeding program across millennia. The only institution that lasts from the first book to the last.",
+      "A sisterhood trained in mind and body, founded after the Butlerian Jihad, that runs a breeding program across millennia. The only institution present from the first book to the last.",
     presence: {
       "old-empire": 1,
       imperium: 3,
@@ -173,7 +173,7 @@ export const factions: Faction[] = [
       "god-emperor": "Tolerated and watched by Leto II.",
       heretics: "Becomes the protagonist: hunted by the Honored Matres, then merges with them.",
     },
-    film: "More openly sinister; Jessica's role as its agent is foregrounded in Part Two.",
+    film: "More openly sinister; Part Two foregrounds Jessica as its agent.",
   },
   {
     id: "guild",
@@ -209,7 +209,7 @@ export const factions: Faction[] = [
     sigil: "knife",
     colour: "#c26a2a",
     blurb:
-      "Descendants of the Zensunni Wanderers, living in desert sietches. Underestimated by everyone, they are the most dangerous fighters in the universe and the tool, then the victims, of Paul's jihad.",
+      "Descendants of the Zensunni Wanderers, living in desert sietches. Underestimated by all, they are the universe's deadliest fighters, and the tool, then the victims, of Paul's jihad.",
     presence: { "old-empire": 1, imperium: 2, dune: 3, messiah: 3, children: 3, "god-emperor": 1 },
     arc: {
       "old-empire": "Zensunni migrations from world to world.",
@@ -219,7 +219,7 @@ export const factions: Faction[] = [
       children: "Split between old ways and the new religion.",
       "god-emperor": 'Survive only as "Museum Fremen", performers of their own past.',
     },
-    film: "Split into skeptical northerners and southern fundamentalists, an invention of Part Two.",
+    film: "Part Two invents a split between skeptical northerners and southern fundamentalists.",
   },
   {
     id: "choam",
@@ -232,7 +232,7 @@ export const factions: Faction[] = [
     presence: { imperium: 3, dune: 2, messiah: 2, children: 1, "god-emperor": 1, scattering: 1, heretics: 1 },
     arc: {
       imperium: "Holds the purse strings of the Great Convention.",
-      dune: "The Atreides' gain in CHOAM standing is part of what makes them dangerous.",
+      dune: "Rising CHOAM standing is part of what makes the Atreides dangerous.",
     },
     film: "Barely mentioned.",
   },
@@ -259,7 +259,7 @@ export const factions: Faction[] = [
     sigil: "mask",
     colour: "#6b7a3a",
     blurb:
-      "Gene-crafters with their own secret faith. They make Face Dancers, who can take any shape, and gholas, people regrown from dead cells, above all Duncan Idaho, again and again.",
+      "Gene-crafters with a secret faith. They make Face Dancers, who can take any shape, and gholas, people regrown from dead cells: above all Duncan Idaho, again and again.",
     presence: { imperium: 1, dune: 1, messiah: 3, children: 1, "god-emperor": 2, scattering: 1, heretics: 3 },
     arc: {
       dune: "Made Piter de Vries.",
@@ -276,7 +276,7 @@ export const factions: Faction[] = [
     sigil: "gear",
     colour: "#7f8c99",
     blurb:
-      "The machine culture that pushes the Jihad's limits. Its no-chambers and no-ships hide people from prescience, which makes the Scattering possible.",
+      "The machine culture that pushes the Jihad's limits. Its no-chambers and no-ships hide people from prescience and make the Scattering possible.",
     presence: { imperium: 1, dune: 1, messiah: 1, children: 1, "god-emperor": 2, scattering: 2, heretics: 2 },
     arc: {
       "god-emperor": "Sends Hwi Noree to Leto and builds a no-chamber.",
@@ -292,7 +292,7 @@ export const factions: Faction[] = [
     sigil: "flame",
     colour: "#d9822b",
     blurb:
-      "Paul's missionary priesthood, the Qizarate, which turns Muad'Dib into a god. Its successor on Rakis is the Priesthood of the Divided God, worshipping the worms that carry Leto.",
+      "Paul's missionary priesthood, the Qizarate, makes Muad'Dib a god. Its successor on Rakis, the Priesthood of the Divided God, worships the worms that carry Leto.",
     presence: { messiah: 3, children: 3, "god-emperor": 1, heretics: 2 },
     arc: {
       messiah: "Runs the religion of Muad'Dib.",
@@ -307,7 +307,7 @@ export const factions: Faction[] = [
     kind: "Army",
     sigil: "fish",
     colour: "#3a8fa0",
-    blurb: "Leto II's army and priesthood, made up entirely of women. After his death some of them scatter.",
+    blurb: "Leto II's all-female army and priesthood, some of whom scatter after his death.",
     presence: { "god-emperor": 3, scattering: 2, heretics: 1 },
     arc: {
       "god-emperor": "Police the Empire and worship Leto.",
@@ -321,7 +321,7 @@ export const factions: Faction[] = [
     sigil: "claw",
     colour: "#e0562a",
     blurb:
-      "A violent matriarchy returning from the Scattering, ruling men through sexual imprinting. They destroy planets the Bene Gesserit hold, and are themselves fleeing an unnamed enemy.",
+      "A violent matriarchy back from the Scattering that rules men through sexual imprinting. They destroy Bene Gesserit planets while fleeing an unnamed enemy.",
     presence: { scattering: 2, heretics: 3 },
     arc: { heretics: "Destroy Rakis; end merged with the Bene Gesserit under Murbella." },
   },
@@ -363,7 +363,7 @@ export const characters: Character[] = [
     ],
     eras: { dune: "alive", messiah: "alive", children: "alive" },
     blurb:
-      "The Kwisatz Haderach, a generation early. He sees the jihad coming and cannot find a path that avoids it. Herbert built him as a warning about charismatic leaders, not a hero.",
+      "The Kwisatz Haderach, a generation early. He foresees the jihad and finds no path that avoids it. Herbert wrote him as a warning about charismatic leaders, not a hero.",
     arc: {
       dune: "Duke's son to Fremen messiah to Emperor in about two years.",
       messiah: "Emperor of a holy war he hates; blinded, he walks into the desert.",
@@ -371,7 +371,7 @@ export const characters: Character[] = [
     },
     film: {
       actor: "Timothée Chalamet",
-      note: "Older than the book's fifteen. Part Two turns his acceptance of the messiah role into a darker, more deliberate choice.",
+      note: "Older than the book's fifteen. In Part Two, taking the messiah role is a darker, more deliberate choice.",
     },
     look: { skin: S.fair, hair: H.black, eyes: "blue", head: "hair", cloth: "#3a3a3a" },
   },
@@ -392,7 +392,7 @@ export const characters: Character[] = [
       children:
         "Returns to judge her grandchildren and is taken to Salusa Secundus, where she trains Farad'n.",
     },
-    film: { actor: "Rebecca Ferguson", note: "Becomes an active evangelist of the prophecy in Part Two." },
+    film: { actor: "Rebecca Ferguson", note: "Actively spreads the prophecy in Part Two." },
     look: { skin: S.fair, hair: H.bronze, eyes: "dark", head: "long", cloth: "#3a2a3f" },
   },
   {
@@ -422,7 +422,7 @@ export const characters: Character[] = [
     ],
     eras: { dune: "alive", messiah: "alive", children: "alive" },
     blurb:
-      "Pre-born: awakened in the womb with every ancestor's memory. A child who kills the Baron, a regent who becomes possessed by him.",
+      "Pre-born: awake in the womb with every ancestor's memory. As a child she kills the Baron; as regent she is possessed by him.",
     arc: {
       dune: "Kills Baron Harkonnen with the gom jabbar.",
       messiah: "Priestess of Paul's religion; falls for the ghola Hayt.",
@@ -430,7 +430,7 @@ export const characters: Character[] = [
     },
     film: {
       actor: "Anya Taylor-Joy (vision)",
-      note: "Never born in Part Two; speaks from the womb and appears as an adult in Paul's vision.",
+      note: "Unborn in Part Two; speaks from the womb and appears as an adult in Paul's vision.",
     },
     look: { skin: S.fair, hair: H.bronze, eyes: "blue", head: "long", cloth: "#1f1f1f" },
   },
@@ -491,7 +491,7 @@ export const characters: Character[] = [
     ],
     eras: { messiah: "alive", children: "alive" },
     blurb:
-      "Leto II's twin sister, pre-born like him. Holds the memories of Chani close as a shield against Abomination.",
+      "Leto II's twin sister, pre-born like him. She keeps Chani's memories close as a shield against Abomination.",
     arc: {
       messiah: "Born.",
       children: "Plans to kill Farad'n, then formally marries Leto and takes Farad'n as her consort.",
@@ -518,7 +518,7 @@ export const characters: Character[] = [
       heretics: "alive",
     },
     blurb:
-      "The one character in every novel. Swordmaster who dies for Paul, then regrown by the Tleilaxu again and again: the thread that ties five thousand years together.",
+      "The only character in every novel. A swordmaster who dies for Paul and is regrown by the Tleilaxu again and again, tying five thousand years together.",
     arc: {
       dune: "Dies holding a doorway so Paul and Jessica can escape.",
       messiah: "Returns as the ghola Hayt, a weapon that remembers he is Duncan.",
@@ -586,7 +586,7 @@ export const characters: Character[] = [
     blurb:
       "Head of House Harkonnen, held up by suspensors, and secretly Jessica's father. Killed by his granddaughter; returns as a voice inside her.",
     arc: { dune: "Destroys the Atreides; killed by Alia.", children: "His memory possesses Alia." },
-    film: { actor: "Stellan Skarsgård", note: "Killed by Paul. His being Jessica's father is kept." },
+    film: { actor: "Stellan Skarsgård", note: "Killed by Paul. Still Jessica's father." },
     look: { skin: S.fair, eyes: "dark", head: "bald", wide: true, cloth: "#2a3a6a" },
   },
   {
@@ -692,7 +692,7 @@ export const characters: Character[] = [
     factions: [{ id: "tleilax", rel: "member" }],
     eras: { messiah: "alive" },
     blurb:
-      "The Tleilaxu Face Dancer who drives the conspiracy in Messiah. The books never say whether he is linked to the Tleilaxu Master Scytale of Heretics and Chapterhouse.",
+      "The Tleilaxu Face Dancer who drives the conspiracy in Messiah. The books never say whether he is linked to Master Scytale of Heretics and Chapterhouse.",
     arc: { messiah: "Offers Paul a ghola of Chani; is killed by Paul." },
     look: { skin: S.grey, eyes: "white", head: "bald", cloth: "#4a5a2a" },
   },
@@ -717,10 +717,10 @@ export const characters: Character[] = [
     ],
     eras: { "god-emperor": "alive", heretics: "echo" },
     blurb:
-      "A rebel against Leto II, and the goal of his breeding: a human invisible to prescience. Her descendants cannot be foreseen.",
+      "A rebel against Leto II and the goal of his breeding: a human invisible to prescience, as are her descendants.",
     arc: {
       "god-emperor": "Steals his journals; kills him at the bridge.",
-      heretics: "Her bloodline protects Teg, Odrade and the later Duncan gholas from prescient sight.",
+      heretics: "Her bloodline hides Teg, Odrade and the later Duncan gholas from prescience.",
     },
     look: { skin: S.olive, hair: H.black, eyes: "dark", head: "long", cloth: "#3a6a7a" },
   },
@@ -781,7 +781,7 @@ export const characters: Character[] = [
     ],
     eras: { heretics: "alive" },
     blurb:
-      "A young Honored Matre who tries to imprint Duncan and is imprinted instead. Ends as the leader of both orders.",
+      "A young Honored Matre who tries to imprint Duncan and is imprinted instead. Ends up leading both orders.",
     arc: { heretics: "Captured, retrained, then commands the merged Sisterhood." },
     look: { skin: S.fair, hair: H.blond, eyes: "dark", head: "long", cloth: "#e0562a" },
   },

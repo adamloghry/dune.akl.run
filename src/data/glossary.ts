@@ -26,44 +26,44 @@ const terms: Term[] = [
   {
     id: "abomination",
     term: "Abomination",
-    def: "A pre-born person taken over by one of the ancestral lives in their memory. The Bene Gesserit fear it above almost anything.",
-    more: "Every pre-born child lives with this danger, which is why the Sisterhood watches them so closely.",
+    def: "A pre-born person taken over by an ancestral life in their memory. The Bene Gesserit fear it above almost anything.",
+    more: "Every pre-born child faces this danger, so the Sisterhood watches them closely.",
   },
   {
     id: "amtal",
     term: "amtal",
     aliases: ["amtal rule"],
-    def: "A custom of testing something to its breaking point to learn its limits. On Arrakis it can mean a fight to the death.",
-    more: "In Dune it is the custom behind Jamis's challenge to Paul.",
+    def: "A custom of testing something to destruction to learn its limits. On Arrakis it can mean a fight to the death.",
+    more: "It lies behind Jamis's challenge to Paul in Dune.",
   },
   {
     id: "arrakeen",
     term: "Arrakeen",
-    def: "The first settlement on Arrakis and the seat of its government. The Atreides move into its Residency when they arrive.",
+    def: "The first settlement on Arrakis and its seat of government. The Atreides move into its Residency.",
   },
   {
     id: "arrakis",
     term: "Arrakis",
-    def: "The desert planet, the only known natural source of the spice melange. Its Fremen call it Dune. Much later it is called Rakis.",
+    def: "The desert planet, the only known natural source of melange. The Fremen call it Dune; much later it is Rakis.",
   },
   {
     id: "assassins-handbook",
     term: "Assassins' Handbook",
-    def: "An old reference work that lists the poisons and weapons allowed in a War of Assassins.",
+    def: "An old reference work listing the poisons and weapons allowed in a War of Assassins.",
   },
   {
     id: "atomics",
     term: "atomics",
     aliases: ["family atomics"],
     def: "Nuclear weapons. Each Great House keeps a family stockpile, but the Great Convention forbids using them on people.",
-    more: "Paul turns his on the Shield Wall, which is rock, not people, so he stays inside the letter of the law.",
+    more: "Paul uses his on the Shield Wall: rock, not people, so within the letter of the law.",
     film: "Part Two keeps the atomics that blast open the Shield Wall.",
   },
   {
     id: "axlotl-tank",
     term: "axlotl tank",
     aliases: ["axlotl tanks"],
-    def: "The Tleilaxu vats in which gholas are grown. The last two novels reveal what they really are: living Tleilaxu women.",
+    def: "The Tleilaxu vats that grow gholas. The last two novels reveal them as living Tleilaxu women.",
   },
   {
     id: "baliset",
@@ -74,29 +74,29 @@ const terms: Term[] = [
     id: "bashar",
     term: "Bashar",
     aliases: ["Mentat-Bashar"],
-    def: "A senior military rank, first used for Sardaukar officers. Miles Teg, a Mentat-Bashar, is both a commander and a Mentat.",
+    def: "A senior military rank, first used for Sardaukar officers. Miles Teg is a Mentat-Bashar: commander and Mentat.",
   },
   {
     id: "bene-gesserit",
     term: "Bene Gesserit",
     aliases: ["Sisterhood", "Sister"],
     def: "An ancient order of women trained to master body and mind. It runs a secret breeding program aimed at the Kwisatz Haderach.",
-    more: "Its members serve the Great Houses as wives, advisers and Truthsayers. It is the only old power still standing in the last two novels.",
-    film: "More openly sinister in the films. Part Two puts Jessica's work as its agent in the foreground.",
+    more: "Its members serve the Great Houses as wives, advisers and Truthsayers. It is the only old power left in the last two novels.",
+    film: "More openly sinister on screen. Part Two foregrounds Jessica's work as its agent.",
   },
   {
     id: "bene-tleilax",
     term: "Bene Tleilax",
     aliases: ["Tleilaxu", "Tleilax"],
     def: "Secretive gene-crafters with a hidden faith of their own. They make gholas, Face Dancers and twisted Mentats.",
-    film: "They do not appear in the two films.",
+    film: "Absent from both films.",
   },
   {
     id: "butlerian-jihad",
     term: "Butlerian Jihad",
     aliases: ["Jihad"],
     def: "The crusade, more than ten thousand years before Dune, that destroyed computers, thinking machines and conscious robots.",
-    more: "Its commandment against machines made like a human mind shapes everything after it. Mentats, Navigators and the Bene Gesserit all do work that machines once did.",
+    more: "Its ban on machines made like a human mind shapes everything after. Mentats, Navigators and the Bene Gesserit do work machines once did.",
   },
   {
     id: "butlerians",
@@ -107,12 +107,12 @@ const terms: Term[] = [
   {
     id: "caladan",
     term: "Caladan",
-    def: "The ocean world that was home to House Atreides before the move to Arrakis.",
+    def: "The ocean world, home of House Atreides before Arrakis.",
   },
   {
     id: "chapterhouse",
     term: "Chapterhouse",
-    def: "The hidden home world of the Bene Gesserit. In the last novel it starts to dry out into a new desert.",
+    def: "The hidden home world of the Bene Gesserit. In the last novel it begins drying into desert.",
   },
   {
     id: "choam",
@@ -124,8 +124,8 @@ const terms: Term[] = [
     id: "crysknife",
     term: "crysknife",
     aliases: ["crysknives"],
-    def: "The sacred Fremen knife, made from a sandworm's tooth. An unfixed blade breaks down unless it stays close to a living body.",
-    more: "By Fremen custom, a crysknife once drawn must draw blood before it is sheathed.",
+    def: "The sacred Fremen knife, made from a sandworm's tooth. An unfixed blade disintegrates away from a living body.",
+    more: "By custom, once drawn it must draw blood before it is sheathed.",
     film: "Kept. Shadout Mapes gives one to Jessica in Part One.",
   },
   {
@@ -138,7 +138,7 @@ const terms: Term[] = [
   {
     id: "divided-god",
     term: "Divided God",
-    def: "Leto II as he is worshipped on Rakis in the last novels: one god split among the sandworms that carry pieces of him.",
+    def: "Leto II as worshipped on Rakis in the last novels: one god split among the sandworms that carry pieces of him.",
   },
   {
     id: "eyes-of-ibad",
@@ -156,43 +156,43 @@ const terms: Term[] = [
   {
     id: "faufreluches",
     term: "faufreluches",
-    def: "The rigid class system of the Imperium, in which every person has a fixed place.",
+    def: "The Imperium's rigid class system, which fixes every person's place.",
   },
   {
     id: "fedaykin",
     term: "Fedaykin",
-    def: "Fremen death commandos, sworn to give their lives for a cause. They become Paul's personal guard.",
+    def: "Fremen death commandos, sworn to die for a cause. They become Paul's personal guard.",
   },
   {
     id: "fish-speakers",
     term: "Fish Speakers",
     aliases: ["Fish Speaker"],
-    def: "Leto II's army and priesthood, made up only of women and devoted to him.",
-    more: "After his death some of them scatter. The last novels name them among the ancestors of the Honored Matres.",
+    def: "Leto II's all-female army and priesthood, devoted to him.",
+    more: "After his death some scatter. The last novels name them among the Honored Matres' ancestors.",
   },
   {
     id: "fremen",
     term: "Fremen",
     def: "The free people of the deep desert of Arrakis, descended from the Zensunni Wanderers. Far more numerous and dangerous than outsiders think.",
-    film: "Part Two splits them into skeptical northerners and devout southerners, an invention of the film.",
+    film: "Part Two invents a split between skeptical northerners and devout southerners.",
   },
   {
     id: "gammu",
     term: "Gammu",
-    def: "The later name of Giedi Prime. In Heretics of Dune, the newest Duncan Idaho ghola is raised there.",
+    def: "Giedi Prime's later name. In Heretics of Dune the newest Duncan Idaho ghola is raised there.",
   },
   {
     id: "ghola",
     term: "ghola",
     aliases: ["gholas", "Gholas"],
-    def: "A person regrown by the Tleilaxu from a dead body's cells. A ghola has none of the original's memories unless they are woken.",
+    def: "A person regrown by the Tleilaxu from a dead body's cells, without the original's memories unless they are woken.",
     more: "Duncan Idaho is regrown again and again, from Dune Messiah to Chapterhouse: Dune.",
   },
   {
     id: "giedi-prime",
     term: "Giedi Prime",
     def: "The Harkonnen home world: industrial, cruel and built for spectacle.",
-    film: "Part Two shows it under a black sun that drains it of color, a look invented for the film.",
+    film: "Part Two invents a black sun that drains it of color.",
   },
   {
     id: "golden-path",
@@ -222,7 +222,7 @@ const terms: Term[] = [
     id: "holtzman-shield",
     term: "Holtzman shield",
     aliases: ["shields"],
-    def: "A force field that stops anything moving fast. Only a slow blade gets through, which is why the Imperium fights with knives.",
+    def: "A force field that stops anything moving fast. Only a slow blade gets through, so the Imperium fights with knives.",
     more: "A lasgun beam that hits a shield sets off a blast like an atomic explosion.",
     film: "The films show a shield flash red when a slow blade gets through.",
   },
@@ -231,7 +231,7 @@ const terms: Term[] = [
     term: "Honored Matres",
     aliases: ["Honored Matre", "Matres"],
     def: "A violent order of women who return from the Scattering and rule men through sexual imprinting.",
-    more: "Chapterhouse: Dune traces them to Fish Speakers and Bene Gesserit who fled into the Scattering. They are running from an enemy of their own.",
+    more: "Chapterhouse: Dune traces them to Fish Speakers and Bene Gesserit who fled into the Scattering. They flee an enemy of their own.",
   },
   {
     id: "hunter-seeker",
@@ -253,7 +253,7 @@ const terms: Term[] = [
   {
     id: "inkvine",
     term: "inkvine",
-    def: "A creeping plant from Giedi Prime used as a whip. Its lash leaves a dark red scar that hurts for years, like the one on Gurney's jaw.",
+    def: "A creeping Giedi Prime plant used as a whip. Its lash leaves a dark red scar that hurts for years, like the one on Gurney's jaw.",
   },
   {
     id: "ix",
@@ -316,12 +316,12 @@ const terms: Term[] = [
     id: "lisan-al-gaib",
     term: "Lisan al-Gaib",
     def: "The Voice from the Outer World: the off-world messiah of Fremen prophecy, a legend the Missionaria Protectiva planted long ago.",
-    film: "Part Two makes belief in it strongest among southern fundamentalists, and Paul claims the title before their war council.",
+    film: "Part Two roots belief in it among southern fundamentalists. Paul claims the title before their war council.",
   },
   {
     id: "mahdi",
     term: "Mahdi",
-    def: "The Fremen title for the messiah who will lead them to paradise. The Fremen hail Paul by it.",
+    def: "The Fremen title for the messiah who will lead them to paradise. They hail Paul by it.",
   },
   {
     id: "maker",
@@ -342,20 +342,20 @@ const terms: Term[] = [
     aliases: ["spice"],
     def: "The spice. It extends life, sharpens awareness and enables prescience, and it is addictive. Arrakis is its only natural source.",
     more: "Withdrawal kills. The Guild cannot navigate without it, so whoever controls Arrakis holds the Imperium by the throat.",
-    film: "Shown as a glittering orange dust that hangs in the desert air.",
+    film: "Glittering orange dust hanging in the desert air.",
   },
   {
     id: "mentat",
     term: "Mentat",
     aliases: ["Mentats"],
-    def: "A person trained to think like a computer, doing the work that machines did before the Butlerian Jihad.",
+    def: "A person trained to do the thinking computers did before the Butlerian Jihad.",
     more: "Mentats in Dune drink sapho juice, which stains their lips.",
     film: "Kept, with the stained lips.",
   },
   {
     id: "missionaria-protectiva",
     term: "Missionaria Protectiva",
-    def: "The arm of the Bene Gesserit that seeds legends and prophecies on primitive worlds, so a Sister in trouble can use them later.",
+    def: "The Bene Gesserit arm that seeds legends and prophecies on primitive worlds for Sisters in trouble to use later.",
   },
   {
     id: "mother-superior",
@@ -365,12 +365,12 @@ const terms: Term[] = [
   {
     id: "muad-dib",
     term: "Muad'Dib",
-    def: "Paul's Fremen name, which he picks himself: a small desert mouse admired for how well it survives.",
+    def: "Paul's self-chosen Fremen name, after a small desert mouse admired for surviving.",
   },
   {
     id: "museum-fremen",
     term: "Museum Fremen",
-    def: "In God Emperor of Dune, the last Fremen: people who keep up a staged version of their ancestors' desert life.",
+    def: "In God Emperor of Dune, the last Fremen, who act out their ancestors' desert life for show.",
   },
   {
     id: "naib",
@@ -383,14 +383,14 @@ const terms: Term[] = [
     term: "Navigator",
     aliases: ["Navigators"],
     def: "A Guild pilot who uses spice-driven prescience to find a safe path when a ship folds space.",
-    more: "Years of spice change their bodies. The first one seen on the page, Edric in Dune Messiah, lives in a tank of spice gas.",
+    more: "Years of spice change their bodies. The first seen on the page, Edric in Dune Messiah, lives in a tank of spice gas.",
     film: "Seen only briefly, on Caladan in Part One.",
   },
   {
     id: "no-chamber",
     term: "no-chamber",
     aliases: ["no-globe"],
-    def: "An Ixian-made space hidden from prescience. Those inside cannot be seen by anyone looking into the future.",
+    def: "An Ixian-made space whose occupants prescience cannot see.",
   },
   {
     id: "no-ship",
@@ -413,7 +413,7 @@ const terms: Term[] = [
     id: "ornithopter",
     term: "ornithopter",
     aliases: ["ornithopters", "thopter"],
-    def: "An aircraft that flies by beating its wings like a bird. On Arrakis it is the usual way to fly.",
+    def: "An aircraft with beating, birdlike wings. The usual way to fly on Arrakis.",
     film: "Redesigned as a dragonfly-like craft with fast-beating wings.",
   },
   {
@@ -449,7 +449,7 @@ const terms: Term[] = [
   {
     id: "prescience",
     term: "prescience",
-    def: "Sight into possible futures. Spice can bring it on. Guild Navigators, Paul and Leto II have it in different strengths.",
+    def: "Sight into possible futures, which spice can bring on. Guild Navigators, Paul and Leto II have it in different strengths.",
     more: "It has blind spots: other prescients, no-ships, and people like Siona who were bred to be unseen.",
   },
   {
@@ -467,7 +467,7 @@ const terms: Term[] = [
     id: "rakis",
     term: "Rakis",
     aliases: ["Rakian"],
-    def: "The later name of Arrakis, used after it has turned back into desert. Its priests worship the worms.",
+    def: "Arrakis's later name, once it has turned back into desert. Its priests worship the worms.",
   },
   {
     id: "reverend-mother",
@@ -489,7 +489,7 @@ const terms: Term[] = [
   {
     id: "sandtrout",
     term: "sandtrout",
-    def: "The small larval stage of the sandworm. Sandtrout wall off water underground, which keeps Arrakis a desert.",
+    def: "The sandworm's small larval stage. Sandtrout wall off water underground, keeping Arrakis a desert.",
     more: "In Children of Dune, Leto II lets them cover his skin like a living membrane.",
   },
   {
@@ -502,12 +502,12 @@ const terms: Term[] = [
     id: "sapho",
     term: "sapho",
     aliases: ["sapho juice"],
-    def: "A strong liquid pressed from the roots of a plant from Ecaz. Mentats drink it to sharpen their thinking, and it stains the lips red.",
+    def: "A strong liquid pressed from the roots of an Ecaz plant. Mentats drink it to sharpen thought; it stains the lips red.",
   },
   {
     id: "sardaukar",
     term: "Sardaukar",
-    def: "The Emperor's terror troops, raised on the prison planet Salusa Secundus. For centuries no one could beat them.",
+    def: "The Emperor's terror troops, raised on the prison planet Salusa Secundus. Unbeaten for centuries.",
     film: "Part One adds a Sardaukar ritual on Salusa Secundus.",
   },
   {
@@ -545,7 +545,7 @@ const terms: Term[] = [
     id: "sietch",
     term: "sietch",
     aliases: ["sietches", "Sietch"],
-    def: "A Fremen cave community, hidden in rock and sealed to keep in water. The word also means the people who live there.",
+    def: "A Fremen cave community, hidden in rock and sealed to keep in water. The word also means its people.",
   },
   {
     id: "sietch-tabr",
@@ -570,7 +570,7 @@ const terms: Term[] = [
     id: "spice-blow",
     term: "spice blow",
     aliases: ["pre-spice mass"],
-    def: "An eruption of gas from a buried pre-spice mass that throws fresh spice onto the surface of the desert.",
+    def: "A gas eruption from a buried pre-spice mass that throws fresh spice onto the desert surface.",
   },
   {
     id: "spice-essence",
@@ -581,7 +581,7 @@ const terms: Term[] = [
     id: "stillsuit",
     term: "stillsuit",
     aliases: ["stillsuits"],
-    def: "The Fremen body suit that recovers sweat and urine and filters them back into drinkable water.",
+    def: "The Fremen body suit that recycles sweat and urine into drinkable water.",
     film: "Kept in close detail in both films.",
   },
   {
@@ -624,7 +624,7 @@ const terms: Term[] = [
     id: "thumper",
     term: "thumper",
     aliases: ["thumpers"],
-    def: "A stake that beats a steady rhythm into the sand to call a sandworm. The Fremen use it to summon a worm to ride.",
+    def: "A stake that beats a steady rhythm into the sand to call a sandworm. Fremen use it to summon a worm to ride.",
     film: "Kept. In Part One, Liet Kynes uses one to call a worm onto the Sardaukar.",
   },
   {
@@ -646,7 +646,7 @@ const terms: Term[] = [
   {
     id: "voice",
     term: "Voice",
-    def: "The Bene Gesserit skill of controlling another person through carefully pitched tones of voice.",
+    def: "The Bene Gesserit skill of controlling others with precisely pitched tones.",
     film: "Rendered as a deep, layered voice that seems to come from several throats.",
   },
   {
@@ -671,7 +671,7 @@ const terms: Term[] = [
     id: "zensunni",
     term: "Zensunni",
     aliases: ["Zensunni Wanderers"],
-    def: "A religious sect that broke away long ago and wandered from world to world for generations. The Fremen descend from them.",
+    def: "A breakaway sect that wandered from world to world for generations. The Fremen descend from them.",
   },
 ];
 

@@ -39,12 +39,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div class="wrap hero-inner">
       <p class="kicker">a chronicle in {eras.length} eras</p>
       <h1>THE GOLDEN<br />PATH</h1>
-      <p class="lede">
-        More than fifteen thousand years of Frank Herbert's Dune, from the war on thinking machines to the
-        no-ship vanishing into the dark. The books are the record. Where Denis Villeneuve's films
-        tell it differently, the difference is marked. The later books by Brian Herbert and Kevin
-        J. Anderson, and the other screen versions, sit in dashed boxes you can switch off.
-      </p>
+      <p class="lede">More than fifteen thousand years of Frank Herbert's Dune</p>
       <div class="cta">
         <a class="btn" href="#old-empire">begin the record</a>
         <a class="btn ghost" href={`${base}/characters/`}>meet the people</a>
@@ -57,9 +52,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <section class="ruler-sec" aria-labelledby="scale">
       <h2 id="scale" class="sec-title">The scale of it</h2>
       <p class="sec-sub">
-        Each band is an era drawn to its length in years. The whole of the novel Dune, and both
-        films, happen inside a sliver about two years wide. Leto II's reign alone is more than a
-        fifth of the record. <a href={`${base}/scale/`}>Zoom in on every event by year</a>.
+        Each band is an era at its length in years. Dune and both films fit in a sliver two years wide.
+        <a href={`${base}/scale/`}>See every event by year</a>.
       </p>
       <nav class="ruler" aria-label="Eras by length">
         {ruler.map((e) => (

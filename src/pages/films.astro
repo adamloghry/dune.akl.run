@@ -11,7 +11,7 @@ const kinds: FilmKind[] = ['changed', 'cut', 'added', 'kept'];
 const count = (k: FilmKind) => rows.filter((r) => r.kind === k).length;
 const films: { id: Film; title: string; year: string; scope: string }[] = [
   { id: 'PART ONE', title: 'Dune', year: '2021', scope: 'The first half of the novel: Caladan to the duel with Jamis.' },
-  { id: 'PART TWO', title: 'Dune: Part Two', year: '2024', scope: 'The second half: the sietch years to the throne, compressed from about two years into months.' },
+  { id: 'PART TWO', title: 'Dune: Part Two', year: '2024', scope: 'The second half: the sietch years to the throne, about two years compressed into months.' },
 ];
 const order = (k: FilmKind) => kinds.indexOf(k);
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -22,9 +22,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <p class="kicker">the divergence ledger</p>
       <h1>Book vs film</h1>
       <p class="sec-sub">
-        Every place where Villeneuve's two films change, cut, add to or deliberately keep Herbert's
-        Dune. "Kept" is listed where a reader might expect a change. The pattern is consistent:
-        the films move the book's later critique of the messiah forward, mostly through Chani.
+        Every place Villeneuve's films change, cut, add to or keep Herbert's Dune ("kept" only where
+        you might expect a change). The pattern: the films bring the messiah critique forward, mostly through Chani.
       </p>
       <div class="stats">
         {kinds.map((k) => (
@@ -58,10 +57,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <section class="prose">
       <h2>What the films don't reach</h2>
       <p>
-        Everything after the Battle of Arrakeen on the chronicle comes from books Villeneuve has not
-        yet put on screen. A third film drawn from Dune Messiah is not covered here; this ledger
-        covers only the two released films. David Lynch's 1984 film and the television
-        adaptations are out of scope by design.
+        Everything after the Battle of Arrakeen is still unfilmed by Villeneuve. This ledger covers
+        only the two released films; Lynch's 1984 film and the TV versions are out of scope.
       </p>
     </section>
   </div>

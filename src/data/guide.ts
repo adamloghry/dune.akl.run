@@ -16,33 +16,33 @@ export const startHere: {
   steps: StartStep[];
   alternatives: { label: string; text: string }[];
 } = {
-  lead: "Our default: read the novel first, then watch the films as a companion.",
+  lead: "Our default: read the novel, then watch the films.",
   steps: [
     {
       what: "Read Dune (1965).",
-      why: "The book is the record. It holds the inner voices, the politics and the slow turn in Paul that the films have to compress.",
+      why: "The book is the record: the inner voices, the politics and Paul's slow turn, which the films compress.",
     },
     {
       what: "Watch Dune (2021) and Dune: Part Two (2024), back to back.",
-      why: "Together they cover the novel. Knowing the book, you will see exactly what Villeneuve kept and what he changed.",
+      why: "Together they cover the novel. Having read it, you will see what Villeneuve kept and changed.",
     },
     {
       what: "Read Dune Messiah (1969).",
-      why: "It is short, and Frank Herbert meant it as the second half of Dune. Read it before the third film arrives.",
+      why: "Short, and Frank Herbert meant it as the second half of Dune. Read it before the third film.",
     },
     {
       what: "Keep going if you want more.",
-      why: "Children of Dune finishes the story of Paul's family. God Emperor, Heretics and Chapterhouse are stranger and slower, and they reward patience.",
+      why: "Children of Dune finishes the story of Paul's family. God Emperor, Heretics and Chapterhouse are stranger and slower, but reward patience.",
     },
   ],
   alternatives: [
     {
       label: "Films first",
-      text: "Watch both films, then read Dune. You will know the plot, but the book still surprises: whole characters and threads never reach the screen.",
+      text: "Watch both films, then read Dune. The book still surprises: whole characters and threads never reach the screen.",
     },
     {
       label: "Short on time",
-      text: "Read Dune and Dune Messiah as one story and stop there. That is the complete arc of Paul.",
+      text: "Read Dune and Dune Messiah as one story and stop: that is Paul's complete arc.",
     },
   ],
 };
@@ -73,7 +73,7 @@ export const herbertBooks: HerbertBook[] = [
     year: "1969",
     eras: ["messiah"],
     adds: "Twelve years on, the cost of winning. A conspiracy forms around a ruler who can see it coming.",
-    feel: "The shortest. A tight palace drama told largely in conversations.",
+    feel: "The shortest: a tight palace drama, mostly conversation.",
     films: "Dune: Part Three adapts it (see below).",
   },
   {
@@ -91,7 +91,7 @@ export const herbertBooks: HerbertBook[] = [
     year: "1981",
     eras: ["god-emperor"],
     adds: "Thousands of years later, one ruler explains why he chose to be a tyrant, and what it is for.",
-    feel: "Mostly dialogue and ideas. A philosophical novel more than an adventure.",
+    feel: "Mostly dialogue and ideas; more philosophy than adventure.",
   },
   {
     book: "HERETICS",
@@ -107,7 +107,7 @@ export const herbertBooks: HerbertBook[] = [
     year: "1985",
     eras: ["heretics"],
     adds: "A Sisterhood under siege works out how to survive by changing itself.",
-    feel: "Reflective and slow. It ends on an open question: Herbert did not live to write the next book.",
+    feel: "Reflective and slow. It ends open: Herbert did not live to write the next book.",
   },
 ];
 
@@ -178,7 +178,7 @@ export const laterChronoSource = "https://dunenovels.com/chronological-order-of-
 export const otherScreens: { screen: Screen; line: string }[] = [
   {
     screen: "LYNCH",
-    line: "David Lynch's single film of the first novel. Memorable and strange, it follows the plot but invents a lot.",
+    line: "David Lynch's film of the first novel. Strange and memorable; it follows the plot but invents a lot.",
   },
   {
     screen: "SCIFI DUNE",

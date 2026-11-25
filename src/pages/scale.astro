@@ -20,15 +20,15 @@ const fmtYear = (y: number) => (y < 0 ? `${Math.abs(y).toLocaleString('en')} B.G
 interface View { id: string; name: string; note: string; a: number; b: number; log?: boolean }
 const views: View[] = [
   { id: 'all', name: 'true scale', a: -1450, b: 15300,
-    note: 'Every year the same width. The three novels about Paul, and both films, fit inside the thin spike at Dune.' },
+    note: 'Every year the same width. Paul\'s three novels and both films fit in the spike at Dune.' },
   { id: 'log', name: 'zoom on Dune', a: -1450, b: 15300, log: true,
-    note: 'Each step away from Dune is ten times longer than the last: one year, ten, a hundred, a thousand. The same events, finally readable.' },
+    note: 'Each step away from Dune is ten times longer: one year, ten, a hundred, a thousand.' },
   { id: 'paul', name: "Paul's lifetime", a: 10150, b: 10220,
-    note: 'Seventy years, from the fall of Ix in the later books to the twins. Most of what fans argue about happens in here.' },
+    note: 'Seventy years, from the fall of Ix in the later books to the twins.' },
   { id: 'novel', name: 'inside Dune', a: 10190.85, b: 10193.6,
-    note: 'The two and a half years of the novel Dune, roughly the span of both films. The order follows the book; the spacing inside a year is a best guess.' },
+    note: 'The novel\'s two and a half years, roughly both films. Spacing within a year is a best guess.' },
   { id: 'after', name: 'Leto II to the end', a: 10185, b: 15300,
-    note: "Leto's reign is the long bar: 3,500 years of enforced peace. Then the Scattering, and the last two novels at the far right." },
+    note: "Leto's 3,500-year reign is the long bar. Then the Scattering, and the last two novels." },
 ];
 
 interface Item { id: string; title: string; y: number; span?: [number, number]; rough?: boolean; eu: boolean; level: number; era: string }
@@ -103,9 +103,7 @@ const level = (ids: Item[]) => Math.max(...ids.map((i) => i.level));
       <p class="kicker">sixteen thousand years</p>
       <h1>The scale of it</h1>
       <p class="sec-sub">
-        Every event on the chronicle, placed by its year. Switch zoom to see how much of the saga
-        happens in a few years around Dune, and how much time passes between the books. Dates
-        the books leave vague are placed by best reading and drawn hollow.
+        Every event, placed by its year. Vague dates are best guesses, drawn hollow.
       </p>
     </header>
 
@@ -169,7 +167,7 @@ const level = (ids: Item[]) => Math.max(...ids.map((i) => i.level));
                 })}
               </svg>
             </div>
-            <p class="scroll-hint vt">Scroll sideways to see the whole line.</p>
+            <p class="scroll-hint vt">Scroll sideways for the whole line.</p>
             {p.pin && <p class="pin-note vt">The orange spike: Dune, Messiah and Children of Dune, 23 years, {p.pin.w} {p.pin.w === 1 ? 'pixel' : 'pixels'} wide.</p>}
           </section>
         ))}

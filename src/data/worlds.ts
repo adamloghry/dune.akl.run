@@ -53,7 +53,7 @@ export const worlds: World[] = [
     source: GLOSSARY,
     kind: "desert world · the only source of spice",
     blurb:
-      "The hinge of the Imperium: the one world where the spice melange forms, and so the one world everyone must hold. It has two moons. By Heretics it is called Rakis, and at the end of that book the Honored Matres burn it to bedrock.",
+      "The only world where the spice melange forms, so everyone must hold it. It has two moons. By Heretics it is called Rakis, and at that book's end the Honored Matres burn it to bedrock.",
     events: [
       "zensunni",
       "missionaria",
@@ -107,7 +107,7 @@ export const worlds: World[] = [
     source: GLOSSARY,
     kind: "sea world · Atreides fief",
     blurb:
-      "The Atreides home, a wet world of oceans, and the birthworld of Paul. Mohiam tests him with the gom jabbar here on the eve of the move to Arrakis. Fifteen centuries after Leto II, the name has worn down to Dan.",
+      "Ocean world, home of House Atreides and birthplace of Paul. Mohiam tests him with the gom jabbar here before the move to Arrakis. Fifteen centuries after Leto II, the name has worn down to Dan.",
     events: ["gom-jabbar"],
     eu: ["eu-new-duke", "eu-duncan-escape", "eu-caladan"],
     factions: ["atreides"],
@@ -141,7 +141,7 @@ export const worlds: World[] = [
     source: "Dune, glossary (under Salusa Secundus)",
     kind: "Imperial capital",
     blurb:
-      "Seat of the Padishah Emperor when Dune opens. The glossary says the Corrino court moved here from Salusa Secundus. Shaddam IV loses the throne on Arrakis, not here, and is sent back to Salusa.",
+      "Seat of the Padishah Emperor when Dune opens; the Corrino court moved here from Salusa Secundus. Shaddam IV loses the throne on Arrakis and is sent back to Salusa.",
     events: ["ascension"],
     eu: ["eu-new-duke", "eu-princess"],
     factions: ["corrino"],
@@ -158,7 +158,7 @@ export const worlds: World[] = [
     source: GLOSSARY,
     kind: "Corrino homeworld · prison planet",
     blurb:
-      "Homeworld of House Corrino, made the Imperial prison planet once the court left. Its harsh life breeds the Sardaukar. The glossary calls it the second stop of the Zensunni migration; Fremen say they were slaves here for nine generations. Shaddam IV is exiled here, and Jessica trains Farad'n here.",
+      "Homeworld of House Corrino, made the Imperial prison planet once the court left. Its harsh life breeds the Sardaukar. It was the second stop of the Zensunni migration; Fremen say they were slaves here for nine generations. Shaddam IV is exiled here, and Jessica trains Farad'n here.",
     events: ["zensunni", "corrin", "betrayal", "ascension", "farad"],
     factions: ["corrino", "fremen"],
     people: ["shaddam", "farad", "jessica"],
@@ -173,7 +173,7 @@ export const worlds: World[] = [
     source: "Chapterhouse: Dune",
     kind: "old Guild center · Honored Matre stronghold",
     blurb:
-      "An old Spacing Guild center. By Chapterhouse the Honored Matres hold it as their stronghold. Odrade goes there to offer surrender while Teg attacks, dies there, and the battle ends the war.",
+      "An old Spacing Guild center, held by the Honored Matres as their stronghold in Chapterhouse. Odrade goes there to offer surrender while Teg attacks. She dies there, and the battle ends the war.",
     events: ["junction"],
     factions: ["guild", "honored-matres", "bene-gesserit"],
     people: ["odrade", "murbella", "teg"],
@@ -189,7 +189,7 @@ export const worlds: World[] = [
     source: "Dune, glossary (under Richese)",
     kind: "machine world",
     blurb:
-      "With Richese, the glossary ranks it supreme in machine culture, and both came through the Butlerian Jihad less harmed than most. In God Emperor, Ix sends Hwi Noree to Leto II. Ixian no-ships, hidden from prescience, make the Scattering possible.",
+      "Ranked with Richese as supreme in machine culture; both came through the Butlerian Jihad less harmed than most. In God Emperor, Ix sends Hwi Noree to Leto II. Ixian no-ships, hidden from prescience, make the Scattering possible.",
     events: ["jihad", "siona", "famine"],
     eu: ["eu-ix-falls", "eu-spice-war", "eu-winds"],
     factions: ["ix"],
@@ -206,7 +206,7 @@ export const worlds: World[] = [
     source: GLOSSARY,
     kind: "Tleilaxu homeworld",
     blurb:
-      'Home of the Bene Tleilax, who grow gholas in their axlotl tanks and breed the shape-shifting Face Dancers. In Dune\'s day the glossary knows it as a renegade school for "twisted" Mentats. In Chapterhouse the Honored Matres wipe out the Tleilaxu.',
+      'Home of the Bene Tleilax, who grow gholas in axlotl tanks and breed the shape-shifting Face Dancers. In Dune\'s glossary it is a renegade school for "twisted" Mentats. In Chapterhouse the Honored Matres wipe out the Tleilaxu.',
     events: ["conspiracy", "peace", "teg"],
     factions: ["tleilax", "honored-matres"],
     people: ["scytale"],
@@ -223,7 +223,7 @@ export const worlds: World[] = [
     source: GLOSSARY,
     kind: "Bene Gesserit Mother School",
     blurb:
-      "Site of the Bene Gesserit Mother School in the time of Dune, where the Sisterhood trains its own. By Heretics the order is run from a hidden world instead.",
+      "Home of the Bene Gesserit Mother School in Dune's time. By Heretics the order is run from a hidden world.",
     events: ["schools", "breeding"],
     factions: ["bene-gesserit"],
     x: 26,
@@ -237,7 +237,7 @@ export const worlds: World[] = [
     source: "Heretics of Dune · Chapterhouse: Dune",
     kind: "hidden Bene Gesserit homeworld",
     blurb:
-      "The Sisterhood's secret seat in the last two books, green when we first see it. After Rakis burns, the one rescued worm seeds it with sandtrout, and the Sisters let it dry into a new desert. The last no-ship leaves from here.",
+      "The Sisterhood's secret seat in the last two books, green at first. After Rakis burns, the one rescued worm seeds it with sandtrout, and the Sisters let it dry into a new desert. The last no-ship leaves from here.",
     events: ["rakis-destroyed", "chapterhouse", "junction", "daniel-marty"],
     factions: ["bene-gesserit", "honored-matres"],
     people: ["odrade", "murbella", "sheeana", "duncan", "teg"],
@@ -253,7 +253,7 @@ export const worlds: World[] = [
     source: GLOSSARY,
     kind: "machine world",
     blurb:
-      "Ranked with Ix as supreme in machine culture and known for miniaturization. The glossary notes that both worlds escaped the worst of the Butlerian Jihad.",
+      "Ranked with Ix as supreme in machine culture, and known for miniaturization. Both escaped the worst of the Butlerian Jihad.",
     events: ["jihad"],
     x: 70,
     y: 146,
@@ -267,7 +267,7 @@ export const worlds: World[] = [
     source: GLOSSARY,
     kind: "fogwood world",
     blurb:
-      "The glossary calls it a sculptors' paradise. It is the home of fogwood, a plant that can be shaped as it grows by human thought alone.",
+      "A sculptors' paradise, home of fogwood, a plant that can be shaped as it grows by human thought alone.",
     events: [],
     eu: ["eu-paul-of-dune"],
     x: 92,
@@ -281,7 +281,7 @@ export const worlds: World[] = [
     source: "Dune, glossary (under Mudir Nahya)",
     kind: "Harkonnen holding",
     blurb:
-      "Glossu Rabban, the Beast, is styled Count of Lankiveil. Frank Herbert says nothing more about the world. The later books make it the place of Abulurd Harkonnen's exile.",
+      "Glossu Rabban, the Beast, is styled Count of Lankiveil; Frank Herbert says nothing more about it. The later books make it Abulurd Harkonnen's place of exile.",
     events: ["rabban"],
     eu: ["eu-abulurd"],
     factions: ["harkonnen"],
@@ -311,7 +311,7 @@ export const worlds: World[] = [
     source: "Heretics of Dune · Chapterhouse: Dune",
     kind: "Bene Gesserit school world",
     blurb:
-      "A center of Bene Gesserit learning. In Chapterhouse the Honored Matres destroy it. Its Sisters pool their memories in one woman, Lucilla, who flees, is forced down on Gammu, and passes the dead of Lampadas to Rebecca, a wild Reverend Mother.",
+      "A center of Bene Gesserit learning, destroyed by the Honored Matres in Chapterhouse. Its Sisters pool their memories in one woman, Lucilla, who flees, is forced down on Gammu, and passes the dead of Lampadas to Rebecca, a wild Reverend Mother.",
     events: ["chapterhouse"],
     factions: ["bene-gesserit", "honored-matres"],
     x: 96,
@@ -326,7 +326,7 @@ export const worlds: World[] = [
     source: "Chapterhouse: Dune",
     kind: "cold sea world · place of exile",
     blurb:
-      "A cold ocean world whose only land is small, bare islands. The Sisterhood uses it as a punishment station for Sisters who have failed it.",
+      "A cold ocean world with only small, bare islands for land. The Sisterhood sends Sisters who have failed it there as punishment.",
     events: [],
     factions: ["bene-gesserit"],
     x: 66,
@@ -341,7 +341,7 @@ export const worlds: World[] = [
     source: GLOSSARY,
     kind: "battle site",
     blurb:
-      "In the glossary, Corrin is a space battle, not a world: fought near Sigma Draconis in 88 B.G., it settled the rise of the ruling house from Salusa Secundus, which took its name from it. The later books make Corrin the thinking machines' last planet.",
+      "In the glossary, Corrin is a space battle, not a world: fought near Sigma Draconis in 88 B.G., it settled the rise of the ruling house from Salusa Secundus, which took its name. The later books make Corrin the thinking machines' last planet.",
     events: ["corrin"],
     eu: ["eu-corrin", "eu-abulurd"],
     factions: ["corrino", "atreides", "harkonnen"],
@@ -357,7 +357,7 @@ export const worlds: World[] = [
     source: GLOSSARY,
     kind: "sanctuary planet(s)",
     blurb:
-      "A refuge for defeated Great Houses, perhaps several planets. Only the Guild knows where, and the Guild Peace keeps it untouched. So the map can only guess.",
+      "A refuge for defeated Great Houses, perhaps several planets. Only the Guild knows where, and the Guild Peace keeps it untouched. Its place on the map is a guess.",
     events: ["convention"],
     factions: ["guild"],
     x: 160,
@@ -402,7 +402,7 @@ export const worlds: World[] = [
     source: GLOSSARY,
     kind: "Zensunni migration",
     blurb:
-      "The sixth stop of the Zensunni migration, going by Ingsley's listing, which the glossary cites. It is supposed to have circled Delta Pavonis, Caladan's star, and no longer exists.",
+      "The sixth stop of the Zensunni migration in Ingsley's listing, which the glossary cites. It supposedly orbited Delta Pavonis, Caladan's star, and no longer exists.",
     events: ["zensunni"],
     factions: ["fremen"],
     x: 44,
@@ -417,7 +417,7 @@ export const worlds: World[] = [
     source: "Sandworms of Dune (later books)",
     kind: "machine capital · later books only",
     blurb:
-      "Not in Frank Herbert. In the later books it is the capital of the reborn thinking machines, where the story of the no-ship ends in Sandworms of Dune.",
+      "Not in Frank Herbert. In the later books, the capital of the reborn thinking machines, where the no-ship's story ends in Sandworms of Dune.",
     events: [],
     eu: ["eu-hunters", "eu-sandworms"],
     x: 306,

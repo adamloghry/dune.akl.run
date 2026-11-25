@@ -183,10 +183,8 @@ const canonCount = worlds.filter((w) => !w.euOnly).length;
       <p class="kicker">star chart</p>
       <h1>Map of the Imperium</h1>
       <p class="sec-sub">
-        {canonCount} worlds from Frank Herbert's six novels and the glossary printed with Dune, plus one that
-        exists only in the later books. Positions are schematic: the novels give no star chart, so
-        nearness on this map means nothing. Where a star is named, it is the one the Dune glossary
-        gives. Pick a world to read what happens there.
+        {canonCount} worlds from Frank Herbert's novels, plus one from the later books. Positions are
+        schematic; the books give no star chart. Pick a world to read what happens there.
       </p>
     </header>
 
@@ -234,7 +232,7 @@ const canonCount = worlds.filter((w) => !w.euOnly).length;
       <li><i class="k-q">?</i> location unknown in the books</li>
     </ul>
     <script src="../scripts/map.js"></script>
-    <p class="vt scroll-hint">On a small screen, scroll the map sideways. Tap a world to jump to its entry.</p>
+    <p class="vt scroll-hint">Scroll sideways on small screens. Tap a world to jump to it.</p>
 
     <nav class="w-index" aria-label="Worlds">
       {worlds.map((w) => <a href={`#world-${w.id}`} class:list={['vt', { eu: w.euOnly }]}>{w.name}</a>)}
@@ -242,7 +240,7 @@ const canonCount = worlds.filter((w) => !w.euOnly).length;
 
     <section class="arc-sec" aria-labelledby="worlds-h">
       <h2 id="worlds-h" class="sec-title">The worlds</h2>
-      <p class="sec-sub">Star names are quoted from the glossary printed with Dune. Where the books give no star, none is shown.</p>
+      <p class="sec-sub">Star names come from the Dune glossary; none is shown where the books give none.</p>
       <div class="worlds">
         {cards.map(({ w, mini, evs, eus, fs, ps }) => (
           <article id={`world-${w.id}`} class:list={['world', 'pxbox', { 'eu-only': w.euOnly, wide: w.id === 'arrakis' }]} aria-labelledby={`wh-${w.id}`}>

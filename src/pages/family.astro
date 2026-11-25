@@ -58,10 +58,8 @@ const filmNotes = familyNodes.filter((n) => n.film);
       <p class="kicker">bloodline</p>
       <h1>The Atreides line</h1>
       <p class="sec-sub">
-        Five thousand years of one family, from the Old Duke to Odrade, Mother Superior of the Sisterhood. The whole
-        saga is a breeding program: the Bene Gesserit's, then Leto II's. Dotted lines skip
-        generations the novels do not name. Duncan Idaho appears three times, as three different
-        gholas.
+        Five thousand years of one family, from the Old Duke to Odrade. Dotted lines skip generations
+        the novels don't name. Duncan Idaho appears three times, as three gholas.
       </p>
       <p class="tree-key vt">
         <span><i class="k-line"></i> married</span>
@@ -101,11 +99,11 @@ const filmNotes = familyNodes.filter((n) => n.film);
       </div>
     </div>
     <script src="../scripts/family.js"></script>
-    <p class="vt scroll-hint">Scroll sideways to see the whole tree. Tap a portrait to open that person's page.</p>
+    <p class="vt scroll-hint">Scroll sideways for the whole tree. Tap a portrait to open it.</p>
 
     <section class="arc-sec">
       <h2 class="sec-title">On screen</h2>
-      <p class="sec-sub">Villeneuve's two films cover only the first three generations, and change them.</p>
+      <p class="sec-sub">Villeneuve's films cover the first three generations, with changes.</p>
       <ul class="tree-films">
         {filmNotes.map((n) => <li class="pxbox" {...sp(Math.max(2, lv(n.id)) as Level)}><b>{n.name}</b> <span>{n.film}</span></li>)}
       </ul>

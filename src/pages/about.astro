@@ -13,23 +13,20 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div class="prose">
       <h2>Canon</h2>
       <p>
-        The record is Frank Herbert's six Dune novels, with the appendices and glossary printed
-        with Dune. Where Herbert left something vague, the main timeline leaves it vague too.
-        Everything else is ranked below that, and drawn so you can always tell which is which:
+        The record is Frank Herbert's six novels plus Dune's appendices and glossary. Where Herbert
+        is vague, so is the timeline. Everything else ranks below, drawn so you can tell them apart:
       </p>
       <ol class="tier-list">
         <li class="pxbox"><b>1. Frank Herbert's novels.</b> Solid cards on the timeline.</li>
-        <li class="pxbox"><b>2. Denis Villeneuve's films.</b> Coloured film notes on those cards, tagged by how they differ.</li>
-        <li class="pxbox dashed"><b>3. The later books by Brian Herbert and Kevin J. Anderson.</b> Dashed cards and notes marked LATER BOOKS. A
-          <span class="badge eu-badge eu-k-retcon">RETCON</span> tag means a later book changes or re-explains
-          something Frank Herbert wrote, and the card says what he wrote. <span class="badge eu-badge eu-k-expands">EXPANDS</span>
-          means it fills a gap without contradicting him.</li>
+        <li class="pxbox"><b>2. Denis Villeneuve's films.</b> Film notes on those cards, tagged by how they differ.</li>
+        <li class="pxbox dashed"><b>3. The later books by Brian Herbert and Kevin J. Anderson.</b> Dashed cards and notes marked LATER BOOKS. 
+          <span class="badge eu-badge eu-k-retcon">RETCON</span> changes or re-explains Frank Herbert, and says what he wrote.
+          <span class="badge eu-badge eu-k-expands">EXPANDS</span> fills a gap without contradicting him.</li>
         <li class="pxbox dashed"><b>4. Other screen versions.</b> Lynch's 1984 film, the two Sci Fi Channel miniseries and
-          HBO's Dune: Prophecy. Hidden on the timeline until you switch them on, because they often depart a long way from the books.</li>
+          HBO's Dune: Prophecy. Off by default; they stray far from the books.</li>
       </ol>
       <p>
-        Character, faction, family and web pages use tiers 1 and 2 only. The full list of later
-        books, every retcon and every screen version is on <a href={`${base}/beyond/`}>Beyond Herbert</a>.
+        Character, faction, family and web pages use tiers 1 and 2 only. Everything else is on <a href={`${base}/beyond/`}>Beyond Herbert</a>.
       </p>
       <ul class="books-grid">
         {Object.entries(bookInfo).map(([k, b]) => (
@@ -39,31 +36,27 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
       <h2>Films</h2>
       <p>
-        Denis Villeneuve's Dune (2021) and Dune: Part Two (2024). Each film note is tagged
+        Denis Villeneuve's Dune (2021) and Dune: Part Two (2024). Notes are tagged
         <span class="badge k-changed">CHANGED</span>, <span class="badge k-cut">CUT</span>,
         <span class="badge k-added">ADDED</span> or <span class="badge k-kept">KEPT</span>.
       </p>
 
       <h2>Dates</h2>
       <p>
-        The Imperial calendar counts years After Guild (A.G.), from the start of the Spacing
-        Guild's monopoly. Herbert gives hard dates for the deep past (the Butlerian Jihad, the
-        Battle of Corrin) and for the opening of Dune in 10,191 A.G. After that, each novel dates
-        itself only relative to the one before: Messiah is twelve years after Dune, Children nine
-        after that, God Emperor about 3,500 years later, Heretics about 1,500 after Leto's death.
-        Those dates are shown as intervals, marked "≈", and drawn as hollow markers on the timeline.
-        The scale ruler uses approximate absolute positions built from those intervals.
+        Years count After Guild (A.G.), from the start of the Guild's monopoly. Herbert gives hard
+        dates only for the deep past and for Dune's opening in 10,191 A.G. Later novels date
+        themselves from the one before: Messiah 12 years after Dune, Children 9 after that, God
+        Emperor about 3,500 later, Heretics about 1,500 after Leto's death. These are marked "≈"
+        and drawn as hollow markers.
       </p>
       <p>
-        The appendices to Dune give some absolute dates (for example Paul's birth and death) that
-        do not line up exactly with counting the intervals between books. Where they disagree,
-        this site follows the novels' own intervals, because those are what the stories state.
+        Where Dune's appendices (for example Paul's birth and death) disagree with those intervals,
+        the site follows the novels' intervals.
       </p>
       <h2>People, powers and the web</h2>
       <p>
-        Every event is tagged with the characters and factions in it. The character and faction
-        pages, and the intersection views on <a href={`${base}/web/`}>the web</a>, are all built from those
-        tags, so a correction to an event updates every view that uses it.
+        Each event is tagged with its characters and factions. Their pages and
+        <a href={`${base}/web/`}>the web</a> are built from those tags.
       </p>
 
       <h2 id="credits">Credits and copyright</h2>
@@ -89,11 +82,9 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
           Properties and others.</li>
       </ul>
       <p>
-        The summaries on this site are written in our own words. Quotations from the novels are a
-        sentence or two at most, and always say where they come from. No text, stills, posters or
-        other images from the books, films or series are reproduced. Every picture here is original
-        pixel art drawn by code when the site is built, and none of the portraits is based on an
-        actor's likeness.
+        Summaries are in our own words. Quotations are a sentence or two at most and name their
+        source. No stills, posters or other images are reproduced: every picture is original pixel
+        art drawn by code, and no portrait is based on an actor's likeness.
       </p>
       <p>
         <b>This site's own work.</b> The source code is released under the MIT License. The original
