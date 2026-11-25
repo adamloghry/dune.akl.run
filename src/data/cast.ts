@@ -2,7 +2,14 @@
 // Villeneuve's Dune (2021) and Dune: Part Two (2024).
 
 export type EraId =
-  "old-empire" | "imperium" | "dune" | "messiah" | "children" | "god-emperor" | "scattering" | "heretics";
+  | "old-empire"
+  | "imperium"
+  | "dune"
+  | "messiah"
+  | "children"
+  | "god-emperor"
+  | "scattering"
+  | "heretics";
 
 export const eraOrder: EraId[] = [
   "old-empire",
