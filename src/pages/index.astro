@@ -34,7 +34,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   <section class="hero">
     <div class="hero-art" aria-hidden="true">{lookIds.map((l) => <img class={`lk lk-${l}`} src={`${base}/art/${l}/hero.png`} width="480" height="120" alt="" />)}</div>
     <div class="motes" aria-hidden="true">{motes.map((m) => <i style={`--x:${m.x}%;--d:${m.d}s;--delay:${m.delay}s;--dx:${m.dx}px`}></i>)}</div>
-    <div class="actor worm-rise"><Sprite name="worm" size={5} /></div>
+    <div class="actor worm-rise"><div class="worm-body"><Sprite name="wormrise" size={5} /></div><div class="worm-spray"><Sprite name="breach" size={5} /></div></div>
     <div class="actor thopter-fly"><Sprite name="thopter" size={4} /></div>
     <div class="wrap hero-inner">
       <p class="kicker">a chronicle in {eras.length} eras</p>

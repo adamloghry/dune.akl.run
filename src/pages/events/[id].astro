@@ -7,7 +7,7 @@ import EUCard from '../../components/EUCard.astro';
 import Sprite from '../../components/Sprite.astro';
 import { eventPages, neighbours, type EventPage } from '../../data/pages';
 import { levels } from '../../data/spoilers';
-import { eraBackdrop } from '../../lib/card';
+import { lookIds } from '../../lib/style';
 
 export function getStaticPaths() {
   return eventPages.map((p) => ({ params: { id: p.id }, props: { p } }));
@@ -23,7 +23,6 @@ const share = spoil
   ? { title: `A ${label.short} spoiler — The Golden Path`, description: `A moment from the Dune saga, from ${label.label}. The page hides spoilers past the point you have read.` }
   : { title: `${p.title} — The Golden Path`, description: first };
 const img = `${base}/og/${p.id}.png`;
-const backdrop = eraBackdrop(p.era.id, 320, 80).toSVG({ cls: 'pix ev-scene', preserve: 'xMidYMid slice' });
 ---
 <Base page="event" title={`${p.title} — The Golden Path`} description={share.description} image={img} share={share}>
   <div class="wrap ev-page">
@@ -33,7 +32,7 @@ const backdrop = eraBackdrop(p.era.id, 320, 80).toSVG({ cls: 'pix ev-scene', pre
       <a href={`${base}/#${p.id}`}>on the timeline</a>
     </nav>
     <figure class="ev-hero pxbox">
-      <Fragment set:html={backdrop} />
+      {lookIds.map((l) => <img class={`ev-scene lk lk-${l}`} src={`${base}/art/${l}/era/${p.era.id}.png`} width="320" height="80" alt="" />)}
       <span class="ev-plate"><Sprite name={p.era.sprite} size={3} /></span>
     </figure>
 
@@ -76,7 +75,7 @@ const backdrop = eraBackdrop(p.era.id, 320, 80).toSVG({ cls: 'pix ev-scene', pre
   .crumbs { font-size: 20px; color: var(--ink-3); display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; }
   .crumbs a { color: var(--ink-2); }
   .ev-hero { position: relative; margin: 0 0 18px; padding: 0; height: 160px; overflow: hidden; background: var(--bg-2); }
-  .ev-hero :global(.ev-scene) { width: 100%; height: 100%; display: block; }
+  .ev-hero .ev-scene { width: 100%; height: 100%; object-fit: cover; object-position: 50% 80%; image-rendering: pixelated; }
   .ev-plate { position: absolute; left: 14px; bottom: 14px; padding: 6px; background: var(--bg); border-top: var(--px) solid var(--spice); line-height: 0; }
   .solo-event { list-style: none; padding: 0; margin: 0 0 24px; }
   .solo-event :global(.event) { width: 100%; margin: 0; padding: 0; }

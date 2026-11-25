@@ -57,7 +57,7 @@
     --kept: #256b29;
     --changed: #7a5500;
     --cut: #b3261e;
-    --added: #1f5fb4;
+    --added: #1a55a3;
     --shadow: #8a5a2e;
     color-scheme: light;
   }
@@ -88,7 +88,7 @@
   --kept: #256b29;
   --changed: #7a5500;
   --cut: #b3261e;
-  --added: #1f5fb4;
+  --added: #1a55a3;
   --shadow: #8a5a2e;
   color-scheme: light;
 }
@@ -193,6 +193,37 @@ a:hover {
 }
 .px-c {
   fill: currentColor;
+}
+/* fixed colours: they match the painted scenes, so they do not follow the theme */
+.px-1 {
+  fill: #2a1a12;
+}
+.px-2 {
+  fill: #4e3020;
+}
+.px-3 {
+  fill: #7a4e30;
+}
+.px-4 {
+  fill: #a8784e;
+}
+.px-5 {
+  fill: #d0a070;
+}
+.px-g {
+  fill: #3a0e12;
+}
+.px-t {
+  fill: #fff0d0;
+}
+.px-a {
+  fill: #a85a30;
+}
+.px-e {
+  fill: #d8803a;
+}
+.px-h {
+  fill: #f4a852;
 }
 .sprite {
   display: block;
@@ -462,19 +493,69 @@ footer .dunes {
   z-index: -1;
 }
 .worm-rise {
+  /* a window onto the sand: the worm rises inside it, so it comes up out of the dunes */
   left: 12%;
-  bottom: 4%;
+  bottom: calc(clamp(150px, 25vw, 340px) * 0.06);
+  width: clamp(66px, 8.6vw, 110px);
+  aspect-ratio: 22 / 30;
+  overflow: hidden;
+}
+.worm-rise .worm-body {
+  position: absolute;
+  left: 9%;
+  bottom: 0;
+  width: 82%;
   animation: rise 9s steps(12) infinite;
+}
+.worm-rise .worm-body .sprite,
+.worm-rise .worm-spray .sprite {
+  width: 100%;
+  height: auto;
+}
+.worm-rise .worm-spray {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  animation: spray 9s steps(12) infinite;
 }
 @keyframes rise {
   0%,
   55%,
   100% {
-    transform: translateY(140%);
+    transform: translateY(102%);
   }
   65%,
   85% {
     transform: translateY(0);
+  }
+}
+/* the film look repaints the scene in sand and ash; match the sky and the actors to it */
+html[data-look="film"] .hero {
+  background: linear-gradient(#0e0b0a, #2b231e 70%);
+}
+:root[data-theme="light"][data-look="film"] .hero {
+  background: linear-gradient(#f2e6cc, #d6c3a0 70%);
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme])[data-look="film"] .hero {
+    background: linear-gradient(#f2e6cc, #d6c3a0 70%);
+  }
+}
+html[data-look="film"] .worm-rise,
+html[data-look="film"] .thopter-fly {
+  filter: grayscale(1) sepia(0.3) contrast(1.1);
+}
+@keyframes spray {
+  0%,
+  52%,
+  95%,
+  100% {
+    opacity: 0;
+  }
+  58%,
+  90% {
+    opacity: 1;
   }
 }
 .thopter-fly {
@@ -1098,6 +1179,9 @@ footer .dunes {
 footer .foot {
   position: relative;
   padding-top: 18px;
+  /* keep the text above the painted dunes: they are 60/320 of their width tall (at least 900px wide)
+     and the far ridge starts about 62% of the way up */
+  padding-bottom: calc(max(900px, 100vw) * 60 / 320 * 0.64);
   font-family: "VT323", monospace;
   font-size: 19px;
   color: var(--ink-2);
@@ -1118,7 +1202,6 @@ footer .foot {
   background: var(--spice);
   color: var(--bg);
   text-decoration: none;
-  font-family: "Silkscreen", monospace;
   box-shadow: var(--px) var(--px) 0 var(--shadow);
 }
 .to-top:hover {
@@ -1698,7 +1781,7 @@ html[data-look="film"] .lk-film {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: 50% 100%;
+  object-position: 50% 80%; /* keeps a breaching worm's maw in frame on wide strips */
   image-rendering: pixelated;
 }
 .era-land span {
