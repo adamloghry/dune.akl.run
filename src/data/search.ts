@@ -1,6 +1,7 @@
 // Flat search index built at compile time and embedded in /search/ (no fetch, no server).
 import { eras, kindLabel } from './timeline';
 import { characters, factions } from './cast';
+import { euEvents, euNotesFor, altNotesFor, screens } from './beyond-view';
 
 export interface Doc { k: 'event' | 'character' | 'faction'; t: string; s: string; b: string; u: string }
 
@@ -12,9 +13,19 @@ export function buildIndex(base: string): Doc[] {
         k: 'event',
         t: ev.title,
         s: `${ev.when} · ${era.name}`,
-        b: [ev.body, ...(ev.films ?? []).map((f) => `${kindLabel[f.kind]} in the films: ${f.text}`)].join(' '),
+        b: [ev.body, ...(ev.films ?? []).map((f) => `${kindLabel[f.kind]} in the films: ${f.text}`),
+          ...euNotesFor(ev.id).map((n) => `Later books: ${n.text}`),
+          ...altNotesFor(ev.id).map((n) => `${screens[n.screen].title}: ${n.text}`)].join(' '),
         u: `${base}/#${ev.id}`,
       });
+  for (const ev of euEvents)
+    docs.push({
+      k: 'event',
+      t: ev.title,
+      s: `${ev.when} · later books${ev.kind === 'retcon' ? ' · retcon' : ''}`,
+      b: [ev.body, ev.herbert ? `Frank Herbert wrote: ${ev.herbert}` : '', ...altNotesFor(ev.id).map((n) => `${screens[n.screen].title}: ${n.text}`)].join(' '),
+      u: `${base}/#${ev.id}`,
+    });
   for (const c of characters)
     docs.push({
       k: 'character',

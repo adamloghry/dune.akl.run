@@ -56,6 +56,7 @@
 /* ---------- base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+html:has(.controls) { scroll-padding-top: 190px; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation: none !important; transition: none !important; } }
 body {
   margin: 0;
@@ -457,3 +458,51 @@ a.t-card:hover, a.t-card:focus-visible { border-color: var(--spice); transform: 
 .search-empty { color: var(--ink-3); }
 .wrap.narrow { max-width: 860px; }
 kbd { font: 16px 'VT323', monospace; padding: 0 5px; border: 2px solid var(--line); background: var(--panel); }
+
+/* ---------- beyond canon: later books + other screen versions ---------- */
+.eu-card { border-style: dashed; background: var(--bg-2); }
+.event.eu::before { background: var(--bg); box-shadow: inset 0 0 0 3px var(--ink-3), 0 0 0 4px var(--bg), 0 0 0 6px var(--line); width: 14px; height: 14px; top: 21px; right: -7px; }
+.event.eu:nth-child(even)::before { left: -7px; right: auto; }
+@media (max-width: 820px) { .event.eu::before, .event.eu:nth-child(even)::before { left: 3px; } }
+.eu-flag { margin: -4px 0 8px !important; font-size: 17px !important; color: var(--ink-3) !important; line-height: 1.1; }
+.eu-flag span { color: var(--bg); background: var(--ink-3); padding: 1px 6px; margin-right: 6px; }
+.eu-card .card-meta .when { color: var(--ink-2); }
+.eu-tag { --tag-bg: transparent; color: var(--ink-2); border: 2px dashed var(--ink-3); padding: 1px 5px 0; }
+.eu-badge.eu-k-expands { color: var(--blue); }
+.eu-badge.eu-k-retcon { color: var(--cut); background: var(--bg); }
+.eu-retcon .eu-card { border-color: var(--cut); }
+.eu-herbert { margin: 10px 0 0 !important; padding: 8px 10px; border-left: var(--px) solid var(--spice); background: var(--panel); font-size: 14px !important; }
+.eu-herbert b { display: block; font-family: 'VT323', monospace; font-weight: 400; font-size: 17px; color: var(--spice); line-height: 1; margin-bottom: 3px; }
+.eu-notes, .alt-notes { margin: 14px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.eu-note, .alt-note { display: grid; grid-template-columns: auto 1fr; gap: 10px; padding: 10px 12px; border: 2px dashed var(--line); font-size: 14px; }
+.eu-note.eu-k-retcon { border-color: var(--cut); }
+.eu-note p, .alt-note p { margin: 0; font-size: 14px; color: var(--ink-2); }
+.eu-note .fn-head, .alt-note .fn-head { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.eu-note .fn-film, .alt-note .fn-film { font-family: 'VT323', monospace; font-size: 16px; color: var(--ink-3); line-height: 1; max-width: 16ch; }
+.alt-note { opacity: 0.92; }
+.alt-note .badge { font-size: 16px; }
+@media (max-width: 480px) { .eu-note, .alt-note { grid-template-columns: 1fr; } .eu-note .fn-head, .alt-note .fn-head { flex-direction: row; align-items: center; flex-wrap: wrap; } .eu-note .fn-film, .alt-note .fn-film { max-width: none; } }
+body:has(#show-eu:not(:checked)) .event.eu,
+body:has(#show-eu:not(:checked)) .eu-notes { display: none; }
+body:has(#show-alt:not(:checked)) .alt-notes { display: none; }
+body:has(#only-diverged:checked) .event.eu { display: none; }
+
+.beyond-books { list-style: none; padding: 0; margin: 14px 0 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+.beyond-books li { padding: 12px 14px; border-style: dashed; }
+.beyond-books b { display: block; }
+.beyond-books .vt { color: var(--gold); font-size: 18px; }
+.beyond-books p { margin: 6px 0 0; font-size: 14px; color: var(--ink-2); }
+.series-h { font-family: 'VT323', monospace; font-weight: 400; font-size: 22px; color: var(--ink-2); margin: 26px 0 0; }
+.retcon-row td:nth-child(2) { border-left: var(--px) solid var(--spice); }
+.retcon-row td:nth-child(3) { border-left: var(--px) dashed var(--cut); color: var(--ink-2); }
+.screen-card { margin: 18px 0 0; padding: 16px 18px; border-style: dashed; }
+.screen-card h3 { margin: 0 0 2px; }
+.screen-card .vt { color: var(--gold); font-size: 19px; }
+.screen-card > p { margin: 8px 0 0; color: var(--ink-2); }
+.tier-list { list-style: none; padding: 0; display: grid; gap: 8px; }
+.tier-list li { padding: 10px 14px; }
+.tier-list li.dashed { border-style: dashed; color: var(--ink-2); }
+
+@media (max-width: 820px) { html:has(.controls) { scroll-padding-top: 110px; } .controls { position: static; } }
+.retcon-row .vt { font-size: 17px; color: var(--ink-3); }
+.retcon-row td:nth-child(2) { width: 40%; }

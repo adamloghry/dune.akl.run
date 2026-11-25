@@ -3,6 +3,8 @@ import Base from '../layouts/Base.astro';
 import Sprite from '../components/Sprite.astro';
 import Dunes from '../components/Dunes.astro';
 import EventCard from '../components/EventCard.astro';
+import EUCard from '../components/EUCard.astro';
+import { spineFor, euEvents, altNotes } from '../data/beyond-view';
 import { eras, kindLabel } from '../data/timeline';
 
 const colours = ['--rust', '--sand-d', '--spice', '--blue', '--sand', '--gold', '--dune-3', '--added'];
@@ -38,7 +40,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <p class="lede">
         More than fifteen thousand years of Frank Herbert's Dune, from the war on thinking machines to the
         no-ship vanishing into the dark. The books are the record. Where Denis Villeneuve's films
-        tell it differently, the difference is marked.
+        tell it differently, the difference is marked. The later books by Brian Herbert and Kevin
+        J. Anderson, and the other screen versions, sit in dashed boxes you can switch off.
       </p>
       <div class="cta">
         <a class="btn" href="#old-empire">begin the record</a>
@@ -73,6 +76,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <div class="controls pxbox" role="group" aria-label="Display options">
       <label class="toggle"><input type="checkbox" id="show-films" checked /><span class="sw"></span>show film notes</label>
       <label class="toggle"><input type="checkbox" id="only-diverged" /><span class="sw"></span>only what the films touch</label>
+      <label class="toggle"><input type="checkbox" id="show-eu" checked /><span class="sw"></span>later books ({euEvents.length})</label>
+      <label class="toggle"><input type="checkbox" id="show-alt" /><span class="sw"></span>other screen versions ({altNotes.length})</label>
       <span class="era-now" aria-live="polite"></span>
       <div class="legend" aria-hidden="true">
         {(['kept', 'changed', 'cut', 'added'] as const).map((k) => <span class={`badge k-${k}`}>{kindLabel[k]}</span>)}
@@ -98,7 +103,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
             </div>
           </header>
           <ol class="spine">
-            {era.events.map((ev) => <EventCard event={ev} />)}
+            {spineFor(era).map((it) => it.t === 'canon' ? <EventCard event={it.ev} /> : <EUCard event={it.ev} />)}
           </ol>
         </section>
       );

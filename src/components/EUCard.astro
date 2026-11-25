@@ -1,0 +1,38 @@
+---
+import type { EUEvent } from '../data/beyond-types';
+import { euKindLabel, euAuthors, altNotesFor } from '../data/beyond-view';
+import { charById, factionById } from '../data/cast';
+import AltNotes from './AltNotes.astro';
+import Avatar from './Avatar.astro';
+import Sprite from './Sprite.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+interface Props { event: EUEvent }
+const { event: e } = Astro.props;
+const who = (e.who ?? []).filter((id) => charById[id]);
+const fs = (e.f ?? []).filter((id) => factionById[id]);
+const alts = altNotesFor(e.id);
+---
+<li id={e.id} class:list={['event', 'eu', `eu-${e.kind}`, { approx: e.approx }]}>
+  <article class="card pxbox eu-card">
+    <p class="eu-flag vt"><span>LATER BOOKS</span> not Frank Herbert · {euAuthors}</p>
+    <div class="card-meta">
+      <span class="when">{e.when}</span>
+      <span class={`badge eu-badge eu-k-${e.kind}`}>{euKindLabel[e.kind]}</span>
+      {e.books.map((b) => <span class="book-tag eu-tag">{b}</span>)}
+      {e.approx && <span class="sr-only">(approximate date)</span>}
+    </div>
+    <h3><a href={`#${e.id}`}>{e.title}</a></h3>
+    <p>{e.body}</p>
+    {e.herbert && (
+      <p class="eu-herbert"><b>Frank Herbert wrote</b> {e.herbert}</p>
+    )}
+    {(who.length > 0 || fs.length > 0) && (
+      <div class="involved">
+        {who.map((id) => <a href={`${base}/characters/${id}/`} title={charById[id].name}><Avatar c={charById[id]} size={2} /></a>)}
+        {who.length > 0 && fs.length > 0 && <span class="sep" aria-hidden="true"></span>}
+        {fs.map((id) => <a class="fsig" href={`${base}/factions/${id}/`} title={factionById[id].name} style={`color:${factionById[id].colour}`}><Sprite name={factionById[id].sigil} size={2} /></a>)}
+      </div>
+    )}
+    <AltNotes notes={alts} />
+  </article>
+</li>

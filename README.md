@@ -28,6 +28,7 @@ This README is the authority for the handoff.
 | `/factions/` and `/factions/<id>/` | 13 powers: weight per era, members, which other factions they collide with, every event |
 | `/web/`    | Intersections: lifelines, powers by era heatmap, allegiance matrix, collisions heatmap |
 | `/family/` | Atreides family tree across all six novels, with film differences flagged    |
+| `/beyond/` | Later novels by Brian Herbert and Kevin J. Anderson, a ledger of every retcon against Frank Herbert's text, and the other screen versions |
 | `/search/` | Client-side search over every event, person and faction (index embedded at build; `/` opens it) |
 | `/about/`  | Canon, dating method, build commands                                        |
 | `/404.html`| Served by Cloudflare for unknown paths                                      |
@@ -47,6 +48,7 @@ src/data/cast.ts        characters, factions, and the event → people/factions 
 src/data/query.ts       derived views (events per person, companions, faction links)
 src/data/family.ts      family tree nodes, unions and descent lines (hand-placed layout)
 src/data/search.ts      builds the search index embedded in /search/
+src/data/beyond.ts      later books and other screen versions (secondary tiers; types in beyond-types.ts, joins in beyond-view.ts)
 src/data/sprites.ts     pixel sprites as character grids (palette chars → CSS vars)
 src/components/         Sprite (grid → merged-run SVG), Dunes (seeded landscape), EventCard, Avatar (procedural portrait)
 src/layouts/Base.astro  shell, nav, theme switch, footer

@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Sprite from '../components/Sprite.astro';
 import { bookInfo } from '../data/timeline';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <Base page="about" title="About — The Golden Path">
   <div class="wrap">
@@ -12,10 +13,23 @@ import { bookInfo } from '../data/timeline';
     <div class="prose">
       <h2>Canon</h2>
       <p>
-        Only Frank Herbert's six Dune novels and the appendices and glossary printed with Dune.
-        Nothing from the later prequels and sequels by Brian Herbert and Kevin J. Anderson is
-        used, even where those books fill gaps. Where Herbert left something vague, so does this
-        site.
+        The record is Frank Herbert's six Dune novels, with the appendices and glossary printed
+        with Dune. Where Herbert left something vague, the main timeline leaves it vague too.
+        Everything else is ranked below that, and drawn so you can always tell which is which:
+      </p>
+      <ol class="tier-list">
+        <li class="pxbox"><b>1. Frank Herbert's novels.</b> Solid cards on the timeline.</li>
+        <li class="pxbox"><b>2. Denis Villeneuve's films.</b> Coloured film notes on those cards, tagged by how they differ.</li>
+        <li class="pxbox dashed"><b>3. The later books by Brian Herbert and Kevin J. Anderson.</b> Dashed cards and notes marked LATER BOOKS. A
+          <span class="badge eu-badge eu-k-retcon">RETCON</span> tag means a later book changes or re-explains
+          something Frank Herbert wrote, and the card says what he wrote. <span class="badge eu-badge eu-k-expands">EXPANDS</span>
+          means it fills a gap without contradicting him.</li>
+        <li class="pxbox dashed"><b>4. Other screen versions.</b> Lynch's 1984 film, the two Sci Fi Channel miniseries and
+          HBO's Dune: Prophecy. Hidden on the timeline until you switch them on, because they often depart a long way from the books.</li>
+      </ol>
+      <p>
+        Character, faction, family and web pages use tiers 1 and 2 only. The full list of later
+        books, every retcon and every screen version is on <a href={`${base}/beyond/`}>Beyond Herbert</a>.
       </p>
       <ul class="books-grid">
         {Object.entries(bookInfo).map(([k, b]) => (
@@ -48,16 +62,9 @@ import { bookInfo } from '../data/timeline';
       <h2>People, powers and the web</h2>
       <p>
         Every event is tagged with the characters and factions in it. The character and faction
-        pages, and the intersection views on <a href="/web/">the web</a>, are all built from those
+        pages, and the intersection views on <a href={`${base}/web/`}>the web</a>, are all built from those
         tags, so a correction to an event updates every view that uses it.
       </p>
-
-      <h2>Build</h2>
-      <p>Astro static site, pinned by a Nix flake, deployed to Cloudflare's free tier.</p>
-      <pre tabindex="0"><code>nix develop          # node + wrangler
-npm run dev          # local preview
-nix build            # reproducible build into ./result
-npx wrangler deploy  # publish dist/ as static assets</code></pre>
     </div>
   </div>
 </Base>

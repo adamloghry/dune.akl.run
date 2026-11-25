@@ -1,0 +1,20 @@
+---
+import type { AltNote } from '../data/beyond-types';
+import { kindLabel } from '../data/timeline';
+import { screens } from '../data/beyond-view';
+interface Props { notes: AltNote[] }
+const { notes } = Astro.props;
+---
+{notes.length > 0 && (
+  <ul class="alt-notes" aria-label="Other screen versions">
+    {notes.map((n) => (
+      <li class="alt-note">
+        <div class="fn-head">
+          <span class={`badge k-${n.kind}`}>{kindLabel[n.kind]}</span>
+          <span class="fn-film">{screens[n.screen].title} · {screens[n.screen].year}</span>
+        </div>
+        <p>{n.text}</p>
+      </li>
+    ))}
+  </ul>
+)}

@@ -1,0 +1,22 @@
+---
+import type { EUNote } from '../data/beyond-types';
+import { euKindLabel, euBooks } from '../data/beyond-view';
+interface Props { notes: EUNote[] }
+const { notes } = Astro.props;
+---
+{notes.length > 0 && (
+  <ul class="eu-notes" aria-label="What the later books add or change">
+    {notes.map((n) => (
+      <li class={`eu-note eu-k-${n.kind}`}>
+        <div class="fn-head">
+          <span class={`badge eu-badge eu-k-${n.kind}`}>{euKindLabel[n.kind]}</span>
+          <span class="fn-film">LATER BOOKS · {n.books.map((b) => euBooks[b].title).join(', ')}</span>
+        </div>
+        <div>
+          <p>{n.text}</p>
+          {n.herbert && <p class="eu-herbert"><b>Frank Herbert wrote</b> {n.herbert}</p>}
+        </div>
+      </li>
+    ))}
+  </ul>
+)}

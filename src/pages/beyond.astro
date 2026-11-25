@@ -1,0 +1,97 @@
+---
+import Base from '../layouts/Base.astro';
+import { kindLabel, eras } from '../data/timeline';
+import { euBooks, euEvents, euNotes, screens, altNotes, retcons, euKindLabel, euAuthors } from '../data/beyond-view';
+import type { EUBook, Screen } from '../data/beyond-types';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const series = new Map<string, [EUBook, (typeof euBooks)[EUBook]][]>();
+for (const [k, b] of Object.entries(euBooks) as [EUBook, (typeof euBooks)[EUBook]][]) {
+  if (!series.has(b.series)) series.set(b.series, []);
+  series.get(b.series)!.push([k, b]);
+}
+const expands = euEvents.filter((e) => e.kind === 'expands').length + euNotes.filter((n) => n.kind === 'expands').length;
+const byScreen = (s: Screen) => altNotes.filter((n) => n.screen === s);
+const anchorTitle = (id: string) => {
+  const eu = euEvents.find((e) => e.id === id);
+  return eu?.title ?? eras.flatMap((x) => x.events).find((x) => x.id === id)?.title ?? id;
+};
+---
+<Base page="beyond" title="Beyond Herbert — The Golden Path" description="The later Dune novels by Brian Herbert and Kevin J. Anderson, every place they change Frank Herbert, and the other screen versions.">
+  <div class="wrap">
+    <header class="page-head">
+      <p class="kicker">outside the record</p>
+      <h1>Beyond Herbert</h1>
+      <p class="sec-sub">
+        Since 1999, {euAuthors} have written {Object.keys(euBooks).length} more Dune novels, and
+        there are four more screen versions besides Villeneuve's. None of it outranks Frank Herbert's six
+        novels or Villeneuve's films on this site. It is shown in dashed boxes, and every place a
+        later book changes what Frank Herbert wrote is marked as a retcon.
+      </p>
+    </header>
+
+    <div class="stats">
+      <div class="stat pxbox"><b>{Object.keys(euBooks).length}</b><span>later novels</span></div>
+      <div class="stat pxbox"><b>{retcons.length}</b><span>retcons</span></div>
+      <div class="stat pxbox"><b>{expands}</b><span>expansions</span></div>
+      <div class="stat pxbox"><b>{Object.keys(screens).length}</b><span>other screen versions</span></div>
+    </div>
+
+    <section class="film-block" aria-labelledby="ret-h">
+      <h2 id="ret-h"><span class="badge eu-badge eu-k-retcon">RETCON</span> What the later books change</h2>
+      <p class="sec-sub">Frank Herbert's own text on the left. The site's main timeline follows the left column.</p>
+      <table class="ledger">
+        <thead><tr><th>Event</th><th>Frank Herbert wrote</th><th>The later books say</th></tr></thead>
+        <tbody>
+          {retcons.map((r) => (
+            <tr class="retcon-row">
+              <td><a href={`${base}/#${r.id}`}>{r.title}</a></td>
+              <td>{r.herbert}</td>
+              <td>{r.text} <span class="vt">({r.books.map((b) => euBooks[b].title).join(', ')})</span></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="film-block" aria-labelledby="books-h">
+      <h2 id="books-h">The later novels</h2>
+      <p class="sec-sub">Grouped by series, with the part of the timeline each one covers.</p>
+      {[...series.entries()].map(([name, books]) => (
+        <>
+          <h3 class="series-h">{name}</h3>
+          <ul class="beyond-books">
+            {books.map(([, b]) => (
+              <li class="pxbox"><b>{b.title}</b><span class="vt">{b.year} · {b.covers}</span><p>{b.note}</p></li>
+            ))}
+          </ul>
+        </>
+      ))}
+    </section>
+
+    <section class="film-block" aria-labelledby="scr-h">
+      <h2 id="scr-h">Other screen versions</h2>
+      <p class="sec-sub">
+        Villeneuve's films are the screen canon here. These versions are listed for comparison and
+        hidden on the timeline until you switch them on.
+      </p>
+      {(Object.entries(screens) as [Screen, (typeof screens)[Screen]][]).map(([k, s]) => (
+        <article class="screen-card pxbox">
+          <h3>{s.title}</h3>
+          <span class="vt">{s.year} · {s.maker} · {s.covers}</span>
+          <p>{s.stance}</p>
+          {byScreen(k).length > 0 && (
+            <ul class="alt-notes">
+              {byScreen(k).map((n) => (
+                <li class="alt-note">
+                  <div class="fn-head"><span class={`badge k-${n.kind}`}>{kindLabel[n.kind]}</span></div>
+                  <p><a href={`${base}/#${n.event}`}>{anchorTitle(n.event)}</a>: {n.text}</p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </article>
+      ))}
+    </section>
+  </div>
+</Base>

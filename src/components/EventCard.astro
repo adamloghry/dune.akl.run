@@ -4,11 +4,15 @@ import { kindLabel } from '../data/timeline';
 import { tags, charById, factionById } from '../data/cast';
 import Avatar from './Avatar.astro';
 import Sprite from './Sprite.astro';
+import EUNotes from './EUNotes.astro';
+import AltNotes from './AltNotes.astro';
+import { euNotesFor, altNotesFor } from '../data/beyond-view';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 interface Props { event: Event }
 const { event: e } = Astro.props;
 const films = e.films ?? [];
 const who = (tags[e.id]?.who ?? []).filter((id) => charById[id]);
+const eu = euNotesFor(e.id), alts = altNotesFor(e.id);
 const fs = (tags[e.id]?.f ?? []).filter((id) => factionById[id]);
 ---
 <li id={e.id} class:list={['event', { approx: e.approx, 'has-film': films.length > 0 }]}>
@@ -40,5 +44,7 @@ const fs = (tags[e.id]?.f ?? []).filter((id) => factionById[id]);
         ))}
       </ul>
     )}
+    <EUNotes notes={eu} />
+    <AltNotes notes={alts} />
   </article>
 </li>

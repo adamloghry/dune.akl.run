@@ -7,7 +7,7 @@ import '../styles/global.css';
 import Sprite from '../components/Sprite.astro';
 import Dunes from '../components/Dunes.astro';
 
-interface Props { title?: string; description?: string; page?: 'home' | 'films' | 'about' | 'characters' | 'factions' | 'web' | 'family' | 'search' }
+interface Props { title?: string; description?: string; page?: 'home' | 'films' | 'about' | 'characters' | 'factions' | 'web' | 'family' | 'search' | 'beyond' }
 const {
   title = 'The Golden Path — a Dune chronicle',
   description = 'The in-universe history of Frank Herbert\'s Dune, from the Butlerian Jihad to Chapterhouse, with every divergence in Denis Villeneuve\'s films marked.',
@@ -21,6 +21,7 @@ const nav = [
   { id: 'web', href: `${base}/web/`, label: 'web' },
   { id: 'family', href: `${base}/family/`, label: 'family' },
   { id: 'films', href: `${base}/films/`, label: 'films' },
+  { id: 'beyond', href: `${base}/beyond/`, label: 'beyond' },
   { id: 'about', href: `${base}/about/`, label: 'about' },
 ];
 ---
