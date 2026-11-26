@@ -14,7 +14,7 @@ const hit = (w?: string[], fs?: string[]) => (who ? (w ?? []).includes(who) : (f
 const evs = euEvents.filter((e) => hit(e.who, e.f));
 const title = Object.fromEntries(allEvents.map((p) => [p.ev.id, p.ev.title]));
 // Notes count for a person if they are tagged on the event or named in the note itself.
-const named: Record<string, string> = { mohiam: 'Mohiam', irulan: 'Irulan', shaddam: 'Shaddam', gurney: 'Gurney', thufir: 'Thufir', feyd: 'Feyd', stilgar: 'Stilgar', kynes: 'Kynes', alia: 'Alia', farad: "Farad'n", scytale: 'Scytale', teg: 'Teg', odrade: 'Odrade', murbella: 'Murbella', sheeana: 'Sheeana' };
+const named: Record<string, string> = { mohiam: 'Mohiam', irulan: 'Irulan', shaddam: 'Shaddam', gurney: 'Gurney', thufir: 'Thufir', feyd: 'Feyd', stilgar: 'Stilgar', kynes: 'Kynes', alia: 'Alia', farad: "Farad'n", scytale: 'Scytale', teg: 'Teg', odrade: 'Odrade', murbella: 'Murbella', sheeana: 'Sheeana', rabban: 'Rabban', yueh: 'Yueh', piter: 'Piter', jamis: 'Jamis', edric: 'Edric', taraza: 'Taraza', lucilla: 'Lucilla', fenring: 'Fenring', margot: 'Margot' };
 const notes = euNotes.filter((n) => hit(tags[n.event]?.who, tags[n.event]?.f) || (who && named[who] && n.text.includes(named[who])));
 const seen = new Set<string>();
 const books = (ids: string[]) => ids.map((b) => euBooks[b as keyof typeof euBooks]?.title ?? b).join(', ');

@@ -10,6 +10,12 @@ interface Props {
   label?: string;
 }
 const { name, size = 4, class: cls = '', label } = Astro.props;
+// Each sprite's pixels are written once per page as a <symbol>; later copies only point at it.
+const seen: Set<string> = ((Astro.locals as Record<string, unknown>).sprites ??= new Set<string>()) as Set<string>;
+const key = sprites[name] ? name : 'worm';
+const first = !seen.has(key);
+seen.add(key);
+const id = `spr-${key}`;
 const grid = sprites[name] ?? sprites.worm;
 const w = Math.max(...grid.map((r) => r.length));
 const h = grid.length;
@@ -35,5 +41,6 @@ grid.forEach((row, y) => {
   aria-label={label}
   aria-hidden={label ? undefined : 'true'}
 >
-  {rects.map((r) => <rect x={r.x} y={r.y} width={r.w} height="1" class={`px-${r.c}`} />)}
+  {first && <symbol id={id} viewBox={`0 0 ${w} ${h}`}>{rects.map((r) => <rect x={r.x} y={r.y} width={r.w} height="1" class={`px-${r.c}`} />)}</symbol>}
+  <use href={`#${id}`} />
 </svg>

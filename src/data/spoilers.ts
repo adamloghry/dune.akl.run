@@ -96,8 +96,15 @@ export const charAppear: Record<string, Level> = {
   mohiam: 1,
   irulan: 1,
   shaddam: 1,
+  yueh: 1,
+  piter: 1,
+  rabban: 1,
+  jamis: 1,
+  margot: 1,
+  fenring: 2,
   farad: 4,
   scytale: 3,
+  edric: 3,
   moneo: 5,
   siona: 5,
   hwi: 5,
@@ -105,6 +112,8 @@ export const charAppear: Record<string, Level> = {
   teg: 6,
   sheeana: 6,
   murbella: 6,
+  taraza: 6,
+  lucilla: 6,
 };
 /** When a person's one-line description stops spoiling. */
 export const charBlurb: Record<string, Level> = {
@@ -120,6 +129,8 @@ export const charBlurb: Record<string, Level> = {
   mohiam: 3,
   irulan: 2,
   shaddam: 2,
+  rabban: 2,
+  margot: 2,
   farad: 5,
   moneo: 5,
   murbella: 7,

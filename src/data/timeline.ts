@@ -22,6 +22,7 @@ export interface Event {
   approx?: boolean;
   title: string;
   book: Book;
+  ref?: string; // where in the novel it happens, e.g. "Dune · Book II: Muad'Dib"
   body: string;
   films?: FilmNote[];
 }
@@ -115,6 +116,7 @@ export const eras: Era[] = [
         approx: true,
         title: "The Bene Gesserit breeding program",
         book: "DUNE",
+        ref: "Dune · backstory, told in Book I: Dune",
         body: "The Sisterhood breeds bloodlines toward the Kwisatz Haderach, a male who can see where they cannot. The plan, near completion, needs an Atreides daughter to marry a Harkonnen heir. Lady Jessica disobeys and bears a son.",
       },
       {
@@ -123,6 +125,7 @@ export const eras: Era[] = [
         approx: true,
         title: "The Missionaria Protectiva seeds Arrakis",
         book: "DUNE",
+        ref: "Dune · backstory, told in Book I: Dune",
         body: "Bene Gesserit missionaries plant protective legends on primitive worlds for any Sister in danger to exploit. On Arrakis they plant the prophecy of the Lisan al-Gaib, the off-world messiah, which Jessica and Paul later use.",
       },
       {
@@ -131,6 +134,7 @@ export const eras: Era[] = [
         approx: true,
         title: "Harkonnens hold Arrakis",
         book: "DUNE",
+        ref: "Dune · backstory, told in Book I: Dune",
         body: "House Harkonnen runs Arrakis as a CHOAM quasi-fief and squeezes it for spice. The Fremen, assumed to be a few scattered tribes, are hunted for sport.",
       },
       {
@@ -160,6 +164,7 @@ export const eras: Era[] = [
         when: "10,191 A.G.",
         title: "The gom jabbar",
         book: "DUNE",
+        ref: "Dune · Book I: Dune",
         body: "On Caladan, Reverend Mother Gaius Helen Mohiam tests fifteen-year-old Paul with the box of pain and the poisoned needle, and he passes. Duke Leto accepts Arrakis knowing it is a trap: the Emperor fears the Atreides' popularity and their near-Sardaukar army.",
         films: [
           {
@@ -179,6 +184,7 @@ export const eras: Era[] = [
         when: "10,191 A.G.",
         title: "Arrival at Arrakeen",
         book: "DUNE",
+        ref: "Dune · Book I: Dune",
         body: 'The Atreides take over the Residency. The Fremen housekeeper, the Shadout Mapes, gives Jessica a crysknife; that first night a hunter-seeker nearly kills Paul. At a formal banquet the Duke and Jessica size up the planet\'s power brokers. Duncan Idaho returns from the sietches with a report on the Fremen, and Leto tells Paul what they must win: "desert power".',
         films: [
           {
@@ -193,6 +199,7 @@ export const eras: Era[] = [
         when: "10,191 A.G.",
         title: "Yueh's betrayal and the fall of the Atreides",
         book: "DUNE",
+        ref: "Dune · Book I: Dune",
         body: "Dr. Wellington Yueh, whose Suk conditioning was believed unbreakable, drops the shields. Harkonnens and disguised Sardaukar take Arrakeen. Duke Leto dies biting a poison-gas tooth meant for the Baron; it kills the Mentat Piter de Vries instead. Thufir Hawat is captured and pressed into Harkonnen service.",
         films: [
           {
@@ -203,30 +210,12 @@ export const eras: Era[] = [
         ],
       },
       {
-        id: "kynes-death",
-        when: "10,191 A.G.",
-        title: "Into the desert, and the death of Kynes",
-        book: "DUNE",
-        body: "Dumped in the deep desert by Harkonnen soldiers, Paul and Jessica escape with the survival kit Yueh hid for them. Duncan takes them to Liet-Kynes's Imperial ecological testing station. Sardaukar attack; Duncan dies holding them off while Paul and Jessica flee by ornithopter into a storm. Kynes, unmasked as a Fremen leader, is left in the open desert by the Harkonnens and dies when a pre-spice mass erupts beneath him, hallucinating his father's voice.",
-        films: [
-          {
-            film: "PART ONE",
-            kind: "kept",
-            text: "Duncan's last stand at the station is kept.",
-          },
-          {
-            film: "PART ONE",
-            kind: "changed",
-            text: "Liet Kynes is a woman, and her father's plan is barely mentioned. She summons a sandworm with a thumper and dies taking the Sardaukar with her.",
-          },
-        ],
-      },
-      {
         id: "stilltent",
         when: "10,191 A.G.",
         title: "The awakening in the stilltent",
         book: "DUNE",
-        body: "Sheltering from the storm in a stilltent, steeped in spice, Paul's prescience opens fully. He sees the jihad that will be fought in his name, knows he is the Kwisatz Haderach, and learns that Jessica is the Baron's daughter: he is part Harkonnen.",
+        ref: "Dune · Book II: Muad'Dib",
+        body: "Dumped in the deep desert by Harkonnen soldiers, Paul and Jessica escape with the survival kit Yueh hid for them. That night, hidden in a stilltent and steeped in spice, Paul's prescience opens fully. He sees the jihad that will be fought in his name, knows he is the Kwisatz Haderach, and learns that Jessica is the Baron's daughter: he is part Harkonnen.",
         films: [
           {
             film: "PART ONE",
@@ -241,10 +230,31 @@ export const eras: Era[] = [
         ],
       },
       {
+        id: "kynes-death",
+        when: "10,191 A.G.",
+        title: "Into the desert, and the death of Kynes",
+        book: "DUNE",
+        ref: "Dune · Book II: Muad'Dib",
+        body: "Duncan finds Paul and Jessica and takes them to Liet-Kynes's Imperial ecological testing station. Sardaukar attack; Duncan dies holding them off while Paul and Jessica flee by ornithopter into a storm. Kynes, unmasked as a Fremen leader, is left in the open desert by the Harkonnens and dies when a pre-spice mass erupts beneath him, hallucinating his father's voice.",
+        films: [
+          {
+            film: "PART ONE",
+            kind: "kept",
+            text: "Duncan's last stand at the station is kept.",
+          },
+          {
+            film: "PART ONE",
+            kind: "changed",
+            text: "Liet Kynes is a woman, and her father's plan is barely mentioned. She summons a sandworm with a thumper and dies taking the Sardaukar with her.",
+          },
+        ],
+      },
+      {
         id: "jamis",
         when: "10,191 A.G.",
         title: "Stilgar's troop and the duel with Jamis",
         book: "DUNE",
+        ref: "Dune · Book II: Muad'Dib",
         body: "Stilgar's Fremen find Paul and Jessica. Jamis invokes the amtal and fights Paul to the death. Paul kills with a blade for the first time and weeps for Jamis (\"he gives moisture to the dead\"). He takes the tribe name Usul, chooses Muad'Dib, and inherits Jamis's household, including his widow Harah.",
         films: [
           {
@@ -259,6 +269,7 @@ export const eras: Era[] = [
         when: "10,191 A.G.",
         title: "Jessica becomes a Fremen Reverend Mother",
         book: "DUNE",
+        ref: "Dune · Book II: Muad'Dib",
         body: "Pregnant with the Duke's daughter, Jessica drinks the Water of Life to become the sietch's Reverend Mother. The unborn child is awakened in the womb with all her ancestral memories.",
         films: [
           {
@@ -274,6 +285,7 @@ export const eras: Era[] = [
         approx: true,
         title: "Alia is born",
         book: "DUNE",
+        ref: "Dune · Book II: Muad'Dib",
         body: "Born months after the Duke's death, Alia has an adult mind in an infant body, which unsettles even the Fremen.",
         films: [
           {
@@ -288,6 +300,7 @@ export const eras: Era[] = [
         when: "10,191 A.G.",
         title: "Paul and Chani",
         book: "DUNE",
+        ref: "Dune · Book II: Muad'Dib",
         body: "At Sietch Tabr, Paul takes Chani, Liet-Kynes's daughter and the girl from his visions, as his partner. She believes in him to the end and accepts his dynastic marriage to Irulan. The novel ends with Jessica telling her that history will call them, the concubines, wives.",
         films: [
           {
@@ -303,6 +316,7 @@ export const eras: Era[] = [
         approx: true,
         title: "Sandrider",
         book: "DUNE",
+        ref: "Dune · Book II: Muad'Dib",
         body: "Paul learns Fremen ways (water discipline, stillsuits, thumpers) and teaches the weirding way in return. He calls and rides his first maker with hooks, the rite that makes a Fremen a sandrider, and leads their war against the Harkonnens.",
         films: [
           {
@@ -318,6 +332,7 @@ export const eras: Era[] = [
         approx: true,
         title: "Leto, the first son",
         book: "DUNE",
+        ref: "Dune · Book II: Muad'Dib and Book III: The Prophet",
         body: "Paul and Chani have a son, named Leto after the Duke. Near the end of the war, a Sardaukar raid on the sietches kills the child and carries off Alia.",
         films: [
           {
@@ -333,6 +348,7 @@ export const eras: Era[] = [
         approx: true,
         title: "Rabban, the Beast",
         book: "DUNE",
+        ref: "Dune · Book II: Muad'Dib",
         body: "The Baron hands Arrakis to his brutal nephew Glossu Rabban with orders to squeeze it dry, so that Feyd-Rautha can later arrive as the people's savior. Muad'Dib's raids turn the plan into a slow Harkonnen defeat.",
         films: [
           {
@@ -348,6 +364,7 @@ export const eras: Era[] = [
         approx: true,
         title: "Paul drinks the Water of Life",
         book: "DUNE",
+        ref: "Dune · Book III: The Prophet",
         body: "With his prescience clouded, Paul drinks the poison no man has survived and lies near death for three weeks. He wakes as the Kwisatz Haderach, seeing past, present and the narrow paths of the future, including the jihad he cannot stop.",
         films: [
           {
@@ -368,6 +385,7 @@ export const eras: Era[] = [
         approx: true,
         title: "Thufir Hawat and Gurney Halleck",
         book: "DUNE",
+        ref: "Dune · Book II: Muad'Dib and Book III: The Prophet",
         body: "Hawat, serving the Harkonnens, is a poisoned and divided man; at the end he dies refusing the Emperor's order to kill Paul. Gurney, reunited with Paul among smugglers, nearly kills Jessica, believing she was the traitor.",
         films: [
           {
@@ -383,6 +401,7 @@ export const eras: Era[] = [
         approx: true,
         title: "Feyd-Rautha and Margot Fenring",
         book: "DUNE",
+        ref: "Dune · Book II: Muad'Dib",
         body: "The Baron's nephew and planned heir is a gladiatorial showman. Lady Margot Fenring, on Bene Gesserit orders, seduces him to preserve his genes. Count Hasimir Fenring, the Emperor's friend and a \"failed\" Kwisatz Haderach, is the one man Paul cannot see.",
         films: [
           {
@@ -403,6 +422,7 @@ export const eras: Era[] = [
         approx: true,
         title: "The Battle of Arrakeen",
         book: "DUNE",
+        ref: "Dune · Book III: The Prophet",
         body: "Paul blasts open the Shield Wall with family atomics (legal, since they hit rock, not people) and rides worms into the Emperor's camp in a storm. Alia, taken in the Sardaukar raid on Sietch Tabr, is brought before the Emperor and kills Baron Harkonnen with the gom jabbar. Paul kills Feyd in a duel.",
         films: [
           {
@@ -423,6 +443,7 @@ export const eras: Era[] = [
         approx: true,
         title: "Paul takes the throne",
         book: "DUNE",
+        ref: "Dune · Book III: The Prophet",
         body: "Able to destroy the spice, and so the Guild, Paul forces Shaddam IV to abdicate to Salusa Secundus and takes Princess Irulan as wife in name. Irulan's later histories supply the novel's epigraphs. The jihad begins, against Paul's will.",
         films: [
           {
@@ -452,6 +473,7 @@ export const eras: Era[] = [
         approx: true,
         title: "Muad'Dib's Jihad",
         book: "MESSIAH",
+        ref: "Dune Messiah · told in the backstory",
         body: "Fremen legions conquer the Imperium. Paul tallies it himself: sixty-one billion dead, ninety planets sterilized, five hundred demoralized, the followers of forty religions wiped out. He compares himself unfavorably to Hitler.",
       },
       {
@@ -460,6 +482,7 @@ export const eras: Era[] = [
         approx: true,
         title: "The conspiracy",
         book: "MESSIAH",
+        ref: "Dune Messiah · opening chapters",
         body: "The Bene Gesserit (Mohiam), the Guild (the Navigator Edric, whose presence clouds prescience), the Tleilaxu (the Face Dancer Scytale) and Irulan plot to bring Paul down and steal his bloodline. The Tleilaxu give him Hayt, a ghola grown from Duncan Idaho's body.",
       },
       {
@@ -468,6 +491,7 @@ export const eras: Era[] = [
         approx: true,
         title: "Blindness, twins and the walk into the desert",
         book: "MESSIAH",
+        ref: "Dune Messiah · middle to closing chapters",
         body: "A stone burner blinds Paul, but prescience lets him \"see\". Irulan has secretly fed Chani contraceptives; the delay damages her, and she dies giving birth to twins, Leto II and Ghanima. Her death triggers Hayt's hidden order to kill Paul. The conflict breaks his conditioning: he is Duncan again, and Alia's love. Scytale offers Chani back as a ghola in exchange for the throne; Paul kills him. As Fremen custom demands, Paul walks blind into the desert, leaving Alia as regent.",
       },
     ],
@@ -490,6 +514,7 @@ export const eras: Era[] = [
         approx: true,
         title: "Alia, Abomination",
         book: "CHILDREN",
+        ref: "Children of Dune · spans the book",
         body: "Unable to hold back her ancestral voices, Alia is possessed by the memory of her grandfather, Baron Vladimir Harkonnen. The Bene Gesserit call this Abomination. Jessica returns to Arrakis to judge her grandchildren.",
       },
       {
@@ -498,6 +523,7 @@ export const eras: Era[] = [
         approx: true,
         title: "The Corrino plot and the Preacher",
         book: "CHILDREN",
+        ref: "Children of Dune · early to middle chapters",
         body: "Duncan, now Alia's husband, takes Jessica to Salusa Secundus, where she trains Farad'n in the Bene Gesserit ways. Shaddam's daughter Wensicia sends trained Laza tigers to kill the twins so her son Farad'n can take the throne. Leto lets himself be thought dead. A blind Preacher from the desert denounces the religion of Muad'Dib in Arrakeen.",
       },
       {
@@ -506,6 +532,7 @@ export const eras: Era[] = [
         approx: true,
         title: "Jacurutu",
         book: "CHILDREN",
+        ref: "Children of Dune · middle chapters",
         body: "Leto seeks the lost sietch of Jacurutu. There Gurney, on Jessica's orders, captures him and forces a massive spice overdose on him to test for Abomination. Leto survives and, in the trance, sees the Golden Path in full.",
       },
       {
@@ -514,6 +541,7 @@ export const eras: Era[] = [
         approx: true,
         title: "Duncan forces Stilgar's hand",
         book: "CHILDREN",
+        ref: "Children of Dune · late chapters",
         body: "Knowing what Alia has become, Duncan provokes Stilgar into killing him, which turns the old naib against the regent.",
       },
       {
@@ -522,6 +550,7 @@ export const eras: Era[] = [
         approx: true,
         title: "Leto II takes the sandtrout skin",
         book: "CHILDREN",
+        ref: "Children of Dune · late and closing chapters",
         body: "In the desert, Leto lets sandtrout, the sandworm's larval stage, cover his body as a living membrane. Nearly invulnerable, he begins a transformation that will take millennia. He confronts the Preacher, who is Paul; a priest then kills Paul. Alia, seeing what she has become, throws herself from a window.",
       },
       {
@@ -530,6 +559,7 @@ export const eras: Era[] = [
         approx: true,
         title: "The Golden Path",
         book: "CHILDREN",
+        ref: "Children of Dune · closing chapters",
         body: "Leto takes the throne and follows the future Paul refused. He announces a marriage to Ghanima in form only; Farad'n will father her children and becomes the royal scribe. The Golden Path demands a tyranny long and total enough that humanity learns never again to depend on one leader or one planet.",
       },
     ],
@@ -552,6 +582,7 @@ export const eras: Era[] = [
         approx: true,
         title: "Leto's Peace",
         book: "GOD EMPEROR",
+        ref: "God Emperor of Dune · told across the book",
         body: "Arrakis is green except for the Sareer, a strip of desert Leto preserves. Leto is the only sandworm left. His army is the Fish Speakers, all women. The Tleilaxu supply him with a series of Duncan Idaho gholas; many die by his hand or in rebellion.",
       },
       {
@@ -560,6 +591,7 @@ export const eras: Era[] = [
         approx: true,
         title: "Siona and Hwi Noree",
         book: "GOD EMPEROR",
+        ref: "God Emperor of Dune · opening and middle chapters",
         body: "Siona, a rebellious Atreides descendant and daughter of his majordomo Moneo, steals Leto's journals. She is the product of his own breeding program: invisible to prescience. Ix sends Hwi Noree, engineered to be the woman he could love, and Leto agrees to marry her.",
       },
       {
@@ -568,6 +600,7 @@ export const eras: Era[] = [
         approx: true,
         title: "The test in the Sareer",
         book: "GOD EMPEROR",
+        ref: "God Emperor of Dune",
         body: "Leto takes Siona into the Sareer, the last desert, and gives her spice essence. She sees what he has always seen: without the Golden Path, humanity dies. She remains his enemy, now knowing why he must die.",
       },
       {
@@ -576,6 +609,7 @@ export const eras: Era[] = [
         approx: true,
         title: "The death of the God Emperor",
         book: "GOD EMPEROR",
+        ref: "God Emperor of Dune · closing chapters",
         body: 'On the way to the wedding, Siona and the current Duncan bring down the bridge over the Idaho River. Leto falls into the water, deadly to the sandtrout in his body. Dying, he releases them; each carries a "pearl" of his awareness, and the worms and the spice will return. Humanity is free, and about to scatter.',
       },
     ],
@@ -598,6 +632,7 @@ export const eras: Era[] = [
         approx: true,
         title: "Famine and flight",
         book: "HERETICS",
+        ref: "Heretics of Dune · told in the backstory",
         body: "Leto's death brings the Famine Times. Ixian no-ships, invisible to prescience, make the Scattering possible. Humanity spreads beyond any one power's reach, so no single disaster can end it again.",
       },
       {
@@ -606,6 +641,7 @@ export const eras: Era[] = [
         approx: true,
         title: "The Honored Matres arise",
         book: "HERETICS",
+        ref: "Heretics of Dune · told in the backstory",
         body: "Out in the Scattering, a violent matriarchy forms that controls men through sexual imprinting. The books hint at roots in Fish Speakers and Bene Gesserit who left. They are fleeing something worse.",
       },
     ],
@@ -628,6 +664,7 @@ export const eras: Era[] = [
         approx: true,
         title: "Sheeana of Rakis",
         book: "HERETICS",
+        ref: "Heretics of Dune · early chapters",
         body: "On Rakis, a girl named Sheeana survives a worm attack and can command the worms, which some see as Leto's pearls. Mother Superior Taraza sends her protégée Darwi Odrade to Rakis.",
       },
       {
@@ -636,6 +673,7 @@ export const eras: Era[] = [
         approx: true,
         title: "Miles Teg and the Duncan ghola",
         book: "HERETICS",
+        ref: "Heretics of Dune · spans the book",
         body: "The old Mentat-Bashar Miles Teg guards a new Duncan Idaho ghola on Gammu, once Giedi Prime. In a Harkonnen no-globe there, Teg restores the ghola's original memories. Under torture, Teg finds he can move at blinding speed. The young Honored Matre Murbella seizes Duncan, but his Tleilaxu-implanted conditioning lets him imprint her instead.",
       },
       {
@@ -644,6 +682,7 @@ export const eras: Era[] = [
         approx: true,
         title: "The destruction of Rakis",
         book: "HERETICS",
+        ref: "Heretics of Dune · closing chapters",
         body: "The Honored Matres burn Rakis down to the bedrock. Taraza and Teg die there. Odrade, now Mother Superior, escapes with Sheeana and one worm.",
       },
       {
@@ -652,6 +691,7 @@ export const eras: Era[] = [
         approx: true,
         title: "Chapterhouse becomes a desert",
         book: "CHAPTERHOUSE",
+        ref: "Chapterhouse: Dune · spans the book",
         body: "The rescued worm dies and seeds sandtrout on the Bene Gesserit homeworld, which begins to dry into a new Dune. Honored Matres hunt down Sisterhood planets one by one. Odrade revives Teg as a ghola and trains Murbella as a Bene Gesserit.",
       },
       {
@@ -660,6 +700,7 @@ export const eras: Era[] = [
         approx: true,
         title: "Junction, and the escape",
         book: "CHAPTERHOUSE",
+        ref: "Chapterhouse: Dune · late and closing chapters",
         body: "Odrade dies in a gambit at the Honored Matre stronghold of Junction. Murbella, both Bene Gesserit and Honored Matre, ends up commanding the merged orders. Duncan, Sheeana, the young Teg and the Tleilaxu Scytale escape in a no-ship into the unknown.",
       },
       {
@@ -668,6 +709,7 @@ export const eras: Era[] = [
         approx: true,
         title: "Daniel and Marty",
         book: "CHAPTERHOUSE",
+        ref: "Chapterhouse: Dune · closing chapters",
         body: "An old couple, who appear to Duncan in visions as gardeners, watch the no-ship go and speak of it as something they are searching for. Who they are is left open. Frank Herbert died in 1986, and his arc ends on that question.",
       },
     ],

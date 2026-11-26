@@ -2664,3 +2664,126 @@ html[data-look="film"] .look-btn .lb-film {
     display: none;
   }
 }
+
+/* ---------- /duncan/: Duncan Idaho through the ages (life strip) ---------- */
+.dl-more {
+  margin: 14px 0 0;
+  font-size: 20px;
+}
+.dl-more a {
+  color: var(--gold);
+}
+.dl-lives {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+  display: grid;
+  gap: 32px;
+}
+.dl-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 12px;
+}
+.dl-n {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  background: var(--spice);
+  color: var(--bg);
+  font-size: 28px;
+  line-height: 1;
+}
+.dl-head h3 {
+  margin: 0;
+  font-size: clamp(18px, 3vw, 24px);
+  line-height: 1.1;
+  color: var(--ink);
+}
+.dl-sub {
+  margin: 2px 0 0;
+  font-size: 18px;
+  color: var(--ink-3);
+}
+.dl-stops {
+  list-style: none;
+  margin: 0 0 0 18px;
+  padding: 0 0 0 20px;
+  border-left: var(--px) solid var(--sand-d);
+  display: grid;
+  gap: 12px;
+}
+.dl-stop {
+  position: relative;
+  min-width: 0;
+  padding: 12px 14px;
+  overflow-wrap: anywhere;
+}
+.dl-stop::before {
+  content: "";
+  position: absolute;
+  left: -28px;
+  top: 16px;
+  width: 12px;
+  height: 12px;
+  background: var(--gold);
+  box-shadow: 0 0 0 4px var(--bg);
+}
+.dl-stop p {
+  margin: 6px 0 0;
+  max-width: 70ch;
+}
+.dl-ev {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 16px;
+  font-size: 19px;
+}
+.dl-ev a {
+  color: var(--gold);
+}
+.dl-stop .involved {
+  margin-top: 10px;
+}
+/* keyboard hint on the chronicle; only where there is likely a keyboard */
+.keys-hint {
+  font-size: 12px;
+  color: var(--ink-2);
+}
+.keys-hint kbd {
+  font: inherit;
+  padding: 0 4px;
+  border: 1px solid var(--line, currentColor);
+}
+@media (hover: none), (pointer: coarse) {
+  .keys-hint {
+    display: none;
+  }
+}
+/* event page: where in the book, and where in the Imperium */
+.ev-facts {
+  margin: 12px 0 0;
+  display: grid;
+  gap: 4px;
+  font-size: 14px;
+}
+.ev-facts div {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+.ev-facts dt {
+  color: var(--ink-2);
+  min-width: 7em;
+  font-size: 18px;
+}
+.ev-facts dd {
+  margin: 0;
+}
+.ev-facts .map-go {
+  margin-left: 6px;
+}

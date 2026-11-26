@@ -22,7 +22,7 @@ const seen = new Set<string>();
   <article class="card pxbox">
     <div class="card-meta">
       <span class="when">{e.when}</span>
-      <span class="book-tag">{e.book}</span>
+      <span class="book-tag" title={e.ref}>{e.book}</span>
       {e.approx && <span class="sr-only">(approximate date)</span>}
       {!solo && <a class="perma vt" href={`${base}/events/${e.id}/`} aria-label={`${e.title}: its own page, to share`}>share</a>}
     </div>

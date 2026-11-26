@@ -125,3 +125,46 @@ document.addEventListener("keydown", (e) => {
   if (q) q.focus();
   else location.href = document.querySelector(".search-btn").href;
 });
+// Keyboard jumps: j / k step through the chronicle's events (or to the next and previous event
+// page), [ and ] step through eras. Ignored while typing.
+(() => {
+  const typing = (t) =>
+    t instanceof HTMLElement && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName));
+  const shown = (el) => el.getClientRects().length > 0;
+  // Where scrollIntoView lands an element: the page's scroll-padding-top.
+  const top = () => parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+  const step = (sel, dir) => {
+    const els = [...document.querySelectorAll(sel)].filter(shown);
+    if (!els.length) return false;
+    const y = top();
+    const pos = els.map((el) => el.getBoundingClientRect().top - y);
+    const to = dir > 0 ? els[pos.findIndex((p) => p > 8)] : (els[pos.findLastIndex((p) => p < -8)] ?? els[0]);
+    if (!to) return true;
+    const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    to.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+    to.querySelector("h2 a, h3 a, h2, h3")?.focus?.({ preventScroll: true });
+    return true;
+  };
+  document.addEventListener("keydown", (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey || typing(e.target)) return;
+    const k = e.key;
+    if (k !== "j" && k !== "k" && k !== "[" && k !== "]") return;
+    const dir = k === "j" || k === "]" ? 1 : -1;
+    let done;
+    if (k === "[" || k === "]") done = step("section.era", dir);
+    else {
+      done = step(":not(.solo-event) > li.event", dir);
+      if (!done) {
+        const a = document.querySelector(dir > 0 ? 'a[rel="next"]' : 'a[rel="prev"]');
+        if (a) ((location.href = a.href), (done = true));
+      }
+    }
+    if (done) e.preventDefault();
+  });
+})();
+// Offline reading: see src/pages/sw.js.ts.
+if (
+  "serviceWorker" in navigator &&
+  (location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1")
+)
+  addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));

@@ -224,7 +224,7 @@ export const worlds: World[] = [
     kind: "Bene Gesserit Mother School",
     blurb:
       "Home of the Bene Gesserit Mother School in Dune's time. By Heretics the order is run from a hidden world.",
-    events: ["schools", "breeding"],
+    events: ["schools", "breeding", "conspiracy"],
     factions: ["bene-gesserit"],
     x: 26,
     y: 112,

@@ -76,6 +76,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       <label class="toggle"><input type="checkbox" id="show-alt" /><span class="sw"></span>other screen versions ({altNotes.length})</label>
       <button type="button" class="shield-hint" data-open-shield>spoiler shield <span class="shield-now">off</span></button>
       <span class="era-now" aria-live="polite"></span>
+      <span class="keys-hint">keys: <kbd>j</kbd> <kbd>k</kbd> event · <kbd>[</kbd> <kbd>]</kbd> era · <kbd>/</kbd> search</span>
       <div class="legend" aria-hidden="true">
         {(['kept', 'changed', 'cut', 'added'] as const).map((k) => <span class={`badge k-${k}`}>{kindLabel[k]}</span>)}
       </div>

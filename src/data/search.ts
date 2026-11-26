@@ -69,6 +69,18 @@ export function buildIndex(base: string): Doc[] {
         Math.max(blurbLevel(c.id), lastLevel(c.arc as Partial<Record<EraId, string>>)),
       ),
     );
+  docs.push(
+    withLevel(
+      {
+        k: "character",
+        t: "Duncan Idaho through the ages",
+        s: "every life, Dune to Chapterhouse",
+        b: "Swordmaster, Hayt, ghola after ghola: Duncan Idaho's lives across five thousand years, and in the later books.",
+        u: `${base}/duncan/`,
+      },
+      3,
+    ),
+  );
   for (const f of factions)
     docs.push(
       withLevel(

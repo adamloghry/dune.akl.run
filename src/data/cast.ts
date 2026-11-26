@@ -575,6 +575,20 @@ export const characters: Character[] = [
     look: { skin: S.tan, hair: H.grey, eyes: "dark", head: "hair", cloth: "#2f5a3a" },
   },
   {
+    id: "yueh",
+    name: "Dr. Wellington Yueh",
+    factions: [
+      { id: "atreides", rel: "member" },
+      { id: "harkonnen", rel: "enemy" },
+    ],
+    eras: { dune: "alive" },
+    blurb:
+      "The Atreides' Suk doctor, whose Imperial Conditioning was thought unbreakable. The Harkonnens break him by holding his wife, Wanna.",
+    arc: { dune: "Drops the shields, arms Leto with a poison tooth, saves Paul and Jessica, and is killed." },
+    film: { actor: "Chang Chen", note: "Kept closely." },
+    look: { skin: S.tan, hair: H.black, eyes: "dark", head: "long", cloth: "#2f5a3a" },
+  },
+  {
     id: "baron",
     name: "Baron Vladimir Harkonnen",
     factions: [
@@ -590,6 +604,22 @@ export const characters: Character[] = [
     look: { skin: S.fair, eyes: "dark", head: "bald", wide: true, cloth: "#2a3a6a" },
   },
   {
+    id: "piter",
+    name: "Piter de Vries",
+    factions: [
+      { id: "harkonnen", rel: "member" },
+      { id: "mentats", rel: "member" },
+      { id: "tleilax", rel: "trained" },
+      { id: "atreides", rel: "enemy" },
+    ],
+    eras: { dune: "alive" },
+    blurb:
+      'The Baron\'s Mentat, a "twisted" Mentat made by the Tleilaxu, who plans the fall of the Atreides.',
+    arc: { dune: "Killed by the gas from Leto's poison tooth, meant for the Baron." },
+    film: { actor: "David Dastmalchian", note: "Dies by Leto's poison tooth, as in the book." },
+    look: { skin: S.fair, hair: H.brown, eyes: "blue", head: "hair", cloth: "#2a3a6a" },
+  },
+  {
     id: "feyd",
     name: "Feyd-Rautha Harkonnen",
     factions: [
@@ -602,6 +632,25 @@ export const characters: Character[] = [
     arc: { dune: "Killed by Paul in a duel." },
     film: { actor: "Austin Butler", note: "Introduced in Part Two in a black-sun arena." },
     look: { skin: S.fair, hair: H.black, eyes: "dark", head: "curly", cloth: "#2a3a6a" },
+  },
+  {
+    id: "rabban",
+    name: "Glossu Rabban",
+    aka: "the Beast",
+    factions: [
+      { id: "harkonnen", rel: "member" },
+      { id: "fremen", rel: "enemy" },
+      { id: "atreides", rel: "enemy" },
+    ],
+    eras: { dune: "alive" },
+    blurb:
+      "The Baron's brutal elder nephew and Feyd-Rautha's brother. Set to squeeze Arrakis dry so that Feyd can arrive as its savior.",
+    arc: { dune: "Rules Arrakis by terror after the Atreides fall; Muad'Dib's raids wear him down." },
+    film: {
+      actor: "Dave Bautista",
+      note: "Replaced by Feyd in Part Two; Gurney kills him in the final battle.",
+    },
+    look: { skin: S.fair, hair: H.brown, eyes: "dark", head: "hair", wide: true, cloth: "#2a3a6a" },
   },
   {
     id: "kynes",
@@ -621,6 +670,20 @@ export const characters: Character[] = [
       note: "A woman, Dr. Liet Kynes, who dies summoning a worm onto the Sardaukar.",
     },
     look: { skin: S.tan, hair: H.brown, eyes: "blue", head: "stillsuit", cloth: "#7a6a4a" },
+  },
+  {
+    id: "jamis",
+    name: "Jamis",
+    factions: [{ id: "fremen", rel: "member" }],
+    eras: { dune: "alive" },
+    blurb:
+      "A Fremen of Stilgar's troop who challenges Paul to a duel to the death and becomes his first kill.",
+    arc: { dune: "Killed by Paul; Paul takes in his widow, Harah, and his household." },
+    film: {
+      actor: "Babs Olusanmokun",
+      note: "Appears in Paul's visions before the duel at the end of Part One.",
+    },
+    look: { skin: S.brown, hair: H.black, eyes: "blue", head: "stillsuit", cloth: "#6b4a32" },
   },
   {
     id: "mohiam",
@@ -672,6 +735,34 @@ export const characters: Character[] = [
     look: { skin: S.fair, hair: H.red, eyes: "dark", head: "crown", cloth: "#7a2a2a" },
   },
   {
+    id: "fenring",
+    name: "Count Hasimir Fenring",
+    factions: [
+      { id: "corrino", rel: "member" },
+      { id: "bene-gesserit", rel: "ally" },
+    ],
+    eras: { dune: "alive" },
+    blurb:
+      'The Emperor\'s friend and agent, a genetic eunuch the Bene Gesserit count a "failed" Kwisatz Haderach. Paul cannot see him in his visions.',
+    arc: { dune: "Refuses Shaddam's order to kill Paul." },
+    film: { actor: "Not in the films", note: "Count Fenring does not appear." },
+    look: { skin: S.fair, hair: H.grey, eyes: "dark", head: "hair", cloth: "#6a4a1a" },
+  },
+  {
+    id: "margot",
+    name: "Lady Margot Fenring",
+    factions: [
+      { id: "bene-gesserit", rel: "member" },
+      { id: "corrino", rel: "ally" },
+    ],
+    eras: { dune: "alive" },
+    blurb:
+      "Bene Gesserit wife of Count Fenring. She leaves Jessica a hidden warning in the Arrakeen Residency and later seduces Feyd-Rautha to preserve his genes.",
+    arc: { dune: "Warns Jessica of a traitor; seduces Feyd for the Sisterhood." },
+    film: { actor: "Léa Seydoux", note: "Seduces Feyd on Giedi Prime in Part Two, as in the book." },
+    look: { skin: S.fair, hair: H.blond, eyes: "dark", head: "long", cloth: "#3a2a3f" },
+  },
+  {
     id: "farad",
     name: "Farad'n Corrino",
     aka: "Harq al-Ada",
@@ -695,6 +786,20 @@ export const characters: Character[] = [
       "The Tleilaxu Face Dancer who drives the conspiracy in Messiah. The books never say whether he is linked to Master Scytale of Heretics and Chapterhouse.",
     arc: { messiah: "Offers Paul a ghola of Chani; is killed by Paul." },
     look: { skin: S.grey, eyes: "white", head: "bald", cloth: "#4a5a2a" },
+  },
+  {
+    id: "edric",
+    name: "Edric",
+    factions: [
+      { id: "guild", rel: "member" },
+      { id: "tleilax", rel: "ally" },
+      { id: "atreides", rel: "enemy" },
+    ],
+    eras: { messiah: "alive" },
+    blurb:
+      "A Guild Steersman who lives in a tank of orange spice gas. His presence clouds Paul's prescience and so hides the conspiracy.",
+    arc: { messiah: "Joins the plot against Paul and comes to court as the Guild's ambassador." },
+    look: { skin: S.grey, eyes: "blue", head: "bald", cloth: "#3a6a8a" },
   },
   {
     id: "moneo",
@@ -734,6 +839,19 @@ export const characters: Character[] = [
     look: { skin: S.fair, hair: H.black, eyes: "dark", head: "long", cloth: "#7f8c99" },
   },
   {
+    id: "taraza",
+    name: "Alma Mavis Taraza",
+    factions: [
+      { id: "bene-gesserit", rel: "member" },
+      { id: "honored-matres", rel: "enemy" },
+    ],
+    eras: { heretics: "alive" },
+    blurb:
+      "Mother Superior of the Bene Gesserit when Heretics opens. She commissions the new Duncan ghola and sends Odrade to Rakis.",
+    arc: { heretics: "Plays a long game against the Tleilaxu and the Honored Matres; dies on Rakis." },
+    look: { skin: S.fair, hair: H.grey, eyes: "dark", head: "veil", cloth: "#111111" },
+  },
+  {
     id: "odrade",
     name: "Darwi Odrade",
     factions: [
@@ -759,6 +877,18 @@ export const characters: Character[] = [
       "Mentat-Bashar, the Sisterhood's greatest soldier, of Atreides descent. Under torture discovers he can move faster than the eye.",
     arc: { heretics: "Protects the Duncan ghola; dies on Rakis, then returns as a ghola in Chapterhouse." },
     look: { skin: S.fair, hair: H.white, eyes: "dark", head: "hair", cloth: "#3a3a3a" },
+  },
+  {
+    id: "lucilla",
+    name: "Lucilla",
+    factions: [
+      { id: "bene-gesserit", rel: "member" },
+      { id: "honored-matres", rel: "enemy" },
+    ],
+    eras: { heretics: "alive" },
+    blurb: "A Bene Gesserit Imprinter sent to Gammu to bind the Duncan ghola to the Sisterhood.",
+    arc: { heretics: "Flees Gammu with Teg and the ghola; later carries the memories of fallen Lampadas." },
+    look: { skin: S.fair, hair: H.brown, eyes: "dark", head: "long", cloth: "#3a2a3f" },
   },
   {
     id: "sheeana",
@@ -802,22 +932,22 @@ export const tags: Record<string, { who?: string[]; f?: string[] }> = {
   "harkonnen-fief": { who: ["baron"], f: ["harkonnen", "choam", "fremen"] },
   kynes: { who: ["kynes"], f: ["fremen", "corrino"] },
   "gom-jabbar": { who: ["paul", "mohiam", "jessica", "leto-i"], f: ["bene-gesserit", "atreides"] },
-  arrakeen: { who: ["paul", "jessica", "leto-i", "duncan", "kynes"], f: ["atreides", "fremen"] },
+  arrakeen: { who: ["paul", "jessica", "leto-i", "duncan", "kynes", "yueh"], f: ["atreides", "fremen"] },
   betrayal: {
-    who: ["leto-i", "baron", "thufir", "jessica", "paul"],
+    who: ["leto-i", "baron", "thufir", "jessica", "paul", "yueh", "piter"],
     f: ["atreides", "harkonnen", "corrino", "mentats"],
   },
   "kynes-death": {
     who: ["paul", "jessica", "duncan", "kynes"],
     f: ["atreides", "fremen", "corrino", "harkonnen"],
   },
-  jamis: { who: ["paul", "jessica", "stilgar", "chani"], f: ["fremen"] },
+  jamis: { who: ["paul", "jessica", "stilgar", "chani", "jamis"], f: ["fremen"] },
   "reverend-mother": { who: ["jessica", "alia"], f: ["fremen", "bene-gesserit"] },
   "alia-born": { who: ["alia", "jessica"], f: ["atreides", "fremen"] },
   "first-son": { who: ["paul", "chani", "alia"], f: ["atreides", "fremen", "corrino"] },
   stilltent: { who: ["paul", "jessica", "baron"], f: ["atreides", "harkonnen", "bene-gesserit"] },
   sandrider: { who: ["paul", "stilgar", "chani"], f: ["fremen"] },
-  rabban: { who: ["baron", "feyd", "gurney"], f: ["harkonnen", "fremen"] },
+  rabban: { who: ["baron", "feyd", "gurney", "rabban"], f: ["harkonnen", "fremen"] },
   jacurutu: { who: ["leto-ii", "gurney", "jessica"], f: ["fremen", "bene-gesserit", "atreides"] },
   "duncan-stilgar": { who: ["duncan", "stilgar", "alia"], f: ["fremen", "atreides"] },
   "siona-test": { who: ["siona", "leto-ii"], f: ["atreides"] },
@@ -827,18 +957,30 @@ export const tags: Record<string, { who?: string[]; f?: string[] }> = {
     who: ["thufir", "gurney", "jessica", "paul", "shaddam"],
     f: ["mentats", "harkonnen", "atreides", "corrino"],
   },
-  feyd: { who: ["feyd", "baron"], f: ["harkonnen", "bene-gesserit", "corrino"] },
+  feyd: { who: ["feyd", "baron", "margot", "fenring"], f: ["harkonnen", "bene-gesserit", "corrino"] },
   "arrakeen-battle": {
-    who: ["paul", "alia", "jessica", "mohiam", "baron", "feyd", "shaddam", "gurney", "stilgar", "thufir"],
+    who: [
+      "paul",
+      "alia",
+      "jessica",
+      "mohiam",
+      "baron",
+      "feyd",
+      "shaddam",
+      "gurney",
+      "stilgar",
+      "thufir",
+      "fenring",
+    ],
     f: ["fremen", "atreides", "corrino", "harkonnen", "guild"],
   },
   ascension: {
-    who: ["paul", "shaddam", "irulan", "chani", "jessica", "mohiam"],
+    who: ["paul", "shaddam", "irulan", "chani", "jessica", "mohiam", "fenring"],
     f: ["atreides", "corrino", "guild", "bene-gesserit"],
   },
   "jihad-cost": { who: ["paul"], f: ["fremen", "qizarate", "atreides"] },
   conspiracy: {
-    who: ["mohiam", "scytale", "irulan", "duncan", "paul"],
+    who: ["mohiam", "scytale", "irulan", "duncan", "paul", "edric"],
     f: ["bene-gesserit", "guild", "tleilax", "corrino"],
   },
   "chani-death": {
@@ -860,14 +1002,17 @@ export const tags: Record<string, { who?: string[]; f?: string[] }> = {
   "leto-death": { who: ["leto-ii", "siona", "duncan", "moneo", "hwi"], f: ["atreides", "fish-speakers"] },
   famine: { f: ["ix", "guild"] },
   "honored-matres": { f: ["honored-matres", "fish-speakers", "bene-gesserit"] },
-  sheeana: { who: ["sheeana", "odrade"], f: ["qizarate", "bene-gesserit"] },
-  teg: { who: ["teg", "duncan", "murbella"], f: ["bene-gesserit", "mentats", "honored-matres", "tleilax"] },
+  sheeana: { who: ["sheeana", "odrade", "taraza"], f: ["qizarate", "bene-gesserit"] },
+  teg: {
+    who: ["teg", "duncan", "murbella", "lucilla"],
+    f: ["bene-gesserit", "mentats", "honored-matres", "tleilax"],
+  },
   "rakis-destroyed": {
-    who: ["odrade", "sheeana", "teg"],
+    who: ["odrade", "sheeana", "teg", "taraza"],
     f: ["honored-matres", "bene-gesserit", "qizarate"],
   },
   chapterhouse: {
-    who: ["odrade", "murbella", "teg", "sheeana", "duncan"],
+    who: ["odrade", "murbella", "teg", "sheeana", "duncan", "lucilla"],
     f: ["bene-gesserit", "honored-matres"],
   },
   junction: {

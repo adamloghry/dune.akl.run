@@ -6,6 +6,7 @@ import { characters, factions, tags, charById, factionById } from "../../src/dat
 import { euEvents, euNotes, altNotes } from "../../src/data/beyond";
 import { familyNodes, unions, edges } from "../../src/data/family";
 import { glossary } from "../../src/data/glossary";
+import { worlds } from "../../src/data/worlds";
 
 const canon = eras.flatMap((e) => e.events);
 const canonIds = new Set(canon.map((e) => e.id));
@@ -33,6 +34,25 @@ describe("timeline", () => {
 });
 
 describe("later books and other screen versions", () => {
+  it("says where in the novel each event happens, naming the right book", () => {
+    const title: Record<string, string> = {
+      DUNE: "Dune ·",
+      MESSIAH: "Dune Messiah",
+      CHILDREN: "Children of Dune",
+      "GOD EMPEROR": "God Emperor of Dune",
+      HERETICS: "Heretics of Dune",
+      CHAPTERHOUSE: "Chapterhouse: Dune",
+    };
+    for (const e of canon)
+      if (e.book !== "APPENDIX") expect(e.ref?.startsWith(title[e.book]), `${e.id}: ${e.ref}`).toBe(true);
+  });
+  it("puts events only on worlds that exist, and only real events on worlds", () => {
+    expect(dupes(worlds.map((w) => w.id))).toEqual([]);
+    for (const w of worlds) {
+      for (const id of w.events) expect(canonIds.has(id), `${w.id} event ${id}`).toBe(true);
+      for (const id of w.eu ?? []) expect(euIds.has(id), `${w.id} eu ${id}`).toBe(true);
+    }
+  });
   it("prefixes later-book event ids with eu-", () => {
     for (const e of euEvents) expect(e.id.startsWith("eu-"), e.id).toBe(true);
   });

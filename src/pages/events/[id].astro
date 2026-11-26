@@ -6,7 +6,8 @@ import EventCard from '../../components/EventCard.astro';
 import EUCard from '../../components/EUCard.astro';
 import Sprite from '../../components/Sprite.astro';
 import { eventPages, neighbours, type EventPage } from '../../data/pages';
-import { levels } from '../../data/spoilers';
+import { levels, sp } from '../../data/spoilers';
+import { worlds } from '../../data/worlds';
 import { lookIds } from '../../lib/style';
 
 export function getStaticPaths() {
@@ -23,6 +24,8 @@ const share = spoil
   ? { title: `A ${label.short} spoiler — The Golden Path`, description: `A moment from ${label.label}. Spoilers past your point stay hidden.` }
   : { title: `${p.title} — The Golden Path`, description: first };
 const img = `${base}/og/${p.id}.png`;
+const ref = p.canon?.ref;
+const where = worlds.filter((w) => w.events.includes(p.id) || (w.eu ?? []).includes(p.id));
 ---
 <Base page="event" title={`${p.title} — The Golden Path`} description={share.description} image={img} share={share}>
   <div class="wrap ev-page">
@@ -39,6 +42,12 @@ const img = `${base}/og/${p.id}.png`;
     <ol class="solo-event">
       {p.canon ? <EventCard event={p.canon} solo /> : <EUCard event={p.eu!} solo />}
     </ol>
+    {(ref || where.length > 0) && (
+      <dl class="ev-facts" {...sp(p.level)}>
+        {ref && <div><dt class="vt">in the book</dt><dd>{ref}</dd></div>}
+        {where.length > 0 && <div><dt class="vt">where</dt><dd>{where.map((w, i) => <>{i > 0 && ', '}<a href={`${base}/map/#world-${w.id}`}>{w.name}</a></>)} <a class="vt map-go" href={`${base}/map/#pl-${where[0].id}`}>on the map ›</a></dd></div>}
+      </dl>
+    )}
 
     <section class="share-box pxbox" aria-labelledby="share-h">
       <h2 class="sec-title" id="share-h">Share this event</h2>

@@ -1,0 +1,208 @@
+---
+// Duncan Idaho through the ages: his first life and every ghola, Dune to Chapterhouse, then the
+// later books in their own dashed section. Each stop is veiled at the book it comes from.
+import Base from '../layouts/Base.astro';
+import Avatar from '../components/Avatar.astro';
+import { charById } from '../data/cast';
+import { allEvents } from '../data/query';
+import { bookInfo, type Book } from '../data/timeline';
+import { euEvents, euBooks, euKindLabel, euAuthors } from '../data/beyond-view';
+import { sp, eventLevel, appear, type Level } from '../data/spoilers';
+import { glossHtml } from '../lib/gloss';
+
+interface Stop { ev: string[]; text: string; who: string[] }
+interface Life { name: string; sub: string; stops: Stop[] }
+
+// Frank Herbert's novels only. Each stop names the timeline events it summarises.
+const lives: Life[] = [
+  {
+    name: 'The swordmaster',
+    sub: 'his first life',
+    stops: [
+      {
+        ev: ['arrakeen'],
+        text: 'Swordmaster of House Atreides. On Arrakis the Duke sends him to live among the Fremen, and he comes back to Arrakeen with a report on them.',
+        who: ['leto-i', 'paul'],
+      },
+      {
+        ev: ['kynes-death'],
+        text: "After the Harkonnens retake Arrakis he reaches Paul and Jessica in the desert and brings them to Kynes's ecological testing station. Sardaukar attack, and he dies holding a doorway so the two can escape.",
+        who: ['paul', 'jessica', 'kynes'],
+      },
+    ],
+  },
+  {
+    name: 'Hayt',
+    sub: 'the first ghola',
+    stops: [
+      {
+        ev: ['conspiracy'],
+        text: "The Tleilaxu grow a ghola from Duncan's dead body, with metal eyes and a Mentat's training, and give him to Paul as a gift. Hidden in him is an order to kill Paul.",
+        who: ['paul', 'scytale'],
+      },
+      {
+        ev: ['chani-death'],
+        text: "When Chani dies, the order fires. Fighting it breaks his conditioning: he is Duncan Idaho again, with his old memories, and he stays at Alia's side.",
+        who: ['chani', 'paul', 'alia'],
+      },
+      {
+        ev: ['farad'],
+        text: "Now Alia's husband, he takes Jessica to Salusa Secundus, where she trains Farad'n, the Corrino heir.",
+        who: ['alia', 'jessica', 'farad'],
+      },
+      {
+        ev: ['duncan-stilgar'],
+        text: 'Knowing what Alia has become, he provokes Stilgar into killing him, which turns the old naib against her.',
+        who: ['stilgar', 'alia'],
+      },
+    ],
+  },
+  {
+    name: "Leto's Duncans",
+    sub: 'a line of gholas',
+    stops: [
+      {
+        ev: ['peace'],
+        text: "Through the 3,500 years of Leto II's reign the Tleilaxu supply Duncan after Duncan to command the God Emperor's guard. Many rebel against him, and many die.",
+        who: ['leto-ii'],
+      },
+      {
+        ev: ['siona', 'leto-death'],
+        text: 'Leto means the last of them to father children with Siona, the Atreides hidden from prescience. With her he brings down the bridge over the Idaho River, and Leto falls into the river and dies.',
+        who: ['siona', 'leto-ii'],
+      },
+    ],
+  },
+  {
+    name: 'The ghola of Gammu',
+    sub: 'every life remembered',
+    stops: [
+      {
+        ev: ['teg'],
+        text: 'The Bene Gesserit raise a new Tleilaxu-made ghola in a keep on Gammu, once Giedi Prime. The old Mentat-Bashar Miles Teg trains and guards him.',
+        who: ['teg'],
+      },
+      {
+        ev: ['teg'],
+        text: 'In a Harkonnen no-globe, Teg wakes his original memories. With them come the memories of every ghola life since.',
+        who: ['teg'],
+      },
+      {
+        ev: ['teg'],
+        text: 'Murbella, a young Honored Matre, seizes him and tries to enslave him through sex. Conditioning the Tleilaxu hid in him turns it around, and he imprints her instead.',
+        who: ['murbella'],
+      },
+      {
+        ev: ['chapterhouse'],
+        text: 'On Chapterhouse the Sisterhood keeps him aboard a grounded no-ship. He and Murbella have children there.',
+        who: ['murbella'],
+      },
+      {
+        ev: ['junction', 'daniel-marty'],
+        text: 'At the end he and Sheeana take the no-ship off Chapterhouse with the young ghola Teg and the Tleilaxu Scytale, leaving Murbella behind. In his visions an old couple watch them go.',
+        who: ['sheeana', 'teg', 'scytale'],
+      },
+    ],
+  },
+];
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const placed = Object.fromEntries(allEvents.map((p) => [p.ev.id, p]));
+const stopLevel = (s: Stop) => Math.max(...s.ev.map(eventLevel)) as Level;
+const lifeLevel = (l: Life) => Math.min(...l.stops.map(stopLevel)) as Level;
+const books = (l: Life) => [...new Set(l.stops.flatMap((s) => s.ev.map((id) => placed[id].ev.book as Book)))];
+// A face is veiled on its own only when that person is met later than the stop itself.
+const faceSp = (id: string, s: Stop) => (appear(id) > stopLevel(s) ? sp(appear(id), true) : {});
+const later = euEvents.filter((e) => e.id === 'eu-hunters' || e.id === 'eu-sandworms');
+const duncan = charById.duncan;
+const seen = new Set<string>();
+---
+<Base
+  page="characters"
+  title="Duncan Idaho through the ages — The Golden Path"
+  description="Duncan Idaho, swordmaster of House Atreides, followed through every life from Dune to Chapterhouse, with spoilers veiled by book."
+>
+  <div class="wrap">
+    <nav class="crumbs vt" aria-label="Breadcrumb">
+      <a href={`${base}/characters/`}>characters</a> / <a href={`${base}/characters/duncan/`}>duncan</a> / through the ages
+    </nav>
+    <header class="profile pxbox">
+      <div class="portrait"><Avatar c={duncan} size={10} /></div>
+      <div>
+        <h1>Duncan Idaho through the ages</h1>
+        <p>Swordmaster of House Atreides, followed from Dune to Chapterhouse.</p>
+        <p {...sp(3)}>
+          The Tleilaxu grow him again and again as a ghola, so he lives across some five thousand years and is in
+          all six of Frank Herbert's novels.
+        </p>
+        <p class="vt dl-more">
+          <a href={`${base}/characters/duncan/`}>His character page</a> · <a href={`${base}/family/`}>the family tree</a>
+        </p>
+      </div>
+    </header>
+
+    <section class="arc-sec" aria-labelledby="lives-h">
+      <h2 class="sec-title" id="lives-h">His lives, in order</h2>
+      <p class="sec-sub">From Frank Herbert's novels. Each stop links to its moment in the chronicle.</p>
+      <ol class="dl-lives">
+        {lives.map((l, i) => (
+          <li class="dl-life">
+            <div class="dl-head" {...sp(lifeLevel(l))}>
+              <span class="dl-n vt" aria-hidden="true">{i + 1}</span>
+              <div>
+                <h3>{l.name}</h3>
+                <p class="dl-sub vt">{l.sub} · {books(l).map((b) => bookInfo[b].title).join(', ')}</p>
+              </div>
+            </div>
+            <ol class="dl-stops">
+              {l.stops.map((s) => (
+                <li class="dl-stop pxbox" {...sp(stopLevel(s))}>
+                  <div class="card-meta">
+                    <span class="when">{placed[s.ev[0]].ev.when}</span>
+                    <span class="book-tag">{placed[s.ev[0]].ev.book}</span>
+                  </div>
+                  <p set:html={glossHtml(s.text, seen, base)} />
+                  <p class="dl-ev vt">
+                    {s.ev.map((id) => <a href={`${base}/events/${id}/`}>{placed[id].ev.title} &gt;</a>)}
+                  </p>
+                  <div class="involved">
+                    {s.who.filter((id) => charById[id]).map((id) => (
+                      <a href={`${base}/characters/${id}/`} title={charById[id].name} {...faceSp(id, s)}>
+                        <Avatar c={charById[id]} size={2} />
+                        <span class="sr-only">{charById[id].name}</span>
+                      </a>
+                    ))}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="arc-sec later-books" aria-labelledby="later-h">
+      <h2 class="sec-title" id="later-h">In the later books</h2>
+      <p class="eu-flag vt"><span>LATER BOOKS</span> not Frank Herbert · {euAuthors}</p>
+      <p class="sec-sub">
+        Two sequels pick up where Chapterhouse stops. A <b class="retcon-word">retcon</b> contradicts Frank Herbert.
+      </p>
+      <ol class="mini-events">
+        {later.map((e) => (
+          <li class:list={['pxbox', 'eu-card', `eu-${e.kind}`]} {...sp(eventLevel(e.id))}>
+            <div class="card-meta">
+              <span class="when">{e.when}</span>
+              <span class={`badge eu-badge eu-k-${e.kind}`}>{euKindLabel[e.kind]}</span>
+              <span class="book-tag eu-tag">
+                {e.books.map((b) => `${euBooks[b].title} (${euBooks[b].year})`).join(', ')}
+              </span>
+            </div>
+            <h3><a href={`${base}/events/${e.id}/`}>{e.title}</a></h3>
+            <p set:html={glossHtml(e.body, seen, base)} />
+            {e.herbert && <p class="eu-herbert"><b>Frank Herbert wrote</b> {e.herbert}</p>}
+          </li>
+        ))}
+      </ol>
+    </section>
+  </div>
+</Base>
