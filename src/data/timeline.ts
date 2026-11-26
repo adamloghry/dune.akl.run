@@ -214,7 +214,7 @@ export const eras: Era[] = [
         when: "10,191 A.G.",
         title: "The awakening in the stilltent",
         book: "DUNE",
-        ref: "Dune · Book II: Muad'Dib",
+        ref: "Dune · Book I: Dune",
         body: "Dumped in the deep desert by Harkonnen soldiers, Paul and Jessica escape with the survival kit Yueh hid for them. That night, hidden in a stilltent and steeped in spice, Paul's prescience opens fully. He sees the jihad that will be fought in his name, knows he is the Kwisatz Haderach, and learns that Jessica is the Baron's daughter: he is part Harkonnen.",
         films: [
           {
@@ -234,7 +234,7 @@ export const eras: Era[] = [
         when: "10,191 A.G.",
         title: "Into the desert, and the death of Kynes",
         book: "DUNE",
-        ref: "Dune · Book II: Muad'Dib",
+        ref: "Dune · Book I: Dune",
         body: "Duncan finds Paul and Jessica and takes them to Liet-Kynes's Imperial ecological testing station. Sardaukar attack; Duncan dies holding them off while Paul and Jessica flee by ornithopter into a storm. Kynes, unmasked as a Fremen leader, is left in the open desert by the Harkonnens and dies when a pre-spice mass erupts beneath him, hallucinating his father's voice.",
         films: [
           {
