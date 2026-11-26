@@ -90,7 +90,7 @@ const lifeEras = eraOrder.filter((e) => c.eras[e] || c.arc[e]);
         <h2 class="sec-title">Most often alongside</h2>
         <ul class="companions">
           {comp.map(([id, n]) => (
-            <li {...sp(appear(id))}><a href={`${base}/characters/${id}/`} class="pxbox"><Avatar c={charById[id]} size={3} /><span>{charById[id].name}</span><b class="vt">{n}×</b></a></li>
+            <li {...sp(appear(id))}><a href={`${base}/characters/${id}/`} class="pxbox"><Avatar c={charById[id]} size={3} /><span class="cname">{charById[id].name}</span><b class="vt">{n}×</b></a></li>
           ))}
         </ul>
       </section>

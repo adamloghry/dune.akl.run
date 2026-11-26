@@ -1226,7 +1226,7 @@ footer .foot {
 }
 .avatar {
   display: block;
-  flex: none;
+  flex: none !important; /* a portrait never stretches to fill a row */
   line-height: 0;
 }
 .avatar img {
@@ -1583,7 +1583,7 @@ html[data-look="film"] .lk-film {
 .companions a:hover {
   border-color: var(--spice);
 }
-.companions span {
+.companions .cname {
   flex: 1;
   font-size: 14px;
 }

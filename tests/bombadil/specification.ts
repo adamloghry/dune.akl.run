@@ -22,11 +22,21 @@ const page = extract(({ document, window }) => {
     spoil: root.dataset.spoil ?? null,
     shieldOn: shield?.classList.contains("on") ?? null,
     hasTopbar: !!document.querySelector("header.topbar"),
+    // Pictures drawn at a different shape from their source (squashed or stretched).
+    distorted: [...document.querySelectorAll("img")].filter((im) => {
+      const b = im.getBoundingClientRect();
+      if (!im.complete || !im.naturalWidth || !b.width || !b.height) return false;
+      const fit = window.getComputedStyle(im).objectFit;
+      if (fit === "cover" || fit === "contain") return false;
+      return Math.abs(b.width / b.height / (im.naturalWidth / im.naturalHeight) - 1) > 0.03;
+    }).length,
   };
 });
 
 // No page scrolls sideways, at any viewport (wide trees and maps scroll inside their own boxes).
 export const noHorizontalOverflow = always(() => page.current.scrollWidth <= page.current.width + 1);
+// Every picture keeps its own shape: portraits and art are never squashed or stretched.
+export const picturesKeepShape = always(() => page.current.distorted === 0);
 // boot.js always sets a theme before first paint.
 export const themeIsSet = always(
   () => !page.current.hasTopbar || page.current.theme === "light" || page.current.theme === "dark",
