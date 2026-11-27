@@ -1,41 +1,30 @@
-// The service worker behind offline reading. After a first visit it quietly saves every page in the
-// sitemap, with the styles, scripts and pictures those pages use, so the site works with no signal.
-// Pages are fetched fresh when online and fall back to the saved copy when not. Each build gets a
-// new version, so a deploy refreshes the saved copy.
+// The service worker behind offline reading. After a first visit it quietly saves every page and
+// every file those pages load, so the site works with no signal. Pages are fetched fresh when online
+// and fall back to the saved copy when not. The list of what to save, and the version, are filled in
+// after the build by src/build/offline.mjs, from the build output itself. A deploy that changes any
+// listed file gets a new version, which refreshes the saved copy.
 import type { APIRoute } from "astro";
 
-const version = new Date().toISOString();
-
-const worker = (v: string) => `"use strict";
-const CACHE = "dune-${v}";
+const worker = `"use strict";
+const CACHE = "dune-__VERSION__";
+const FILES = "__PRECACHE__";
 const SAME = (u) => new URL(u, self.location.origin).origin === self.location.origin;
 
 async function saveAll() {
+  if (!Array.isArray(FILES)) return; // dev server: nothing to save
   if (self.navigator.connection && self.navigator.connection.saveData) return;
   const cache = await caches.open(CACHE);
-  const idx = await fetch("/sitemap-0.xml").then((r) => (r.ok ? r.text() : ""));
-  const pages = [...idx.matchAll(/<loc>([^<]+)<\\/loc>/g)].map((m) => new URL(m[1]).pathname);
-  const assets = new Set();
-  for (const p of ["/", ...pages]) {
-    try {
-      const res = await fetch(p);
-      if (!res.ok || res.redirected) continue;
-      const html = await res.clone().text();
-      await cache.put(p, res);
-      for (const m of html.matchAll(/(?:src|href)="(\\/(?:_astro|assets|art|og)\\/[^"#?]+)"/g)) assets.add(m[1]);
-    } catch {}
-  }
-  assets.add("/favicon.svg");
-  for (const a of assets) {
-    if (await cache.match(a)) continue;
-    try {
-      const res = await fetch(a);
-      if (!res.ok) continue;
-      if (a.endsWith(".css"))
-        for (const m of (await res.clone().text()).matchAll(/url\\((\\/_astro\\/[^)"']+)\\)/g)) assets.add(m[1]);
-      await cache.put(a, res);
-    } catch {}
-  }
+  const todo = [...FILES];
+  const one = async () => {
+    for (let u; (u = todo.shift()) !== undefined; ) {
+      try {
+        if (await cache.match(u)) continue;
+        const res = await fetch(u, { cache: "no-cache" });
+        if (res.ok && !res.redirected) await cache.put(u, res);
+      } catch {}
+    }
+  };
+  await Promise.all(Array.from({ length: 6 }, one));
 }
 
 self.addEventListener("install", () => self.skipWaiting());
@@ -79,4 +68,4 @@ self.addEventListener("fetch", (e) => {
 `;
 
 export const GET: APIRoute = () =>
-  new Response(worker(version), { headers: { "Content-Type": "text/javascript; charset=utf-8" } });
+  new Response(worker, { headers: { "Content-Type": "text/javascript; charset=utf-8" } });

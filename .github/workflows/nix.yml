@@ -31,6 +31,9 @@ jobs:
       - name: Build for browser properties
         run: nix develop --impure --command npm run build
 
+      - name: Offline reading check
+        run: nix develop --impure --command npm run test:offline
+
       - name: Bombadil browser properties
         run: nix develop --impure --command npm run test:bombadil
 

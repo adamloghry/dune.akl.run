@@ -23,6 +23,13 @@
         '';
       };
 
+      # Offline reading: every page, and every file a page loads, must be in the list that sw.js
+      # saves, under the exact URL the page asks for (?v= query included).
+      checks.offline-output = pkgs.runCommand "offline-output" { } ''
+        ${pkgs.nodejs_24}/bin/node ${../tests/offline/check.mjs} ${self'.packages.default}
+        echo ok > $out
+      '';
+
       # The CSP has script-src 'self': the browser silently blocks inline scripts and
       # inline event handlers, so turn either into a build failure. (Inline styles are
       # still allowed: style-src keeps 'unsafe-inline' for the generated pixel layouts.)

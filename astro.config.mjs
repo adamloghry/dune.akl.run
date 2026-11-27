@@ -1,5 +1,6 @@
 import { defineConfig } from "astro/config";
 import sitemap from "@astrojs/sitemap";
+import offline from "./src/build/offline.mjs";
 
 // Fully static output: dist/ is plain HTML, CSS, fonts and images.
 // inlineStylesheets: "never" and assetsInlineLimit: 0 (as on akl.run): the CSP has script-src 'self'
@@ -11,6 +12,6 @@ export default defineConfig({
   build: { format: "directory", inlineStylesheets: "never" },
   compressHTML: true,
   devToolbar: { enabled: false },
-  integrations: [sitemap()],
+  integrations: [sitemap(), offline()],
   vite: { build: { assetsInlineLimit: 0, target: "es2020" } },
 });
